@@ -1,0 +1,6 @@
+.account .menu-account{
+    display: none;
+}
+.account:hover .menu-account{
+    display: block;
+}

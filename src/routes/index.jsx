@@ -11,6 +11,7 @@ import CreateNewUser from "../container/auth/createNewUser";
 import { NotFoundPage } from "../container/error/404";
 import { useLayoutEffect } from "react";
 import { AppMiddleware } from "../middleware/AppMiddleware";
+import AdminHome from "../container/admin";
 
 export const GeneralRoute = () => {
   return (
@@ -49,7 +50,7 @@ function Router() {
   return (
     <BrowserRouter>
       {logged ? <LoggedRoute /> : <GeneralRoute />}
-      {/* <Admin /> */}
+      {/* <AdminHome /> */}
     </BrowserRouter>
   );
 }

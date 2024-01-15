@@ -56,3 +56,20 @@ display: none;
 body {
   font-family: "Be Vietnam Pro";
 }
+
+.navHome {
+  transition: width 0.7s; /* Hiệu ứng chuyển động */
+  overflow: hidden; /* Ẩn nội dung vượt quá chiều rộng */
+}
+
+.navHome:hover { /* Chiều rộng tăng lên khi di chuột vào */
+}
+
+.nav-item-text {
+  opacity: 0; /* Ẩn chữ */
+  transition: opacity 0.3s; /* Hiệu ứng ẩn chữ */
+}
+
+.navHome:hover .nav-item-text {
+  opacity: 1; /* Hiển thị chữ khi di chuột vào */
+}

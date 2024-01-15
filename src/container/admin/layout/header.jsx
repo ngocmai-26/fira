@@ -3,6 +3,12 @@ function HeaderAdmin() {
      
         <header class="relative bg-white">
             <div class="flex items-center justify-between p-2 border-b">
+            <a
+            href="index.html"
+            class="inline-block text-2xl font-bold tracking-wider uppercase text-primary-dark p-2"
+          >
+            K-WD
+          </a>
               <button
                 class="p-1 transition-colors duration-200 rounded-md text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 md:hidden focus:outline-none focus:ring"
               >

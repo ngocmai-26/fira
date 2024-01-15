@@ -1,20 +1,14 @@
 function NavBarAdmin() {
   return (
-    <aside class="flex-shrink-0 hidden w-64 bg-white border-r  md:block">
+    <aside class="flex-shrink-0 hidden w-12 hover:w-56 bg-white navHome border-r  md:block">
       <div class="flex flex-col h-full ">
-        <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2">
-          <a
-            href="index.html"
-            class="inline-block text-2xl font-bold tracking-wider uppercase text-primary-dark p-2"
-          >
-            K-WD
-          </a>
+        <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2  mt-10">
           <div  className="py-3">
 
-          <div className="py-2">
+          <div className="py-2 ">
             <a
               href="#"
-              class="flex items-center p-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 "
+              class="flex items-center py-3 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100 "
             >
               <span aria-hidden="true">
                 <svg
@@ -32,15 +26,15 @@ function NavBarAdmin() {
                   />
                 </svg>
               </span>
-              <span class="ml-2 text-sm"> Dashboards </span>
+              <span class="ml-2 text-sm nav-item-text"> Dashboards </span>
             
             </a>
           </div>
 
-          <div className="py-2">
+          <div className="">
             <a
               href="#"
-              class="flex items-center p-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 "
+              class="flex items-center py-3 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100"
               role="button"
               aria-haspopup="true"
             >
@@ -60,15 +54,15 @@ function NavBarAdmin() {
                   />
                 </svg>
               </span>
-              <span class="ml-2 text-sm"> Components </span>
+              <span class="ml-2 text-sm nav-item-text"> Components </span>
             
             </a>
           </div>
 
-          <div className="py-2">
+          <div className="">
             <a
               href="#"
-              class="flex items-center p-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 "
+              class="flex items-center py-3 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100"
               role="button"
               aria-haspopup="true"
             >
@@ -88,14 +82,14 @@ function NavBarAdmin() {
                   />
                 </svg>
               </span>
-              <span class="ml-2 text-sm"> Pages </span>
+              <span class="ml-2 text-sm nav-item-text"> Pages </span>
              
             </a>
           </div>
-          <div className="py-2">
+          <div className="">
             <a
               href="#"
-              class="flex items-center p-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 "
+              class="flex items-center py-3 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100"
               role="button"
               aria-haspopup="true"
             >
@@ -115,15 +109,15 @@ function NavBarAdmin() {
                   />
                 </svg>
               </span>
-              <span class="ml-2 text-sm"> Authentication </span>
+              <span class="ml-2 text-sm nav-item-text"> Authentication </span>
             
             </a>
           </div>
 
-          <div className="py-2">
+          <div className="">
             <a
               href="#"
-              class="flex items-center p-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 "
+              class="flex items-center py-3 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100  hover:bg-gray-100"
               role="button"
               aria-haspopup="true"
             >
@@ -143,7 +137,7 @@ function NavBarAdmin() {
                   />
                 </svg>
               </span>
-              <span class="ml-2 text-sm"> Layouts </span>
+              <span class="ml-2 text-sm nav-item-text"> Layouts </span>
              
             </a>
           </div>

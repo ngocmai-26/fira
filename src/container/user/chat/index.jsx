@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import ModalRoomChat from "../../modal/modalRoomChat";
+import NavBarAdmin from "../../admin/layout/nav";
 
 function Chat() {
   const [seeMore, setSeeMore] = useState(false);
@@ -317,7 +318,8 @@ function Chat() {
     },
   ];
   return (
-    <article className="overflow-hidden relative">
+    <article className="overflow-hidden relative flex">
+      <NavBarAdmin />
       <div className="grid grid-cols-3 lg:grid-cols-4 h-screen relative">
         <div className="p-2 col-span-3 md:col-span-1 border-e-gray-100 border-e-2 h-screen">
           <div className="flex justify-between border-b-gray-100 border-b-2 py-2">

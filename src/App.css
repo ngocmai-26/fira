@@ -73,3 +73,11 @@ body {
 .navHome:hover .nav-item-text {
   opacity: 1; /* Hiển thị chữ khi di chuột vào */
 }
+
+.notification-content {
+  display: none;
+}
+
+.notification:hover .notification-content {
+  display: block;
+}

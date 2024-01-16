@@ -1,6 +1,9 @@
+import { faCircle, faCircleDot } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 function MsgItem({ data }) {
   return (
-    <div className="flex pt-2 justify-between">
+    <div className={`flex py-1 justify-between hover:bg-gray-100`}>
       <div className="flex">
         {data?.type ? (
           <div className="image">
@@ -125,14 +128,14 @@ function MsgItem({ data }) {
             <img src={data?.img} alt="" className="rounded-lg my-1" />
           </div>
         )}
-        <div className="information px-1.5 md:max-w-36 lg:max-w-72 overflow-hidden">
-          <div className="information-name">
+        <div className={`information px-1.5 md:max-w-36 lg:max-w-72  ${data?.typeNotify ===1? "text-gray-400": ""}`}>
+          <div className={`information-name ${data?.name? "block": "hidden"}`}>
             <span className="font-medium">{data?.name}</span>
           </div>
-          <div className="information-chat">
-            <span className="text-xs font-medium single-line">{data?.content}</span>
+          <div className={`information-chat overflow-hidden text-ellipsis max-w-64 ${data?.content? "block": "hidden"}`}>
+            <span className="text-xs font-medium single-line ">{data?.content}</span>
           </div>
-          <div className="information-file">
+          <div className={`information-file ${data?.type? "block": "hidden"}`}>
             <span className="text-xs">{data?.type}</span>
             <span className="text-xs ml-2">{data?.capacity}</span>
           </div>
@@ -141,6 +144,9 @@ function MsgItem({ data }) {
 
       <div className="time">
         <span className="text-xs text-gray-400">{data?.time}</span>
+        <div className={`${data?.typeNotify? "block": "hidden"}`}>
+          <FontAwesomeIcon icon={faCircle} className={`${data?.typeNotify !==1? "block": "hidden"} text-xs text-blue-500`} />
+        </div>
       </div>
       <div className="download">
         {data?.capacity ? (

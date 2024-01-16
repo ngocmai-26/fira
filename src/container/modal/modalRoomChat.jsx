@@ -6,9 +6,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import UserItem from "../component/userItem";
+import SearchComponent from "../component/searchComponent";
 
 function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
+  const [selectedTag, setSelectedTag] = useState(null);
 
   const handleRadioClick = (buttonId) => {
     if (selectedButtons.some((item) => item.id === buttonId.id)) {
@@ -33,7 +36,7 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
     },
     {
       id: 2,
-      name: "Đăng Văn Nam",
+      name: "Đăng Văn Nam Đăng Văn Nam Đăng Văn Nam",
       img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
@@ -63,7 +66,7 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
     },
     {
       id: 7,
-      name: "Đăng Văn Nam",
+      name: "Đăng Văn Nam Đăng Văn Nam  Đăng Văn Nam",
       img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
@@ -81,6 +84,51 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
     },
   ];
 
+  const tags = [
+    {
+      id: 1, 
+      nameTag: "Gia đình"
+    },
+    {
+      id: 2, 
+      nameTag: "Bạn bè"
+    },
+    {
+      id: 3, 
+      nameTag: "Công việc"
+    },
+    {
+      id: 4, 
+      nameTag: "Khách hàng"
+    },
+    {
+      id: 5, 
+      nameTag: "Trả lời sau"
+    },
+    {
+      id: 1, 
+      nameTag: "Gia đình"
+    },
+    {
+      id: 2, 
+      nameTag: "Bạn bè"
+    },
+    {
+      id: 3, 
+      nameTag: "Công việc"
+    },
+    {
+      id: 4, 
+      nameTag: "Khách hàng"
+    },
+    {
+      id: 5, 
+      nameTag: "Trả lời sau"
+    },
+  ]
+  const handleTagClick = (tagId) => {
+    setSelectedTag(tagId);
+  };
   return (
     <div
       className={`absolute top-0 left-0 right-0 bottom-0 bg-[#b5b3b354] m-auto rounded-sm ${
@@ -103,18 +151,21 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
               placeholder="Nhập tên nhóm"
             />
           </div>
-          <div className="search py-2">
-            <div className="border-2 w-full flex justify-between p-1 rounded-3xl">
-              <FontAwesomeIcon
-                icon={faSearch}
-                className="font-thin p-1.5 text-gray-300"
-              />
-              <input
-                type="text"
-                className=" w-full focus-visible:border-0 focus-visible:outline-0 text-sm"
-                placeholder="Nhập tên, số điện thoại"
-              ></input>
-            </div>
+         <SearchComponent placeholder="Nhập tên, số điện thoại" />
+          <div className="tags py-2 scrollX max-w-full">
+          <ul className="flex scrollX-item  pb-2">
+      {tags.map((item) => (
+        <li
+          key={item.id}
+          className={`px-2 mx-1 cursor-pointer ${
+            selectedTag === item.id ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-300'
+          }`}
+          onClick={() => handleTagClick(item.id)}
+        >
+          <span className="text-xs">{item.nameTag}</span>
+        </li>
+      ))}
+    </ul>
           </div>
           <hr />
           <div className="group">
@@ -140,18 +191,8 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
                           onClick={() => handleRadioClick(item)}
                           className="my-auto"
                         />
-                        <div className="w-10 h-10 rounded-full overflow-hidden mx-1.5">
-                          <img
-                            src={item.img}
-                            alt=""
-                            className="w-full h-full"
-                          />
-                        </div>
-                        <div className="my-auto overflow-hidden text-ellipsis">
-                          <span className="single-line text-sm ">
-                            {item.name}
-                          </span>
-                        </div>
+                        
+                        <UserItem img={item.img} name = {item.name} widthContent = "max-w-52" />
                       </button>
                     ))}
                   </div>
@@ -169,20 +210,7 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
                         <div
                           className={`w-11/12 my-2 mx-auto flex py-1 px-1 justify-between rounded-sm bg-gray-100`}
                         >
-                          <div className="flex ">
-                            <div className="w-8 h-8 rounded-full overflow-hidden me-1.5">
-                              <img
-                                src={item.img}
-                                alt=""
-                                className="w-full h-full"
-                              />
-                            </div>
-                            <div className="my-auto text-sm w-24 overflow-hidden text-ellipsis">
-                              <span className="single-line text-xs ">
-                                {item.name}
-                              </span>
-                            </div>
-                          </div>
+                          <UserItem img={item.img} name = {item.name} widthContent = "max-w-24" />
 
                           <button
                             className="text-end"

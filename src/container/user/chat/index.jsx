@@ -11,6 +11,9 @@ import { useSelector } from "react-redux";
 import ModalRoomChat from "../../modal/modalRoomChat";
 import NavBarAdmin from "../../admin/layout/nav";
 import NotificationComponent from "../../component/notification";
+import SearchModal from "../../modal/searchModal";
+import QRCodeModal from "../../modal/QRCodeModal";
+import SearchComponent from "../../component/searchComponent";
 
 function Chat() {
   const [seeMore, setSeeMore] = useState(false);
@@ -273,6 +276,14 @@ function Chat() {
       capacity: "29MB",
     },
   ];
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const handleModalQr = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
+
+  
+
   return (
     <article className="overflow-hidden relative flex">
       <NavBarAdmin />
@@ -282,23 +293,17 @@ function Chat() {
             <span className="font-bold text-2xl">Message</span>
             <div className="flex">
             <button
-              className="relative overflow-hidden bg-gradient-to-r from-blue-300 to-blue-600 text-lg text-white px-2"
+              className=" overflow-hidden bg-gray-100 text-lg text-gray-800 hover:bg-gray-300 px-2"
               onClick={handleHiddenModalRoom}
             >
               <FontAwesomeIcon icon={faPlus} />
-              <div className="absolute inset-0 bg-opacity-40 bg-gray-200"></div>
+       
             </button>
             <NotificationComponent />
             </div>
             
           </div>
-          <div className="search">
-            <input
-              type="text"
-              className="border-2 w-full my-2 rounded-md px-2 py-2 text-sm"
-              placeholder="Tìm kiếm người dùng"
-            />
-          </div>
+         <SearchComponent placeholder="Tìm kiếm người dùng" />
           <div className="scroll">
             <div className="pt-3 scroll-item" style={{ maxHeight: "90vh" }}>
               <button className="text-left" onClick={handleExpandBox}>
@@ -477,10 +482,12 @@ function Chat() {
           </div>
         </div>
       </div>
-      <ModalRoomChat
+      {/* <ModalRoomChat
         hiddenModalRoom={hiddenModalRoom}
         handleHiddenModalRoom={handleHiddenModalRoom}
-      />
+      /> */}
+      {/* <SearchModal /> */}
+      <QRCodeModal handleModalQr={handleModalQr} modalIsOpen={modalIsOpen} />
     </article>
   );
 }

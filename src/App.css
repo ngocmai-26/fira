@@ -47,6 +47,20 @@
 width: 0 !important;
 display: none; 
 }
+.scrollX .scrollX-item {
+  overflow-x: auto;
+  overflow-y: hidden; /* Ẩn thanh cuộn dọc */
+  white-space: nowrap;
+}
+
+.scrollX .scrollX-item::-webkit-scrollbar {
+  width: 2px; /* Chiều rộng của thanh cuộn */
+  height: 2px; /* Chiều cao của thanh cuộn */
+}
+
+.scrollX .scrollX-item::-webkit-scrollbar-thumb {
+  background-color: gray; /* Màu sắc của đối tượng cuộn */
+}
 
 .single-line {
   white-space: nowrap;

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function SearchComponent({placeholder, styleRadius}) {
     return ( 
         <div className="search py-2">
-            <div className={`border-2 w-full flex justify-between p-1 ${styleRadius? styleRadius: "rounded-md"}`} >
+            <div className={`border w-full flex justify-between p-1 ${styleRadius? styleRadius: "rounded-md"}`} >
               <FontAwesomeIcon
                 icon={faSearch}
                 className="font-thin p-1.5 text-gray-300"

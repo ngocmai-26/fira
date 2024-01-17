@@ -1,5 +1,5 @@
-import HeaderAdmin from "./layout/header";
-import NavBarAdmin from "./layout/nav";
+import HeaderAdmin from "../layout/header";
+import NavBarAdmin from "../layout/nav";
 
 function AdminHome() {
   return (

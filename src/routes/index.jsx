@@ -37,7 +37,8 @@ export const LoggedRoute = () => {
     <AppMiddleware>
       <Routes>
         <Route path="/create-new-user" element={<CreateNewUser />} />
-        <Route path="/" element={<Chat />} />
+        <Route path="/" element={<AdminHome />} />
+        <Route path="/chat" element={<Chat />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AppMiddleware>

@@ -4,19 +4,16 @@ import { createNewUser, register } from "../../thunks/AuthThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "../component/spinner";
 import { ErrorField } from "../component/ErrorField";
+import { FormField } from "../component/FormField";
+import ButtonComponent from "../component/ButtonComponent";
 
 function CreateNewUser() {
   const dispatch = useDispatch();
-  const nav = useNavigate();
   const [newUserData, setNewUserData] = useState({});
 
   const { isFetching, errors } = useSelector((state) => state.authReducer);
   const handleCreateNewUser = () => {
     dispatch(createNewUser(newUserData));
-  };
-
-  const handleInputChange = (e) => {
-    setNewUserData({ ...newUserData, [e.target.name]: e.target.value });
   };
   return (
     <article className="bg-cyan-50 h-full w-full my-auto flex items-center py-5">
@@ -38,14 +35,12 @@ function CreateNewUser() {
                 <label htmlFor="Email" className="font-medium text-sm">
                   Firstname
                 </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  id="firstName"
-                  value={newUserData?.firstName}
-                  onChange={handleInputChange}
-                  className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
-                  required
+                <FormField
+                  name={"firstName"}
+                  values={newUserData}
+                  id={"firstName"}
+                  setValue={setNewUserData}
+                  required={"required"}
                 />
                 {<ErrorField errors={errors} field={"firstName"} />}
               </div>
@@ -57,13 +52,12 @@ function CreateNewUser() {
                 <label htmlFor="Phone" className="font-medium text-sm">
                   Lastname
                 </label>
-                <input
-                  name="lastName"
-                  value={newUserData?.lastName}
-                  id="password"
-                  onChange={handleInputChange}
-                  className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
-                  required
+                <FormField
+                  name={"lastName"}
+                  values={newUserData}
+                  id={"lastName"}
+                  setValue={setNewUserData}
+                  required={"required"}
                 />
                 {<ErrorField errors={errors} field={"lastName"} />}
               </div>
@@ -75,13 +69,12 @@ function CreateNewUser() {
                 <label htmlFor="Phone" className="font-medium text-sm">
                   Address
                 </label>
-                <input
-                  name="address"
-                  value={newUserData?.address}
-                  id="confirmPassword"
-                  onChange={handleInputChange}
-                  className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
-                  required
+                <FormField
+                  name={"address"}
+                  values={newUserData}
+                  id={"address"}
+                  setValue={setNewUserData}
+                  required={"required"}
                 />
                 {<ErrorField errors={errors} field={"address"} />}
               </div>
@@ -94,15 +87,13 @@ function CreateNewUser() {
                 <label htmlFor="Phone" className="font-medium text-sm">
                   Birthday
                 </label>
-                <input
-                  max={new Date()}
-                  type="date"
-                  name="birthday"
-                  value={newUserData?.birthday}
-                  id="confirmPassword"
-                  onChange={handleInputChange}
-                  className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
-                  required
+                <FormField
+                  name={"birthday"}
+                  values={newUserData}
+                  id={"birthday"}
+                  setValue={setNewUserData}
+                  type={"date"}
+                  required={"required"}
                 />
                 {<ErrorField errors={errors} field={"birthday"} />}
               </div>
@@ -115,13 +106,12 @@ function CreateNewUser() {
                 <label htmlFor="Phone" className="font-medium text-sm">
                   Department
                 </label>
-                <input
-                  name="department"
-                  value={newUserData?.department}
-                  id="confirmPassword"
-                  onChange={handleInputChange}
-                  className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
-                  required
+                <FormField
+                  name={"department"}
+                  values={newUserData}
+                  id={"department"}
+                  setValue={setNewUserData}
+                  required={"required"}
                 />
                 {<ErrorField errors={errors} field={"department"} />}
               </div>
@@ -134,14 +124,12 @@ function CreateNewUser() {
                 <label htmlFor="Phone" className="font-medium text-sm">
                   Phone
                 </label>
-                <input
-                  maxLength={10}
-                  name="phone"
-                  value={newUserData?.phone}
-                  id="confirmPassword"
-                  onChange={handleInputChange}
-                  className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
-                  required
+                <FormField
+                  name={"phone"}
+                  values={newUserData}
+                  id={"phone"}
+                  setValue={setNewUserData}
+                  required={"required"}
                 />
                 {<ErrorField errors={errors} field={"phone"} />}
               </div>
@@ -154,13 +142,14 @@ function CreateNewUser() {
             >
               Quay lại
             </Link>
-            <button
-              type="button"
+            {/* <button
+              type="submit"
               onClick={handleCreateNewUser}
               className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 min-w-full sm:min-w-[50%] "
             >
               {isFetching ? <Spinner /> : "Tiếp tục"}
-            </button>
+            </button> */}
+              <ButtonComponent handleSubmit={handleCreateNewUser} type={"button"} textButton={isFetching ? <Spinner /> : "Tiếp tục"} style={"bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-full sm:min-w-[50%]"} />
           </div>
         </form>
       </div>

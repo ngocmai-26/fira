@@ -8,6 +8,7 @@ import { Spinner } from "../component/spinner";
 import { ErrorField } from "../component/ErrorField";
 import { FormField } from "../component/FormField";
 import { loadTokenFromStorage } from "../../services/AuthService";
+import ButtonComponent from "../component/ButtonComponent";
 
 function Login() {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ function Login() {
                     values={user}
                     id={"username"}
                     setValue={setUser}
+                    required={"required"}
                   />
                 </div>
                 {<ErrorField errors={errors} field={"username"} />}
@@ -73,16 +75,13 @@ function Login() {
                   <span className="font-medium text-sm">Password:</span>
                 </div>
                 <div className="col-span-2 relative">
-                  <input
+                  <FormField
+                    name={"password"}
+                    values={user}
+                    id={"password"}
+                    setValue={setUser}
                     type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={user?.password}
-                    id="password"
-                    onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
-                    }
-                    className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
-                    required
+                    required={"required"}
                   />
                   <div
                     className="absolute top-2 right-2 cursor-pointer text-sm text-gray-300"
@@ -113,13 +112,15 @@ function Login() {
               >
                 Đăng Ký
               </Link>
-              <button
-                type="button"
-                onClick={handleLogin}
-                className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 min-w-full sm:min-w-[50%] "
-              >
-                {isFetching ? <Spinner /> : "Đăng nhập"}
-              </button>
+          
+              <ButtonComponent
+                textButton={isFetching ? <Spinner /> : "Đăng nhập"}
+                style={
+                  "min-w-full sm:min-w-[50%] mr-2 mb-2 bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300"
+                }
+                handleSubmit={handleLogin}
+                type={"button"}
+              />
             </div>
             <div className="text-center">
               <span className="text-sm">

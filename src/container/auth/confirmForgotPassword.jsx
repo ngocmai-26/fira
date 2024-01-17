@@ -2,18 +2,17 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { confirmForgotPassword } from "../../thunks/AuthThunk";
+import { FormField } from "../component/FormField";
+import ButtonComponent from "../component/ButtonComponent";
 
 function ConfirmForgotPassword() {
     const dispatch = useDispatch();
     const nav = useNavigate();
-    const email = localStorage.getItem("email");
-    const [code, setCode] = useState("");
+    const email = JSON.parse(localStorage.getItem("email"));
+    const [code, setCode] = useState({email});
     const handleSubmit = () => {
-      const verify = {
-        email: email,
-        code: code,
-      };
-      dispatch(confirmForgotPassword(verify)).then((reps) => {
+   
+      dispatch(confirmForgotPassword(code)).then((reps) => {
         if (!reps.error) {
           localStorage.removeItem("email");
           nav("/login");
@@ -54,29 +53,20 @@ function ConfirmForgotPassword() {
           </div>
           <form action="" className="py-0">
             <div className="code flex flex-col sm:flex-row py-5 relative">
-              <input
-                type="text"
-                id="code1"
-                onChange={(e) => setCode(e.target.value)}
-                className="rounded-md w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
-                placeholder="Nhập mã code "
-              />
+          
+              <FormField
+              name={"code"}
+              values={code}
+              id={"code"}
+              setValue={setCode}
+              placeholder={"Nhập mã code"}
+            />
             </div>
             <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={handleSendAgain}
-                className="text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2 me-2"
-              >
-                Gửi lại mã code
-              </button>
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2 "
-              >
-                Gửi
-              </button>
+       
+              <ButtonComponent handleSubmit={handleSendAgain} type={"button"} textButton={"Gửi lại mã code"} style={"text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 mx-1.5"} />
+          
+              <ButtonComponent handleSubmit={handleSubmit} type={"button"} textButton={"Gửi"} />
             </div>
           </form>
         </div>

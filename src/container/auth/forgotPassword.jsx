@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../../thunks/AuthThunk";
+import { FormField } from "../component/FormField";
+import ButtonComponent from "../component/ButtonComponent";
 
 function ForgotPassword() {
   const dispatch = useDispatch();
@@ -10,11 +12,11 @@ function ForgotPassword() {
 
   const handleSubmit = () => {
     dispatch(forgotPassword(email)).then((reps) => {
-        if (!reps.error) {
-            localStorage.setItem('email', email)
-            nav("/confirm-forgot-password")
-          }
-        }) 
+      if (!reps.error) {
+        localStorage.setItem("email", JSON.stringify(email));
+        nav("/confirm-forgot-password");
+      }
+    });
   };
   return (
     <article className="bg-cyan-50 h-screen w-full my-auto flex items-center ">
@@ -29,20 +31,22 @@ function ForgotPassword() {
         <hr />
         <form action="" className="py-0">
           <div className="email flex flex-col sm:flex-row py-2 ">
-            <input
-              type="email"
-              id="email"
-              className="rounded-md w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
-              placeholder="Email address"
-              onChange={(e) => setEmail(e.target.value)}
+            <FormField
+              name={"email"}
+              values={email}
+              id={"email"}
+              setValue={setEmail}
+              type={"email"}
+              placeholder={"Email address"}
             />
-            <button
+            {/* <button
               type="button"
               onClick={handleSubmit}
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2 "
+              className="text-white ml-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2 "
             >
               Gửi
-            </button>
+            </button> */}
+            <ButtonComponent handleSubmit={handleSubmit} type={"button"} textButton={"Gửi"} />
           </div>
         </form>
       </div>

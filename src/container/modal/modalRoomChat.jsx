@@ -8,10 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import UserItem from "../component/userItem";
 import SearchComponent from "../component/searchComponent";
+import { FormField } from "../component/FormField";
+import ButtonComponent from "../component/ButtonComponent";
 
 function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
+  const [user, setUser] = useState({});
 
   const handleRadioClick = (buttonId) => {
     if (selectedButtons.some((item) => item.id === buttonId.id)) {
@@ -86,46 +89,46 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
 
   const tags = [
     {
-      id: 1, 
-      nameTag: "Gia đình"
+      id: 1,
+      nameTag: "Gia đình",
     },
     {
-      id: 2, 
-      nameTag: "Bạn bè"
+      id: 2,
+      nameTag: "Bạn bè",
     },
     {
-      id: 3, 
-      nameTag: "Công việc"
+      id: 3,
+      nameTag: "Công việc",
     },
     {
-      id: 4, 
-      nameTag: "Khách hàng"
+      id: 4,
+      nameTag: "Khách hàng",
     },
     {
-      id: 5, 
-      nameTag: "Trả lời sau"
+      id: 5,
+      nameTag: "Trả lời sau",
     },
     {
-      id: 1, 
-      nameTag: "Gia đình"
+      id: 1,
+      nameTag: "Gia đình",
     },
     {
-      id: 2, 
-      nameTag: "Bạn bè"
+      id: 2,
+      nameTag: "Bạn bè",
     },
     {
-      id: 3, 
-      nameTag: "Công việc"
+      id: 3,
+      nameTag: "Công việc",
     },
     {
-      id: 4, 
-      nameTag: "Khách hàng"
+      id: 4,
+      nameTag: "Khách hàng",
     },
     {
-      id: 5, 
-      nameTag: "Trả lời sau"
+      id: 5,
+      nameTag: "Trả lời sau",
     },
-  ]
+  ];
   const handleTagClick = (tagId) => {
     setSelectedTag(tagId);
   };
@@ -145,27 +148,33 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
           </div>
           <hr></hr>
           <div className="new-name py-3">
-            <input
-              type="text"
-              className="text-sm border-b-2 p-2 w-full focus-visible:border-b-2 focus-visible:outline-0"
-              placeholder="Nhập tên nhóm"
+            
+            <FormField
+              name={"nameGroup"}
+              values={user}
+              id={"nameGroup"}
+              setValue={setUser}
+              placeholder={"Nhập tên nhóm"}
             />
           </div>
-         <SearchComponent placeholder="Nhập tên, số điện thoại" />
+          <hr />
+          <SearchComponent placeholder="Nhập tên, số điện thoại" />
           <div className="tags py-2 scrollX max-w-full">
-          <ul className="flex scrollX-item  pb-2">
-      {tags.map((item) => (
-        <li
-          key={item.id}
-          className={`px-2 mx-1 cursor-pointer ${
-            selectedTag === item.id ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-300'
-          }`}
-          onClick={() => handleTagClick(item.id)}
-        >
-          <span className="text-xs">{item.nameTag}</span>
-        </li>
-      ))}
-    </ul>
+            <ul className="flex scrollX-item  pb-2">
+              {tags.map((item) => (
+                <li
+                  key={item.id}
+                  className={`px-2 mx-1 cursor-pointer ${
+                    selectedTag === item.id
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-100 hover:bg-gray-300"
+                  }`}
+                  onClick={() => handleTagClick(item.id)}
+                >
+                  <span className="text-xs">{item.nameTag}</span>
+                </li>
+              ))}
+            </ul>
           </div>
           <hr />
           <div className="group">
@@ -191,13 +200,17 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
                           onClick={() => handleRadioClick(item)}
                           className="my-auto"
                         />
-                        
-                        <UserItem img={item.img} name = {item.name} widthContent = "max-w-52" />
+
+                        <UserItem
+                          img={item.img}
+                          name={item.name}
+                          widthContent="max-w-52"
+                        />
                       </button>
                     ))}
                   </div>
                 </div>
-                <div className="w-5/12 border-2 py-1.5 hidden sm:block">
+                <div className="w-5/12 border py-1.5 hidden sm:block">
                   <div className="px-2">
                     <span className="text-sm font-bold">Đã chọn</span>
                   </div>
@@ -210,7 +223,11 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
                         <div
                           className={`w-11/12 my-2 mx-auto flex py-1 px-1 justify-between rounded-sm bg-gray-100`}
                         >
-                          <UserItem img={item.img} name = {item.name} widthContent = "max-w-24" />
+                          <UserItem
+                            img={item.img}
+                            name={item.name}
+                            widthContent="max-w-24"
+                          />
 
                           <button
                             className="text-end"
@@ -231,12 +248,20 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
           </div>
           <hr />
           <div className="group-btn flex justify-end my-2">
-            <button className="btn bg-slate-300 px-3 py-1.5 mx-2 font-medium rounded-sm">
-              Hủy
-            </button>
-            <button className="btn bg-blue-500 px-3 py-1.5 text-white font-medium rounded-sm">
-              Tạo nhóm
-            </button>
+            <ButtonComponent
+              textButton={"Hủy"}
+              style={
+                "btn bg-slate-300 px-3 py-1.5 mx-2 font-medium rounded-sm text-black"
+              }
+              type={"button"}
+            />
+            <ButtonComponent
+              textButton={"Tạo nhóm"}
+              style={
+                "btn bg-blue-500 px-3 py-1.5 text-white font-medium rounded-sm"
+              }
+              type={"button"}
+            />
           </div>
         </div>
       </div>

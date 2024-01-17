@@ -9,11 +9,12 @@ import {
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import ModalRoomChat from "../../modal/modalRoomChat";
-import NavBarAdmin from "../../admin/layout/nav";
+import NavBarAdmin from "../../layout/nav";
 import NotificationComponent from "../../component/notification";
 import SearchModal from "../../modal/searchModal";
 import QRCodeModal from "../../modal/QRCodeModal";
 import SearchComponent from "../../component/searchComponent";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function Chat() {
   const [seeMore, setSeeMore] = useState(false);
@@ -282,8 +283,6 @@ function Chat() {
     setModalIsOpen(!modalIsOpen);
   };
 
-  
-
   return (
     <article className="overflow-hidden relative flex">
       <NavBarAdmin />
@@ -292,18 +291,16 @@ function Chat() {
           <div className="flex justify-between border-b-gray-100 border-b-2 py-2">
             <span className="font-bold text-2xl">Message</span>
             <div className="flex">
-            <button
-              className=" overflow-hidden bg-gray-100 text-lg text-gray-800 hover:bg-gray-300 px-2"
-              onClick={handleHiddenModalRoom}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-       
-            </button>
-            <NotificationComponent />
+              <button
+                className=" overflow-hidden bg-gray-100 text-lg text-gray-800 hover:bg-gray-300 px-2"
+                onClick={handleHiddenModalRoom}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+              <NotificationComponent />
             </div>
-            
           </div>
-         <SearchComponent placeholder="Tìm kiếm người dùng" />
+          <SearchComponent placeholder="Tìm kiếm người dùng" />
           <div className="scroll">
             <div className="pt-3 scroll-item" style={{ maxHeight: "90vh" }}>
               <button className="text-left" onClick={handleExpandBox}>
@@ -314,7 +311,7 @@ function Chat() {
         </div>
         <div
           className={`col-span-3 md:col-span-2 p-2 border-e-gray-100 absolute w-full md:relative bg-white md:right-0 border-e-2 ${
-            expandBox ? "right-0" : "right-[-100vw]"
+            expandBox ? "right-[0vw]" : "right-[-100vw]"
           }`}
           style={{
             display: expandBox ? "block" : "hidden ",
@@ -324,12 +321,6 @@ function Chat() {
           <div className="relative h-screen">
             <div className="flex justify-between border-b-gray-100 border-b-2">
               <div className="flex">
-                <button
-                  className="come-back block md:hidden "
-                  onClick={handleExpandBox}
-                >
-                  <FontAwesomeIcon icon={faArrowLeft} />
-                </button>
                 <div className="image w-10 ml-3 md:ml-0">
                   <img
                     src="https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg"
@@ -415,13 +406,14 @@ function Chat() {
                 <div className="w-4/5">
                   <input
                     type="text"
-                    className="text-sm border-2 w-full p-1.5 rounded-lg"
-                  />{" "}
+                    className="text-sm border w-full p-1.5 rounded-lg"
+                  />
                 </div>
-
-                <button className="bg-blue-500 text-white px-3 rounded-lg">
-                  Gửi
-                </button>
+                <ButtonComponent
+                  textButton={"Gửi"}
+                  type={"button"}
+                  style={"bg-blue-500 text-white px-3 rounded-lg"}
+                />
               </div>
             </div>
           </div>
@@ -482,10 +474,10 @@ function Chat() {
           </div>
         </div>
       </div>
-      {/* <ModalRoomChat
+      <ModalRoomChat
         hiddenModalRoom={hiddenModalRoom}
         handleHiddenModalRoom={handleHiddenModalRoom}
-      /> */}
+      />
       {/* <SearchModal /> */}
       <QRCodeModal handleModalQr={handleModalQr} modalIsOpen={modalIsOpen} />
     </article>

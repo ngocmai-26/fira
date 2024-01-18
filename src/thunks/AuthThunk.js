@@ -4,6 +4,7 @@ import { API } from "../constants/api";
 import {
   setAuthFetching,
   setErrors,
+  setErrorsRegister,
   setLogged,
   setRefresh,
   setUser,
@@ -35,8 +36,18 @@ export const register = createAsyncThunk(
       });
       const jsonData = await resp.json();
       if (resp.status >= 300) {
-        dispatch(setAlert({ type: "error", content: jsonData.defaultMessage }));
-        return rejectWithValue("");
+        if (!jsonData?.valid) {
+          dispatch(setErrorsRegister(jsonData?.data));
+          return rejectWithValue("something error");
+        }
+        dispatch(
+          setAlert({
+            type: TOAST_ERROR,
+            content: jsonData?.message[0],
+          })
+        );
+        dispatch(setErrors({}));
+        return rejectWithValue("something error");
       }
       dispatch(setAlert({ type: "success", content: "Đăng ký thành công" }));
       return jsonData;
@@ -190,8 +201,8 @@ export const confirmAccount = createAsyncThunk(
       if (resp.status >= 300) {
         dispatch(
           setAlert({
-            type: "error",
-            content: dataJson?.defaultMessage,
+            type: TOAST_ERROR,
+            content: dataJson?.message[0],
           })
         );
         return rejectWithValue("something error");
@@ -222,9 +233,9 @@ export const requestNewCode = createAsyncThunk(
       if (resp.status >= 300) {
         dispatch(
           setAlert({
-            type: "error",
-            content: dataJson?.defaultMessage,
-          })
+            type: TOAST_ERROR,
+            content: dataJson?.message[0],
+          }) 
         );
         return rejectWithValue("something error");
       }
@@ -248,11 +259,12 @@ export const forgotPassword = createAsyncThunk(
         }
       );
       const dataJson = await resp.json();
+      console.log(dataJson, resp.status)
       if (resp.status >= 300) {
         dispatch(
           setAlert({
-            type: "error",
-            content: dataJson?.defaultMessage,
+            type: TOAST_ERROR,
+            content: dataJson?.message[0],
           })
         );
         return rejectWithValue("something error");
@@ -281,8 +293,8 @@ export const confirmForgotPassword = createAsyncThunk(
       if (resp.status >= 300) {
         dispatch(
           setAlert({
-            type: "error",
-            content: dataJson?.defaultMessage,
+            type: TOAST_ERROR,
+            content: dataJson?.message[0],
           })
         );
         return rejectWithValue("something error");

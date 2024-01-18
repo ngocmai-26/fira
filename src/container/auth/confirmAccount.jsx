@@ -66,9 +66,9 @@ function ConfirmAccount() {
           </div>
           <div className="flex justify-end">
 
-            <ButtonComponent handleSubmit={handleSendAgain} type={"button"} textButton={"Gửi lại mã code"} style={"text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 me-1"} />
+            <ButtonComponent handleClick={handleSendAgain} type={"button"} textButton={"Gửi lại mã code"} style={"text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 me-1"} />
     
-            <ButtonComponent handleSubmit={handleSubmit} type={"button"} textButton={"Gửi"} />
+            <ButtonComponent handleClick={handleSubmit} type={"button"} textButton={"Gửi"} />
           </div>
         </form>
       </div>

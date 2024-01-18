@@ -4,7 +4,7 @@ import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login, loginWithAuthToken } from "../../thunks/AuthThunk";
-import { Spinner } from "../component/spinner";
+import { Spinner } from "../component/Spinner";
 import { ErrorField } from "../component/ErrorField";
 import { FormField } from "../component/FormField";
 import { loadTokenFromStorage } from "../../services/AuthService";
@@ -37,6 +37,7 @@ function Login() {
   const toggleVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+  
   return (
     <article className="bg-cyan-50 h-screen w-full my-auto flex items-center justify-center">
       {authToken ? (
@@ -112,13 +113,13 @@ function Login() {
               >
                 Đăng Ký
               </Link>
-          
+
               <ButtonComponent
                 textButton={isFetching ? <Spinner /> : "Đăng nhập"}
                 style={
                   "min-w-full sm:min-w-[50%] mr-2 mb-2 bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300"
                 }
-                handleSubmit={handleLogin}
+                handleClick={handleLogin}
                 type={"button"}
               />
             </div>

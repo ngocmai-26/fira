@@ -11,8 +11,11 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
-    dispatch(forgotPassword(email)).then((reps) => {
-      if (!reps.error) {
+    console.log(email.email)
+    dispatch(forgotPassword(email?.email))
+    .then((reps) => {
+      console.log(reps?.error)
+      if (!reps?.error) {
         localStorage.setItem("email", JSON.stringify(email));
         nav("/confirm-forgot-password");
       }
@@ -39,14 +42,8 @@ function ForgotPassword() {
               type={"email"}
               placeholder={"Email address"}
             />
-            {/* <button
-              type="button"
-              onClick={handleSubmit}
-              className="text-white ml-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2 "
-            >
-              Gửi
-            </button> */}
-            <ButtonComponent handleSubmit={handleSubmit} type={"button"} textButton={"Gửi"} />
+      
+            <ButtonComponent handleClick={handleSubmit} type={"button"} textButton={"Gửi"} />
           </div>
         </form>
       </div>

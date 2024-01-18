@@ -9,6 +9,7 @@ const initState = {
   actionStatusCode: 0,
   isFetching: false,
   errors: {},
+  errorsRegister: {}
 };
 const AuthSlice = createSlice({
   name: "auth",
@@ -16,6 +17,9 @@ const AuthSlice = createSlice({
   reducers: {
     setErrors: (state, { payload }) => {
       state.errors = payload;
+    },
+    setErrorsRegister: (state, { payload }) => {
+      state.errorsRegister = payload;
     },
     setAccount: (state, { payload }) => {
       state.account = payload;
@@ -65,6 +69,7 @@ export const {
   setEmailAuth,
   setErrors,
   setAuthFetching,
+  setErrorsRegister,
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

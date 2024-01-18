@@ -1,34 +1,27 @@
+import { Link } from "react-router-dom";
+import ButtonComponent from "../../component/ButtonComponent";
+import { ErrorField } from "../../component/ErrorField";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { createNewUser, register } from "../../thunks/AuthThunk";
-import { useDispatch, useSelector } from "react-redux";
-import { Spinner } from "../component/Spinner";
-import { ErrorField } from "../component/ErrorField";
-import { FormField } from "../component/FormField";
-import ButtonComponent from "../component/ButtonComponent";
+import Layout from "../../layout";
+import { FormField } from "../../component/FormField";
+import { useSelector } from "react-redux";
 
-function CreateNewUser() {
-  const dispatch = useDispatch();
+function AddNewAccount() {
   const [newUserData, setNewUserData] = useState({});
-
-  const { isFetching, errors } = useSelector((state) => state.authReducer);
-  const handleCreateNewUser = () => {
-    dispatch(createNewUser(newUserData));
-  };
+  
+  const { errors } = useSelector((state) => state.authReducer);
   return (
-    <article className="bg-cyan-50 h-full w-full my-auto flex items-center py-5">
-      <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto p-8 m-4 shadow-md">
-        <div className="logo pb-5">
-          <img src="" alt="logo" />
+    <Layout>
+      <div className="p-4 FormAddNewAccount w-2/4 m-auto">
+        <div className="title pt-3 text-center">
+          <span className="text-xl font-bold uppercase">
+            Thêm tài khoản
+          </span>
         </div>
-        <hr />
-        <h3 className="font-bold text-xl leading-10 pt-5">
-          Nhập thông tin người dùng
-        </h3>
-        <p className="subtitle-login text-sm text-neutral-500 leading-7">
-          Vui lòng nhập đầy đủ thông tin thông tin:
-        </p>
+       
+        <div className="">
         <form action="" className="py-0 sm:py-4">
+          <div className="grid grid-cols-2 gap-3">
           <div className="firstName py-5">
             <div className="">
               <div className="">
@@ -63,6 +56,8 @@ function CreateNewUser() {
               </div>
             </div>
           </div>
+          
+          
           <div className="address py-5">
             <div className="">
               <div className="relative">
@@ -135,27 +130,29 @@ function CreateNewUser() {
               </div>
             </div>
           </div>
-          <div className="text-center py-3 flex">
+          </div>
+          <div className="text-center py-3 flex justify-end">
             <Link
               to="/login"
-              className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 min-w-full sm:min-w-[50%] "
+              className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2"
             >
               Quay lại
             </Link>
 
             <ButtonComponent
-              handleClick={handleCreateNewUser}
+         
               type={"button"}
-              textButton={isFetching ? <Spinner /> : "Tiếp tục"}
+              textButton={"Hoàn thành"}
               style={
-                "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-[50%] sm:min-w-[50%]"
+                "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5  mr-3 mb-3"
               }
             />
           </div>
         </form>
+        </div>
       </div>
-    </article>
+    </Layout>
   );
 }
 
-export default CreateNewUser;
+export default AddNewAccount;

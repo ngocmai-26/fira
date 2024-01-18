@@ -1,6 +1,6 @@
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MsgItem from "./msgItem";
+import MsgItem from "./MsgItem";
 
 function NotificationComponent() {
   const data = [

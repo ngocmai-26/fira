@@ -1,4 +1,4 @@
-import { faCalendar, faChartPie, faComment, faCommentAlt, faCommentDots, faComments, faListCheck, faMessage, faUserPen, faUsers, faUsersGear } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faChartPie, faComment, faCommentAlt, faCommentDots, faComments, faListCheck, faMessage, faPenToSquare, faUserPen, faUsers, faUsersGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -20,7 +20,7 @@ function NavBarAdmin() {
           </div>
 
           <div className="navItem">
-            <Link to=""
+            <Link to="/quan-ly-tai-khoan"
               class="flex items-center py-4 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100"
               role="button"
               aria-haspopup="true"
@@ -72,6 +72,17 @@ function NavBarAdmin() {
             >
               <FontAwesomeIcon icon={faUsersGear} />
               <span class="ml-2 text-sm nav-item-text single-line"> Quản lý lịch chức năng </span>
+            
+            </Link>
+          </div>
+          <div className="navItem">
+            <Link to=""
+              class="flex items-center py-4 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100"
+              role="button"
+              aria-haspopup="true"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+              <span class="ml-2 text-sm nav-item-text single-line"> Quản lý danh sách kpi</span>
             
             </Link>
           </div>

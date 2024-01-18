@@ -6,8 +6,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import UserItem from "../component/userItem";
-import SearchComponent from "../component/searchComponent";
+import UserItem from "../component/UserItem";
+import SearchComponent from "../component/SearchComponent";
 import { FormField } from "../component/FormField";
 import ButtonComponent from "../component/ButtonComponent";
 
@@ -148,7 +148,6 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
           </div>
           <hr></hr>
           <div className="new-name py-3">
-            
             <FormField
               name={"nameGroup"}
               values={user}

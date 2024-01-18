@@ -11,7 +11,9 @@ import CreateNewUser from "../container/auth/createNewUser";
 import { NotFoundPage } from "../container/error/404";
 import { useLayoutEffect } from "react";
 import { AppMiddleware } from "../middleware/AppMiddleware";
-import AdminHome from "../container/admin";
+import Home from "../container/user";
+import ManagerAccount from "../container/user/managerAccounts";
+import AddNewAccount from "../container/user/managerAccounts/AddNewAccount";
 
 export const GeneralRoute = () => {
   return (
@@ -37,8 +39,10 @@ export const LoggedRoute = () => {
     <AppMiddleware>
       <Routes>
         <Route path="/create-new-user" element={<CreateNewUser />} />
-        <Route path="/" element={<AdminHome />} />
+        <Route path="/" element={<Home />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/quan-ly-tai-khoan" element={<ManagerAccount />} />
+        <Route path="/them-tai-khoan" element={<AddNewAccount />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AppMiddleware>

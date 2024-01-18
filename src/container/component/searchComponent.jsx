@@ -1,10 +1,10 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function SearchComponent({placeholder, styleRadius}) {
+function SearchComponent({placeholder, styleRadius, handleSearch, style}) {
     return ( 
-        <div className="search py-2">
-            <div className={`border w-full flex justify-between p-1 ${styleRadius? styleRadius: "rounded-md"}`} >
+        <div className={`search py-2 ${style}`}>
+            <div className={`border w-full flex justify-between p-1 ${styleRadius? styleRadius: "rounded-md"} `} >
               <FontAwesomeIcon
                 icon={faSearch}
                 className="font-thin p-1.5 text-gray-300"

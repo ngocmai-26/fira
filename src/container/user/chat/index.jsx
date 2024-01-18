@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import BoxMsg from "../../component/boxmsg";
-import MsgItem from "../../component/msgItem";
+import BoxMsg from "../../component/BoxMsg";
+import MsgItem from "../../component/MsgItem";
 import {
   faArrowLeft,
   faPlus,
@@ -8,13 +8,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import ModalRoomChat from "../../modal/modalRoomChat";
-import NavBarAdmin from "../../layout/nav";
-import NotificationComponent from "../../component/notification";
-import SearchModal from "../../modal/searchModal";
+import ModalRoomChat from "../../modal/ModalRoomChat";
+import NotificationComponent from "../../component/Notification";
+import SearchModal from "../../modal/SearchModal";
 import QRCodeModal from "../../modal/QRCodeModal";
-import SearchComponent from "../../component/searchComponent";
+import SearchComponent from "../../component/SearchComponent";
 import ButtonComponent from "../../component/ButtonComponent";
+import NavBarAdmin from "../../layout/NavBar";
 
 function Chat() {
   const [seeMore, setSeeMore] = useState(false);

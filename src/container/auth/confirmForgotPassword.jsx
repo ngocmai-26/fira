@@ -9,10 +9,10 @@ function ConfirmForgotPassword() {
     const dispatch = useDispatch();
     const nav = useNavigate();
     const email = JSON.parse(localStorage.getItem("email"));
-    const [code, setCode] = useState({email});
+    const [code, setCode] = useState(email);
     const handleSubmit = () => {
-   
-      dispatch(confirmForgotPassword(code)).then((reps) => {
+      dispatch(confirmForgotPassword(code))
+      .then((reps) => {
         if (!reps.error) {
           localStorage.removeItem("email");
           nav("/login");
@@ -64,9 +64,9 @@ function ConfirmForgotPassword() {
             </div>
             <div className="flex justify-end">
        
-              <ButtonComponent handleSubmit={handleSendAgain} type={"button"} textButton={"Gửi lại mã code"} style={"text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 mx-1.5"} />
+              <ButtonComponent handleClick={handleSendAgain} type={"button"} textButton={"Gửi lại mã code"} style={"text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 mx-1.5"} />
           
-              <ButtonComponent handleSubmit={handleSubmit} type={"button"} textButton={"Gửi"} />
+              <ButtonComponent handleClick={handleSubmit} type={"button"} textButton={"Gửi"} />
             </div>
           </form>
         </div>

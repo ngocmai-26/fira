@@ -1,7 +1,9 @@
+import Layout from "../layout";
+
 function Home() {
-    return ( <>
-    d
-    </> );
+    return ( <Layout>
+
+    </Layout> );
 }
 
 export default Home;

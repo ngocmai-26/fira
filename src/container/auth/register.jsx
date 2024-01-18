@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormField } from "../component/FormField";
 import { ErrorField } from "../component/ErrorField";
 import ButtonComponent from "../component/ButtonComponent";
+import validator from "validator";
 
 function Register() {
   const dispatch = useDispatch();
@@ -14,20 +15,60 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [registerData, setRegisterData] = useState({})
   
-  const [user, setUser] = useState({});
-  const { errors } = useSelector((state) => state.authReducer);
+  const { errorsRegister } = useSelector((state) => state.authReducer);
+
+  const checkPasswordStrength = (password) => {
+    // Đặt các yêu cầu mật khẩu của bạn ở đây
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigits = /\d/.test(password);
+    const hasSpecialChars = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
+
+    // Kiểm tra tất cả các điều kiện
+    const isStrongPassword =
+      password?.length >= minLength &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasDigits &&
+      hasSpecialChars;
+    return isStrongPassword;
+  };
+  const newFormErrors = {...errorsRegister};
+  const [formErrors, setFormErrors] = useState(newFormErrors);
+  
 
   const handleRegister = () => {
-    dispatch(register(registerData)).then((reps) => {
-      if(!reps.error) {
-        localStorage.setItem('email', JSON.stringify(registerData?.username))
-        nav("/confirm-account")
+    const isStrong = checkPasswordStrength(registerData?.password);
+    
+    const newFormErrors = {...errorsRegister};
+    
+    if (registerData?.username) {
+      if (!validator.isEmail(registerData?.username)) {
+        newFormErrors.username = "Format is incorrect";
       }
-    })
-    console.log(registerData)
- 
-  }
-
+    }
+  
+    if (registerData?.password) {
+      if (!isStrong) {
+        newFormErrors.password = "Password is not strong enough";
+      } else if (registerData?.password !== registerData?.confirmPassword) {
+        newFormErrors.password = "Password incorrect";
+      }
+    }
+  
+    setFormErrors(newFormErrors);
+  
+    // Nếu không có lỗi, thực hiện đăng ký
+    if (Object.keys(newFormErrors).length === 0) {
+      dispatch(register(registerData)).then((reps) => {
+        if (!reps.error) {
+          localStorage.setItem('email', JSON.stringify(registerData?.username))
+          nav("/confirm-account")
+        }
+      });
+    }
+  };
   const toggleVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -58,7 +99,7 @@ function Register() {
                     required={"required"}
                   />
                 </div>
-                {<ErrorField errors={errors} field={"username"} />}
+                <ErrorField errors={formErrors} field={"username"} />
               </div>
             </div>
           <div className="password py-5">
@@ -79,13 +120,14 @@ function Register() {
                     className="absolute top-8 right-2 cursor-pointer text-sm text-gray-300"
                     onClick={toggleVisibility}
                   >
-                    {showPassword ? (
+                    {/* {showPassword ? (
                       <FontAwesomeIcon icon={faEyeSlash} />
                     ) : (
                       <FontAwesomeIcon icon={faEye} />
-                    )}
+                    )} */}
                   </div>
-                {<ErrorField errors={errors} field={"password"} />}
+                  <ErrorField errors={formErrors} field={"password"} />
+
                 </div>
               </div>
             </div>
@@ -107,14 +149,14 @@ function Register() {
                     className="absolute top-8 right-2 cursor-pointer text-sm text-gray-300"
                     onClick={toggleVisibility}
                   >
-                    {showPassword ? (
+                    {/* {showPassword ? (
                       <FontAwesomeIcon icon={faEyeSlash}  />
                     ) : (
                       <FontAwesomeIcon icon={faEye} />
-                    )}
+                    )} */}
                   </div>
                 </div>
-                {<ErrorField errors={errors} field={"confirmPassword"} />}
+                <ErrorField errors={formErrors} field={"confirmPassword"} />
               </div>
             </div>
           <div className="text-center py-3 flex">
@@ -123,14 +165,8 @@ function Register() {
             >
               Đăng Nhập
             </Link>
-            {/* <button
-              type="submit"
-              onClick={handleRegister}
-              className=" font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 min-w-full sm:min-w-[50%] "
-            >
-              Đăng Ký
-            </button> */}
-            <ButtonComponent textButton={"Đăng Ký"} handleSubmit={handleRegister} type={"button"} style={"bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-full sm:min-w-[50%]" }/>
+         
+            <ButtonComponent textButton={"Đăng Ký"} handleClick={handleRegister} type={"button"} style={"bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-[50%] sm:min-w-[50%]" }/>
           </div>
         </form>
       </div>

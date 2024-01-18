@@ -6,8 +6,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import UserItem from "../component/userItem";
-import SearchComponent from "../component/searchComponent";
+import UserItem from "../component/UserItem";
+import SearchComponent from "../component/SearchComponent";
 import ButtonComponent from "../component/ButtonComponent";
 
 function SearchModal() {
@@ -151,7 +151,7 @@ function SearchModal() {
                             />
                             <span>Từ chối</span>
                           </button>
-                    
+
                           <button className="text-xs px-1 mx-1 bg-blue-500 py-1 text-white">
                             <FontAwesomeIcon
                               icon={faCheck}

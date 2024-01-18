@@ -11,9 +11,11 @@ function VerifyEmail() {
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
-    dispatch(requestNewCode(email)).then((reps) => {
-      localStorage.setItem("email", JSON.stringify(email));
-      nav("/confirm-account");
+    dispatch(requestNewCode(email?.email)).then((reps) => {
+      if (!reps.error) {
+        localStorage.setItem("email", JSON.stringify(email));
+        nav("/confirm-account");
+      }
     });
   };
   return (
@@ -39,7 +41,11 @@ function VerifyEmail() {
               type={"email"}
               placeholder={"Email address"}
             />
-            <ButtonComponent handleSubmit={handleSubmit} type={"button"} textButton={"Gửi"} />
+            <ButtonComponent
+              handleClick={handleSubmit}
+              type={"button"}
+              textButton={"Gửi"}
+            />
           </div>
         </form>
       </div>

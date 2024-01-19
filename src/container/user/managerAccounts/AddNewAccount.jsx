@@ -133,7 +133,7 @@ function AddNewAccount() {
           </div>
           <div className="text-center py-3 flex justify-end">
             <Link
-              to="/login"
+              to="/quan-ly-tai-khoan"
               className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2"
             >
               Quay lại

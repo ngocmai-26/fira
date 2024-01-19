@@ -8,6 +8,7 @@ import { Spinner } from "../component/Spinner";
 import { ErrorField } from "../component/ErrorField";
 import { FormField } from "../component/FormField";
 import { loadTokenFromStorage } from "../../services/AuthService";
+import logo from "../../asset/images/Fira.png";
 import ButtonComponent from "../component/ButtonComponent";
 
 function Login() {
@@ -89,9 +90,9 @@ function Login() {
                     onClick={toggleVisibility}
                   >
                     {showPassword ? (
-                      <FontAwesomeIcon icon={faEyeSlash} />
-                    ) : (
                       <FontAwesomeIcon icon={faEye} />
+                    ) : (
+                      <FontAwesomeIcon icon={faEyeSlash} />
                     )}
                   </div>
                 </div>

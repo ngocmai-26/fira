@@ -54,7 +54,7 @@ function NavBarAdmin() {
             </Link>
           </div>
           <div className="navItem">
-            <Link to=""
+            <Link to="/quan-ly-chuc-vu"
               class="flex items-center py-4 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100"
               role="button"
               aria-haspopup="true"
@@ -65,7 +65,7 @@ function NavBarAdmin() {
             </Link>
           </div>
           <div className="navItem">
-            <Link to=""
+            <Link to="/quan-ly-chuc-nang"
               class="flex items-center py-4 px-2 text-gray-500 transition-colors rounded-md hover:bg-primary-100 hover:bg-gray-100"
               role="button"
               aria-haspopup="true"

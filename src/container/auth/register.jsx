@@ -13,6 +13,7 @@ function Register() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm , setShowPasswordConfirm] = useState(false);
   const [registerData, setRegisterData] = useState({})
   
   const { errorsRegister } = useSelector((state) => state.authReducer);
@@ -69,9 +70,7 @@ function Register() {
       });
     }
   };
-  const toggleVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
+  
   return (
     <article className="bg-cyan-50 h-screen w-full my-auto flex items-center ">
       <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto p-8 m-4 shadow-md">
@@ -118,13 +117,13 @@ function Register() {
                   />
                   <div
                     className="absolute top-8 right-2 cursor-pointer text-sm text-gray-300"
-                    onClick={toggleVisibility}
+                    onClick={() => setShowPassword(!showPassword)}
                   >
-                    {/* {showPassword ? (
-                      <FontAwesomeIcon icon={faEyeSlash} />
-                    ) : (
+                    {showPassword ? (
                       <FontAwesomeIcon icon={faEye} />
-                    )} */}
+                    ) : (
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    )}
                   </div>
                   <ErrorField errors={formErrors} field={"password"} />
 
@@ -147,13 +146,13 @@ function Register() {
                   />
                   <div
                     className="absolute top-8 right-2 cursor-pointer text-sm text-gray-300"
-                    onClick={toggleVisibility}
+                    onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
                   >
-                    {/* {showPassword ? (
-                      <FontAwesomeIcon icon={faEyeSlash}  />
-                    ) : (
+                    {showPasswordConfirm ? (
                       <FontAwesomeIcon icon={faEye} />
-                    )} */}
+                    ) : (
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    )}
                   </div>
                 </div>
                 <ErrorField errors={formErrors} field={"confirmPassword"} />

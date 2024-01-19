@@ -14,6 +14,8 @@ import { AppMiddleware } from "../middleware/AppMiddleware";
 import Home from "../container/user";
 import ManagerAccount from "../container/user/managerAccounts";
 import AddNewAccount from "../container/user/managerAccounts/AddNewAccount";
+import ManagerRoles from "../container/user/managerRoles";
+import AddNewRole from "../container/user/managerRoles/AddNewRole";
 
 export const GeneralRoute = () => {
   return (
@@ -42,7 +44,11 @@ export const LoggedRoute = () => {
         <Route path="/" element={<Home />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/quan-ly-tai-khoan" element={<ManagerAccount />} />
+        <Route path="/quan-ly-chuc-vu" element={<ManagerRoles />} />
+        <Route path="/quan-ly-chuc-nang" element={<ManagerRoles />} />
+        <Route path="/them-chuc-vu" element={<AddNewRole />} />
         <Route path="/them-tai-khoan" element={<AddNewAccount />} />
+        <Route path="/them-chuc-nang" element={<AddNewAccount />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AppMiddleware>

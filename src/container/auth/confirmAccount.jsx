@@ -11,13 +11,13 @@ function ConfirmAccount() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const email = JSON.parse(localStorage.getItem("email"));
-  const [code, setCode] = useState({email});
+  const [code, setCode] = useState(email);
   const handleSubmit = () => {
   
     dispatch(confirmAccount(code)).then((reps) => {
       if (!reps.error) {
         localStorage.removeItem("email");
-        nav("/login");
+        nav("/create-new-user");
       }
     });
   };

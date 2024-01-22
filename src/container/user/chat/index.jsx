@@ -3,10 +3,12 @@ import BoxMsg from "../../component/BoxMsg";
 import MsgItem from "../../component/MsgItem";
 import {
   faArrowLeft,
+  faImage,
   faPlus,
+  faTimes,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ModalRoomChat from "../../modal/ModalRoomChat";
 import NotificationComponent from "../../component/Notification";
@@ -283,10 +285,35 @@ function Chat() {
     setModalIsOpen(!modalIsOpen);
   };
 
+  const [selectedImages, setSelectedImages] = useState([]);
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = (event) => {
+    const files = event.target.files;
+
+    if (files) {
+      const imageArray = Array.from(files).map((file) =>
+        URL.createObjectURL(file)
+      );
+
+      setSelectedImages((prevImages) => [...prevImages, ...imageArray]);
+    }
+  };
+
+  const handleIconClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleRemoveImage = (index) => {
+    const newImages = [...selectedImages];
+    newImages.splice(index, 1);
+    setSelectedImages(newImages);
+  };
+
   return (
     <article className="overflow-hidden relative flex">
       <NavBarAdmin />
-      <div className="grid grid-cols-3 lg:grid-cols-4 h-screen relative">
+      <div className="grid grid-cols-3 lg:grid-cols-4 h-screen relative w-full">
         <div className="p-2 col-span-3 md:col-span-1 border-e-gray-100 border-e-2 h-screen">
           <div className="flex justify-between border-b-gray-100 border-b-2 py-2">
             <span className="font-bold text-2xl">Message</span>
@@ -404,16 +431,53 @@ function Chat() {
             <div className="absolute border-t-gray-100 border-t-2 w-full bottom-2 p-2 bg-white">
               <div className="flex w-full gap-2 justify-center">
                 <div className="w-4/5">
+                  <div className="flex gap-2">
+                  {selectedImages.map((image, index) => (
+                    <div key={index} className="image-wrapper relative py-2">
+                    <img
+                      src={image}
+                      alt={`Selected ${index + 1}`}
+                      className="selected-image h-16"
+                    />
+                    <button className="remove-button absolute top-0 right-0 rounded-full " onClick={() => handleRemoveImage(index)}>
+                      <FontAwesomeIcon icon={faTimes} className="text-xs" />
+                    </button>
+                  </div>
+                    
+                  ))}
+                  </div>
+                  
                   <input
                     type="text"
                     className="text-sm border w-full p-1.5 rounded-lg"
                   />
                 </div>
-                <ButtonComponent
-                  textButton={"Gửi"}
-                  type={"button"}
-                  style={"bg-blue-500 text-white px-3 rounded-lg"}
-                />
+                <div className="flex gap-2" style={{ alignItems: "flex-end" }}>
+                  <ButtonComponent
+                    textButton={"Gửi"}
+                    type={"button"}
+                    style={"bg-blue-500 text-white px-3 rounded-lg h-8 "}
+                  />
+                  <div>
+                    <label
+                      htmlFor="image-upload"
+                      className="image-upload-label"
+                    >
+                      <input
+                        ref={fileInputRef}
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        multiple
+                        style={{ display: "none" }}
+                      />
+                      <button onClick={handleIconClick} className="image-upload-icon">
+                        <FontAwesomeIcon icon={faImage} className="text-xl text-blue-600" />
+                      </button>
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -95,3 +95,10 @@ body {
 .notification:hover .notification-content {
   display: block;
 }
+
+.boxMsg-chat .time {
+  display: none
+}
+.boxMsg-chat:hover .time {
+  display: block
+}

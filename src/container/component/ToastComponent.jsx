@@ -2,14 +2,14 @@ function ToastComponent({ isHidden, title, content, buttonContent }) {
   return (
     <div
       id="drawer-delete-product-default"
-      class={`fixed top-0  center z-40 h-screen overflow-y-auto  w-full  dark:bg-gray-800 flex justify-center ${
+      className={`fixed top-0  center z-40 h-screen overflow-y-auto  w-full  dark:bg-gray-800 flex justify-center ${
         isHidden ? "block" : "hidden"
       }`}
     >
       <div className="m-auto  max-w-sm bg-white p-8 shadow-lg border rounded-lg">
         <h5
           id="drawer-label"
-          class="inline-flex items-center text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
+          className="inline-flex items-center text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
         >
           {title}
         </h5>
@@ -17,11 +17,11 @@ function ToastComponent({ isHidden, title, content, buttonContent }) {
           type="button"
           data-drawer-dismiss="drawer-delete-product-default"
           aria-controls="drawer-delete-product-default"
-          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
         >
           <svg
             aria-hidden="true"
-            class="w-5 h-5"
+            className="w-5 h-5"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -32,21 +32,22 @@ function ToastComponent({ isHidden, title, content, buttonContent }) {
               clip-rule="evenodd"
             ></path>
           </svg>
-          <span class="sr-only">Close menu</span>
+          <span className="sr-only">Close menu</span>
         </button>
 
-        <h3 class="mb-6 text-sm text-gray-500 dark:text-gray-400">{content}</h3>
+        <h3 className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+          {content}
+        </h3>
         <div className="flex justify-end">
-        {buttonContent.map((item) => (
-          <a
-            href="#"
-            class={`text-white  focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2.5 text-center mr-2 ${item.buttonStyle}`}
-          >
-            {item.buttonName}
-          </a>
-        ))}
+          {buttonContent.map((item) => (
+            <a
+              href="#"
+              className={`text-white  focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2.5 text-center mr-2 ${item.buttonStyle}`}
+            >
+              {item.buttonName}
+            </a>
+          ))}
         </div>
-       
       </div>
     </div>
   );

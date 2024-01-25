@@ -385,32 +385,32 @@ function Chat() {
                       stroke="#F9FAFB"
                       stroke-width="1.2"
                       stroke-miterlimit="10"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       d="M14.1667 8.33341H15.8334C17.5 8.33341 18.3334 7.50008 18.3334 5.83341V4.16675C18.3334 2.50008 17.5 1.66675 15.8334 1.66675H14.1667C12.5 1.66675 11.6667 2.50008 11.6667 4.16675V5.83341C11.6667 7.50008 12.5 8.33341 14.1667 8.33341Z"
                       stroke="#F9FAFB"
                       stroke-width="1.2"
                       stroke-miterlimit="10"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       d="M14.1667 18.3334H15.8334C17.5 18.3334 18.3334 17.5001 18.3334 15.8334V14.1667C18.3334 12.5001 17.5 11.6667 15.8334 11.6667H14.1667C12.5 11.6667 11.6667 12.5001 11.6667 14.1667V15.8334C11.6667 17.5001 12.5 18.3334 14.1667 18.3334Z"
                       stroke="#F9FAFB"
                       stroke-width="1.2"
                       stroke-miterlimit="10"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       d="M4.16669 18.3334H5.83335C7.50002 18.3334 8.33335 17.5001 8.33335 15.8334V14.1667C8.33335 12.5001 7.50002 11.6667 5.83335 11.6667H4.16669C2.50002 11.6667 1.66669 12.5001 1.66669 14.1667V15.8334C1.66669 17.5001 2.50002 18.3334 4.16669 18.3334Z"
                       stroke="#F9FAFB"
                       stroke-width="1.2"
                       stroke-miterlimit="10"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </button>
@@ -432,21 +432,23 @@ function Chat() {
               <div className="flex w-full gap-2 justify-center">
                 <div className="w-4/5">
                   <div className="flex gap-2">
-                  {selectedImages.map((image, index) => (
-                    <div key={index} className="image-wrapper relative py-2">
-                    <img
-                      src={image}
-                      alt={`Selected ${index + 1}`}
-                      className="selected-image h-16"
-                    />
-                    <button className="remove-button absolute top-0 right-0 rounded-full " onClick={() => handleRemoveImage(index)}>
-                      <FontAwesomeIcon icon={faTimes} className="text-xs" />
-                    </button>
+                    {selectedImages.map((image, index) => (
+                      <div key={index} className="image-wrapper relative py-2">
+                        <img
+                          src={image}
+                          alt={`Selected ${index + 1}`}
+                          className="selected-image h-16"
+                        />
+                        <button
+                          className="remove-button absolute top-0 right-0 rounded-full "
+                          onClick={() => handleRemoveImage(index)}
+                        >
+                          <FontAwesomeIcon icon={faTimes} className="text-xs" />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                    
-                  ))}
-                  </div>
-                  
+
                   <input
                     type="text"
                     className="text-sm border w-full p-1.5 rounded-lg"
@@ -472,8 +474,14 @@ function Chat() {
                         multiple
                         style={{ display: "none" }}
                       />
-                      <button onClick={handleIconClick} className="image-upload-icon">
-                        <FontAwesomeIcon icon={faImage} className="text-xl text-blue-600" />
+                      <button
+                        onClick={handleIconClick}
+                        className="image-upload-icon"
+                      >
+                        <FontAwesomeIcon
+                          icon={faImage}
+                          className="text-xl text-blue-600"
+                        />
                       </button>
                     </label>
                   </div>

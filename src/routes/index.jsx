@@ -16,6 +16,8 @@ import ManagerAccount from "../container/user/managerAccounts";
 import AddNewAccount from "../container/user/managerAccounts/AddNewAccount";
 import ManagerRoles from "../container/user/managerRoles";
 import AddNewRole from "../container/user/managerRoles/AddNewRole";
+import ManagerPermissions from "../container/user/managerPermissions";
+import Account from "../container/user/profile/account";
 
 export const GeneralRoute = () => {
   return (
@@ -45,10 +47,11 @@ export const LoggedRoute = () => {
         <Route path="/chat" element={<Chat />} />
         <Route path="/quan-ly-tai-khoan" element={<ManagerAccount />} />
         <Route path="/quan-ly-chuc-vu" element={<ManagerRoles />} />
-        <Route path="/quan-ly-chuc-nang" element={<ManagerRoles />} />
+        <Route path="/quan-ly-chuc-nang" element={<ManagerPermissions />} />
         <Route path="/them-chuc-vu" element={<AddNewRole />} />
         <Route path="/them-tai-khoan" element={<AddNewAccount />} />
         <Route path="/them-chuc-nang" element={<AddNewAccount />} />
+        <Route path="/tai-khoan" element={<Account />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AppMiddleware>

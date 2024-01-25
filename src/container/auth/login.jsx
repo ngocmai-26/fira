@@ -8,7 +8,7 @@ import { Spinner } from "../component/Spinner";
 import { ErrorField } from "../component/ErrorField";
 import { FormField } from "../component/FormField";
 import { loadTokenFromStorage } from "../../services/AuthService";
-import logo from "../../asset/images/Fira.png";
+import logo from "../../asset/images/logo.png";
 import ButtonComponent from "../component/ButtonComponent";
 
 function Login() {
@@ -45,8 +45,8 @@ function Login() {
         <Spinner width={"w-10"} height={"h-10"} color={"fill-gray-500"} />
       ) : (
         <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto p-8 m-4 shadow-md">
-          <div className="logo pb-5">
-            <img src="" alt="logo" />
+          <div className="logo pb-2">
+            <img src={logo} alt="logo" />
           </div>
           <hr />
           <h3 className="font-bold text-xl leading-10 pt-5">Chào mừng</h3>

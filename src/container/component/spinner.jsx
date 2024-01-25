@@ -3,7 +3,7 @@ export const Spinner = ({ color, bgColor, width, height }) => {
     <div role="status">
       <svg
         aria-hidden="true"
-        class={`inline ${width || "w-4"} ${height || "h-4"} ${
+        className={`inline ${width || "w-4"} ${height || "h-4"} ${
           bgColor || "text-transparent"
         } animate-spin  ${color || "fill-gray-100"}`}
         viewBox="0 0 100 101"

@@ -148,7 +148,7 @@ function CreateNewUser() {
               type={"button"}
               textButton={isFetching ? <Spinner /> : "Tiếp tục"}
               style={
-                "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-[50%] sm:min-w-[50%]"
+                "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-[50%] sm:min-w-[50%]  text-white"
               }
             />
           </div>

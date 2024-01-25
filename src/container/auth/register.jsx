@@ -6,6 +6,7 @@ import { register } from "../../thunks/AuthThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { FormField } from "../component/FormField";
 import { ErrorField } from "../component/ErrorField";
+import logo from "../../asset/images/logo.png";
 import ButtonComponent from "../component/ButtonComponent";
 import validator from "validator";
 
@@ -73,9 +74,9 @@ function Register() {
   
   return (
     <article className="bg-cyan-50 h-screen w-full my-auto flex items-center ">
-      <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto p-8 m-4 shadow-md">
-        <div className="logo pb-5">
-          <img src="" alt="logo" />
+      <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto px-8 py-4 m-4 shadow-md">
+        <div className="logo ">
+          <img src={logo} alt="logo" />
         </div>
         <hr />
         <h3 className="font-bold text-xl leading-10 pt-5">Đăng ký tài khoản</h3>
@@ -83,7 +84,7 @@ function Register() {
           Vui lòng nhập đầy đủ thông tin thông tin:
         </p>
         <form action="" className="py-0 sm:py-4">
-            <div className="Email py-5">
+            <div className="Email py-2">
               <div className="">
                 <div className="">
                   <label htmlFor="Email" className="font-medium text-sm">
@@ -101,7 +102,7 @@ function Register() {
                 <ErrorField errors={formErrors} field={"username"} />
               </div>
             </div>
-          <div className="password py-5">
+          <div className="password py-2">
               <div className=" ">
                 <div className="relative">
                   <label htmlFor="Phone" className="font-medium text-sm">
@@ -130,7 +131,7 @@ function Register() {
                 </div>
               </div>
             </div>
-            <div className="confirmPassword py-5">
+            <div className="confirmPassword py-2">
               <div className="">
                 <div className="relative">
                   <label htmlFor="confirmPassword" className="font-medium text-sm">

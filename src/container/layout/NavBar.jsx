@@ -40,8 +40,8 @@ function NavBarAdmin() {
               >
                 <FontAwesomeIcon icon={faUsers} />
                 <span className="ml-2 text-sm nav-item-text single-line">
-                  {" "}
-                  Quản lý tài khoản{" "}
+                  
+                  Quản lý tài khoản
                 </span>
               </Link>
             </div>
@@ -55,8 +55,8 @@ function NavBarAdmin() {
               >
                 <FontAwesomeIcon icon={faListCheck} />
                 <span className="ml-2 text-sm nav-item-text single-line">
-                  {" "}
-                  Quản lý công việc{" "}
+                  
+                  Quản lý công việc
                 </span>
               </Link>
             </div>
@@ -69,8 +69,8 @@ function NavBarAdmin() {
               >
                 <FontAwesomeIcon icon={faCalendar} />
                 <span className="ml-2 text-sm nav-item-text single-line">
-                  {" "}
-                  Quản lý lịch làm việc{" "}
+                  
+                  Quản lý lịch làm việc
                 </span>
               </Link>
             </div>
@@ -83,8 +83,8 @@ function NavBarAdmin() {
               >
                 <FontAwesomeIcon icon={faUserPen} />
                 <span className="ml-2 text-sm nav-item-text single-line">
-                  {" "}
-                  Quản lý lịch chức vụ{" "}
+                  
+                  Quản lý lịch chức vụ
                 </span>
               </Link>
             </div>
@@ -97,8 +97,8 @@ function NavBarAdmin() {
               >
                 <FontAwesomeIcon icon={faUsersGear} />
                 <span className="ml-2 text-sm nav-item-text single-line">
-                  {" "}
-                  Quản lý lịch chức năng{" "}
+                  
+                  Quản lý lịch chức năng
                 </span>
               </Link>
             </div>
@@ -111,7 +111,7 @@ function NavBarAdmin() {
               >
                 <FontAwesomeIcon icon={faPenToSquare} />
                 <span className="ml-2 text-sm nav-item-text single-line">
-                  {" "}
+                  
                   Quản lý danh sách kpi
                 </span>
               </Link>
@@ -128,8 +128,8 @@ function NavBarAdmin() {
                   <FontAwesomeIcon icon={faComments} />
                 </span>
                 <span className="ml-2 text-sm nav-item-text single-line">
-                  {" "}
-                  Tin nhắn{" "}
+                  
+                  Tin nhắn
                 </span>
               </Link>
             </div>

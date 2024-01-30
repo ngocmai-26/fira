@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setAlert } from "../slices/AlertSlice";
 import { API } from "../constants/api";
 import {
+  logout,
   setAuthFetching,
   setErrors,
   setErrorsRegister,
@@ -118,7 +119,13 @@ export const loginWithAuthToken = createAsyncThunk(
 
       if (resp.status >= 300) {
         if (!dataJson?.valid) {
-          dispatch(setErrors(dataJson?.data));
+          dispatch(
+            setAlert({
+              type: TOAST_ERROR,
+              content: "Phiên đăng nhập đã hết hạn vui lòng đăng nhập thủ công",
+            })
+          );
+          dispatch(logout());
           return rejectWithValue("something error");
         }
         dispatch(
@@ -235,7 +242,7 @@ export const requestNewCode = createAsyncThunk(
           setAlert({
             type: TOAST_ERROR,
             content: dataJson?.message[0],
-          }) 
+          })
         );
         return rejectWithValue("something error");
       }
@@ -259,7 +266,7 @@ export const forgotPassword = createAsyncThunk(
         }
       );
       const dataJson = await resp.json();
-      console.log(dataJson, resp.status)
+      console.log(dataJson, resp.status);
       if (resp.status >= 300) {
         dispatch(
           setAlert({

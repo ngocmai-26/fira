@@ -72,7 +72,7 @@ body {
 }
 
 .navHome {
-  transition: width 0.7s; /* Hiệu ứng chuyển động */
+  transition: width 0.2s; /* Hiệu ứng chuyển động */
   overflow: hidden; /* Ẩn nội dung vượt quá chiều rộng */
 }
 

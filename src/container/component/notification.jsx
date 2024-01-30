@@ -7,7 +7,8 @@ function NotificationComponent() {
     {
       id: 1,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       time: "12m",
       typeNotify: 1,
       content:
@@ -16,7 +17,8 @@ function NotificationComponent() {
     {
       id: 2,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       time: "12m",
       typeNotify: 2,
       content:
@@ -25,8 +27,8 @@ function NotificationComponent() {
   ];
   return (
     <div className="relative notification m-auto px-3 cursor-pointer">
-      <div className="notification-icon">
-        <FontAwesomeIcon icon={faBell} className="text-gray-500 text-lg" />
+      <div className="notification-icon pt-1">
+        <FontAwesomeIcon icon={faBell} className="text-gray-800 text-lg" />
       </div>
       <div className="notification-content absolute w-96 h-96 z-30 bg-white shadow-md p-2">
         <div className="title-notification">

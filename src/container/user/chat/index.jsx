@@ -1,18 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import BoxMsg from "../../component/BoxMsg";
+import BoxMsg from "../../component/Boxmsg";
 import MsgItem from "../../component/MsgItem";
 import {
-  faArrowLeft,
+  faUserGroup,
   faImage,
-  faPlus,
+  faUser,
+  faPersonCirclePlus,
   faTimes,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import SearchModal from "../../modal/SearchModal";
 import ModalRoomChat from "../../modal/ModalRoomChat";
 import NotificationComponent from "../../component/Notification";
-import SearchModal from "../../modal/SearchModal";
 import QRCodeModal from "../../modal/QRCodeModal";
 import SearchComponent from "../../component/SearchComponent";
 import ButtonComponent from "../../component/ButtonComponent";
@@ -23,11 +24,15 @@ function Chat() {
   const [expand, setExpand] = useState(false);
   const [expandBox, setExpandBox] = useState(false);
   const [hiddenModalRoom, setHiddenModalRoom] = useState(false);
+  const [addContactModal, setAddContactModal] = useState(false);
 
   const { user } = useSelector((state) => state.authReducer);
   console.log(user);
   const handleSeeMore = () => {
     setSeeMore(!seeMore);
+  };
+  const handleOpenContactModal = () => {
+    setAddContactModal(!addContactModal);
   };
 
   const handleHiddenModalRoom = () => {
@@ -39,7 +44,8 @@ function Chat() {
   };
   const data = {
     name: "Đăng Văn Nam",
-    img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+    img:
+      "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     time: "12m",
     content:
       "ABC Đăng Văn Nam Đăng Văn Nam Đăng Văn Nam  m Đăng Văn Nam Đăng Văn Nam Hôm qua Hôm qua em xinh quá trời Đăng Văn Nam Hôm qua e",
@@ -48,72 +54,86 @@ function Chat() {
     {
       isSender: 1,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 2,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 1,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 2,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 1,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 2,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 1,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 2,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 1,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 2,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 1,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 2,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 1,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
     {
       isSender: 2,
       content: "Hôm qua em xinh quá trời",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
     },
   ];
 
@@ -121,61 +141,71 @@ function Chat() {
     {
       id: 1,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 2,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 1,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 2,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 1,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 2,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 1,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 2,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 1,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
     {
       id: 2,
       name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       content: "abc@gmail.com",
     },
   ];
@@ -183,98 +213,112 @@ function Chat() {
     {
       id: 1,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img:
+        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
@@ -317,12 +361,18 @@ function Chat() {
         <div className="p-2 col-span-3 md:col-span-1 border-e-gray-100 border-e-2 h-screen">
           <div className="flex justify-between border-b-gray-100 border-b-2 py-2">
             <span className="font-bold text-2xl">Message</span>
-            <div className="flex">
+            <div className="flex justify-center items-center">
               <button
-                className=" overflow-hidden bg-gray-100 text-lg text-gray-800 hover:bg-gray-300 px-2"
+                className="text-lg text-gray-800 px-2"
+                onClick={handleOpenContactModal}
+              >
+                <FontAwesomeIcon icon={faUser} />
+              </button>
+              <button
+                className="text-lg text-gray-800 px-2"
                 onClick={handleHiddenModalRoom}
               >
-                <FontAwesomeIcon icon={faPlus} />
+                <FontAwesomeIcon icon={faUserGroup} />
               </button>
               <NotificationComponent />
             </div>
@@ -550,7 +600,7 @@ function Chat() {
         hiddenModalRoom={hiddenModalRoom}
         handleHiddenModalRoom={handleHiddenModalRoom}
       />
-      {/* <SearchModal /> */}
+      {addContactModal && <SearchModal setOpen={setAddContactModal} />}
       <QRCodeModal handleModalQr={handleModalQr} modalIsOpen={modalIsOpen} />
     </article>
   );

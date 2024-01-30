@@ -38,11 +38,16 @@ function Login() {
   const toggleVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  
+
   return (
     <article className="bg-cyan-50 h-screen w-full my-auto flex items-center justify-center">
       {authToken ? (
-        <Spinner width={"w-10"} height={"h-10"} color={"fill-gray-500"} />
+        <div className="flex flex-col justify-center items-center">
+          <div className="logo mb-12">
+            <img src={logo} alt="logo" className="scale-150" />
+          </div>
+          <Spinner width={"w-10"} height={"h-10"} color={"fill-sky-400"} />
+        </div>
       ) : (
         <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto p-8 m-4 shadow-md">
           <div className="logo pb-2">

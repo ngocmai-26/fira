@@ -1,5 +1,3 @@
-import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,9 +9,8 @@ function ConfirmAccount() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const email = JSON.parse(localStorage.getItem("email"));
-  const [code, setCode] = useState(email);
+  const [code, setCode] = useState({ email });
   const handleSubmit = () => {
-  
     dispatch(confirmAccount(code)).then((reps) => {
       if (!reps.error) {
         localStorage.removeItem("email");
@@ -50,12 +47,12 @@ function ConfirmAccount() {
             <span className="sr-only">Warning icon</span>
           </div>
           <div className="ml-3 text-sm font-normal">
-            Mã code đã được gửi về email của bạn. Hãy check email và nhập mã code để xác thực tài khoản
+            Mã code đã được gửi về email của bạn. Hãy check email và nhập mã
+            code để xác thực tài khoản
           </div>
         </div>
         <form action="" className="py-0">
           <div className="code flex flex-col sm:flex-row py-5 relative">
-            
             <FormField
               name={"code"}
               values={code}
@@ -65,10 +62,20 @@ function ConfirmAccount() {
             />
           </div>
           <div className="flex justify-end">
+            <ButtonComponent
+              handleClick={handleSendAgain}
+              type={"button"}
+              textButton={"Gửi lại mã code"}
+              style={
+                "text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 me-1"
+              }
+            />
 
-            <ButtonComponent handleClick={handleSendAgain} type={"button"} textButton={"Gửi lại mã code"} style={"text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-300 me-1"} />
-    
-            <ButtonComponent handleClick={handleSubmit} type={"button"} textButton={"Gửi"} />
+            <ButtonComponent
+              handleClick={handleSubmit}
+              type={"button"}
+              textButton={"Gửi"}
+            />
           </div>
         </form>
       </div>

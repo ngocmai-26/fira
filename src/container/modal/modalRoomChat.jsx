@@ -5,16 +5,55 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import UserItem from "../component/UserItem";
 import SearchComponent from "../component/SearchComponent";
 import { FormField } from "../component/FormField";
 import ButtonComponent from "../component/ButtonComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "../component/Spinner";
+import { setAlert } from "../../slices/AlertSlice";
+import { TOAST_ERROR } from "../../constants/toast";
+import { createNewRoom } from "../../thunks/RoomThunk";
 
-function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
+function ModalRoomChat({ setModalVisible, modalVisible }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
-  const [selectedTag, setSelectedTag] = useState(null);
-  const [user, setUser] = useState({});
+  const [selectedTag, setSelectedTag] = useState([]);
+  const [room, setRoom] = useState("");
+  const [searchContact, setSearchContact] = useState([]);
+
+  const { roomTags, isLoading } = useSelector((state) => state.roomReducer);
+  const { allContact } = useSelector((state) => state.contactReducer);
+  const { user } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
+
+  const [query, setQuery] = useState("");
+  const [searching, setSearching] = useState(false);
+  const SearchAni = () => {
+    return <Spinner width={4} height={4} />;
+  };
+
+  const handleSearch = (q) => {
+    const temp = [];
+    q = q.trim();
+
+    if (q == "") {
+      setSearchContact(allContact);
+      return;
+    }
+
+    allContact.forEach((element) => {
+      if (
+        element.relate?.fullName?.includes(q) ||
+        element.relate?.email?.includes(q) ||
+        element.relate?.phone?.includes(q)
+      ) {
+        temp.push(element);
+      }
+    });
+
+    setSearchContact(temp);
+  };
 
   const handleRadioClick = (buttonId) => {
     if (selectedButtons.some((item) => item.id === buttonId.id)) {
@@ -30,147 +69,102 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
     setSelectedButtons(selectedButtons.filter((props) => item.id !== props.id));
   };
 
-  const member = [
-    {
-      id: 1,
-      name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 2,
-      name: "Đăng Văn Nam Đăng Văn Nam Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 3,
-      name: "Đăng Văn x",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 4,
-      name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 5,
-      name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 6,
-      name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 7,
-      name: "Đăng Văn Nam Đăng Văn Nam  Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 8,
-      name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-    {
-      id: 9,
-      name: "Đăng Văn Nam",
-      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
-      content: "abc@gmail.com",
-    },
-  ];
-
-  const tags = [
-    {
-      id: 1,
-      nameTag: "Gia đình",
-    },
-    {
-      id: 2,
-      nameTag: "Bạn bè",
-    },
-    {
-      id: 3,
-      nameTag: "Công việc",
-    },
-    {
-      id: 4,
-      nameTag: "Khách hàng",
-    },
-    {
-      id: 5,
-      nameTag: "Trả lời sau",
-    },
-    {
-      id: 1,
-      nameTag: "Gia đình",
-    },
-    {
-      id: 2,
-      nameTag: "Bạn bè",
-    },
-    {
-      id: 3,
-      nameTag: "Công việc",
-    },
-    {
-      id: 4,
-      nameTag: "Khách hàng",
-    },
-    {
-      id: 5,
-      nameTag: "Trả lời sau",
-    },
-  ];
   const handleTagClick = (tagId) => {
-    setSelectedTag(tagId);
+    const sel = [...selectedTag];
+    if (sel.includes(tagId)) {
+      sel.splice(sel.indexOf(tagId), 1);
+    } else {
+      sel.push(tagId);
+    }
+    setSelectedTag(sel);
   };
+  const handleCreateRoom = () => {
+    if (selectedButtons.length == 0) {
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: "Hãy chọn một thành viên" })
+      );
+      return;
+    }
+    if (selectedTag.length == 0) {
+      dispatch(setAlert({ type: TOAST_ERROR, content: "Hãy chọn một thẻ" }));
+      return;
+    }
+
+    if (room["roomName"].trim().length == 0) {
+      dispatch(setAlert({ type: TOAST_ERROR, content: "Hãy nhập tên nhóm" }));
+      return;
+    }
+    const selectedMember = selectedButtons.map((btn) => btn.relate.id);
+    selectedMember.push(user?.id);
+
+    const roomData = {
+      roomName: room["roomName"],
+      maxCountMember: 50,
+      roomTagsId: selectedTag,
+      initMember: selectedMember,
+    };
+    dispatch(createNewRoom(roomData)).then((resp) => {
+      if (resp?.payload) {
+        setModalVisible(false);
+      }
+    });
+  };
+
+  useLayoutEffect(() => {
+    setSearchContact(allContact);
+  }, []);
+  useLayoutEffect(() => {
+    handleSearch(query);
+  }, [query]);
   return (
     <div
       className={`absolute top-0 left-0 right-0 bottom-0 bg-[#b5b3b354] m-auto rounded-sm ${
-        hiddenModalRoom ? "block" : "hidden"
+        modalVisible ? "block" : "hidden"
       }`}
     >
-      <div className="flex h-screen  " style={{ alignItems: "center" }}>
-        <div className=" bg-white w-11/12 lg:w-4/12 m-auto p-4 rounded-md">
+      <div className="flex h-screen my-2" style={{ alignItems: "center" }}>
+        <div className=" bg-white w-11/12 lg:w-5/12 m-auto p-4 rounded-md">
           <div className="title text-md font-bold pt-1.5 pb-3.5 flex justify-between">
             <span>Tạo nhóm</span>
-            <button className="text-end mx-3" onClick={handleHiddenModalRoom}>
+            <button
+              className="text-end mx-3"
+              onClick={() => {
+                setModalVisible(false);
+              }}
+            >
               <FontAwesomeIcon icon={faX} className="text-xs" />
             </button>
           </div>
           <hr></hr>
           <div className="new-name py-3">
             <FormField
-              name={"nameGroup"}
-              values={user}
-              id={"nameGroup"}
-              setValue={setUser}
+              name={"roomName"}
+              values={room}
+              setValue={setRoom}
               placeholder={"Nhập tên nhóm"}
             />
           </div>
           <hr />
-          <SearchComponent placeholder="Nhập tên, số điện thoại" />
+          <SearchComponent
+            handleSearch={(e) => setQuery(e.target.value)}
+            SearchingAnimate={<SearchAni />}
+            searchingState={searching}
+            state={query}
+            placeholder="Nhập tên, số điện thoại , Email"
+          />
           <div className="tags py-2 scrollX max-w-full">
             <ul className="flex scrollX-item  pb-2">
-              {tags.map((item) => (
+              {roomTags.map((item) => (
                 <li
                   key={item.id}
-                  className={`px-2 mx-1 cursor-pointer ${
-                    selectedTag === item.id
+                  className={`px-2 mx-1 my-0 rounded-sm cursor-pointer ${
+                    selectedTag.includes(item.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-100 hover:bg-gray-300"
                   }`}
                   onClick={() => handleTagClick(item.id)}
                 >
-                  <span className="text-xs">{item.nameTag}</span>
+                  <span className="text-xs">{item.name}</span>
                 </li>
               ))}
             </ul>
@@ -180,14 +174,14 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
             <div className="title-group py-2">
               <span className="text-sm font-bold ">Danh sách người dùng</span>
               <div className="flex">
-                <div className="w-full sm:w-7/12 py-1.5 scroll">
+                <div className="w-full sm:w-7/12 py-1.5 scroll mr-1">
                   <div
                     className="scroll-item"
                     style={{ minHeight: "50vh", maxHeight: "55vh" }}
                   >
-                    {member.map((item) => (
+                    {searchContact.map((item) => (
                       <button
-                        className={`w-full flex py-2 }`}
+                        className={`w-full flex py-1 hover:bg-gray-100 rounded px-2 flex gap-2`}
                         onClick={() => handleRadioClick(item)}
                       >
                         <input
@@ -197,13 +191,13 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
                           )}
                           onChange={() => {}}
                           onClick={() => handleRadioClick(item)}
-                          className="my-auto"
+                          className="my-auto w-4 h-4"
                         />
-
                         <UserItem
-                          img={item.img}
-                          name={item.name}
-                          widthContent="max-w-52"
+                          img={item.relate.avatar}
+                          name={item.relate.fullName}
+                          email={item.relate.email}
+                          widthContent="max-w-full"
                         />
                       </button>
                     ))}
@@ -220,23 +214,14 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
                     >
                       {selectedButtons.map((item) => (
                         <div
-                          className={`w-11/12 my-2 mx-auto flex py-1 px-1 justify-between rounded-sm bg-gray-100`}
+                          onClick={() => handleRemoveSelectUser(item)}
+                          className={`w-11/12 my-2 mx-auto flex py-1 px-1 cursor-pointer justify-between rounded bg-gray-100`}
                         >
                           <UserItem
-                            img={item.img}
-                            name={item.name}
+                            img={item.relate.avatar}
+                            name={item.relate.fullName}
                             widthContent="max-w-24"
                           />
-
-                          <button
-                            className="text-end"
-                            onClick={() => handleRemoveSelectUser(item)}
-                          >
-                            <FontAwesomeIcon
-                              icon={faXmarkCircle}
-                              className="text-sm text-blue-500"
-                            />
-                          </button>
                         </div>
                       ))}
                     </div>
@@ -255,7 +240,8 @@ function ModalRoomChat({ handleHiddenModalRoom, hiddenModalRoom }) {
               type={"button"}
             />
             <ButtonComponent
-              textButton={"Tạo nhóm"}
+              handleClick={handleCreateRoom}
+              textButton={isLoading ? <Spinner /> : "Tạo nhóm"}
               style={
                 "btn bg-blue-500 px-3 py-1.5 text-white font-medium rounded-sm"
               }

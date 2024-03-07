@@ -2,7 +2,6 @@ export function debounce(fn, ms) {
   let timer;
 
   return function () {
-    // Nhận các đối số
     const args = arguments;
     const context = this;
 

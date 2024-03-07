@@ -23,32 +23,36 @@ const customStyles = {
   },
 };
 
-const QRCodeModal = ({handleModalQr, modalIsOpen}) => {
-
-
-
+const QRCodeModal = ({ setQrModalVisible, qrModalVisible }) => {
+  const [qrValue, setQrValue] = useState("");
   return (
-    <div className={`absolute top-0 left-0 right-0 bottom-0 bg-[#b5b3b354] m-auto rounded-sm ${modalIsOpen? "block": "hidden"}`}>
+    <div
+      className={`absolute top-0 left-0 right-0 bottom-0 bg-[#b5b3b354] m-auto rounded-sm ${
+        qrModalVisible ? "block" : "hidden"
+      }`}
+    >
       <Modal
-        isOpen={modalIsOpen}
-            onRequestClose={handleModalQr}
-            style={customStyles}
-            contentLabel="QR Code Modal"
+        isOpen={qrModalVisible}
+        onRequestClose={() => {
+          setQrModalVisible(false);
+        }}
+        style={customStyles}
+        contentLabel="QR Code Modal"
+      >
+        <div className="">
+          <div className="title">Quét mã Qr</div>
+          <button
+            className="absolute top-0 right-0 m-2 cursor-pointer"
+            onClick={() => {
+              setQrModalVisible(false);
+            }}
           >
-            <div className="">
-              <div className="title">
-                Quét mã Qr
-              </div>
-              <button
-                className="absolute top-0 right-0 m-2 cursor-pointer"
-                onClick={handleModalQr}
-              >
-                <FontAwesomeIcon icon={faX} className="text-sm " />
-              </button>
-              <hr></hr>
-              <QRCode value="https://www.facebook.com/profile.php?id=100086153393963" className="mx-auto my-3 " />
-            </div>
-          </Modal>
+            <FontAwesomeIcon icon={faX} className="text-sm " />
+          </button>
+          <hr></hr>
+          <QRCode value={qrValue} className="mx-auto my-3 " />
+        </div>
+      </Modal>
     </div>
   );
 };

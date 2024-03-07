@@ -5,6 +5,7 @@ import { API } from "../constants/api";
 import { getHeaders } from "../services/ApiService";
 import { delaySync, loadTokenFromStorage } from "../services/AuthService";
 import { setSearchContact, setSearching } from "../slices/SearchSlice";
+
 export const searchContactAsync = createAsyncThunk(
   "/search-contact",
   async (email, { dispatch, rejectWithValue }) => {
@@ -21,6 +22,7 @@ export const searchContactAsync = createAsyncThunk(
         return rejectWithValue();
       }
       const jsonData = await resp.json();
+
       dispatch(setSearchContact(jsonData?.data || new Array(0)));
       dispatch(setSearching(false));
       return;

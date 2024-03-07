@@ -1,25 +1,28 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { createNewUser, register } from "../../thunks/AuthThunk";
+import { Link } from "react-router-dom";
+import { createNewUser } from "../../thunks/AuthThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "../component/Spinner";
 import { ErrorField } from "../component/ErrorField";
 import { FormField } from "../component/FormField";
 import ButtonComponent from "../component/ButtonComponent";
-
+import logo from "../../asset/images/logo.png";
+import { ImagePicker } from "../component/ImageBox";
+import { FBStorageService } from "../../services/firebase/StorageService";
 function CreateNewUser() {
   const dispatch = useDispatch();
   const [newUserData, setNewUserData] = useState({});
-
+  const [images, setImages] = useState([]);
   const { isFetching, errors } = useSelector((state) => state.authReducer);
   const handleCreateNewUser = () => {
-    dispatch(createNewUser(newUserData));
+    // upload first
+    dispatch(createNewUser({ ...newUserData, avatar: images[0] }));
   };
   return (
     <article className="bg-cyan-50 h-full w-full my-auto flex items-center py-5">
       <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto p-8 m-4 shadow-md">
         <div className="logo pb-5">
-          <img src="" alt="logo" />
+          <img src={logo} className="w-36 object-cover h-20" alt="logo" />
         </div>
         <hr />
         <h3 className="font-bold text-xl leading-10 pt-5">
@@ -29,6 +32,11 @@ function CreateNewUser() {
           Vui lòng nhập đầy đủ thông tin thông tin:
         </p>
         <form action="" className="py-0 sm:py-4">
+          <ImagePicker
+            folder={`uploads/users`}
+            images={images}
+            setImages={setImages}
+          />
           <div className="firstName py-5">
             <div className="">
               <div className="">
@@ -135,7 +143,7 @@ function CreateNewUser() {
               </div>
             </div>
           </div>
-          <div className="text-center py-3 flex">
+          <div className="text-center py-3 flex flex-col md:flex-row">
             <Link
               to="/login"
               className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 min-w-full sm:min-w-[50%] "

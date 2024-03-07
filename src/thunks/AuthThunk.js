@@ -19,6 +19,7 @@ import {
 } from "../services/AuthService";
 import { getHeaders } from "../services/ApiService";
 import { TOAST_ERROR, TOAST_SUCCESS } from "../constants/toast";
+import { FBStorageService } from "../services/firebase/StorageService";
 
 export const register = createAsyncThunk(
   "/register",
@@ -57,7 +58,6 @@ export const register = createAsyncThunk(
     }
   }
 );
-
 export const login = createAsyncThunk(
   "/login",
   async (loginData, { rejectWithValue, dispatch }) => {
@@ -143,7 +143,9 @@ export const loginWithAuthToken = createAsyncThunk(
       dispatch(setLogged(true));
       dispatch(setRefresh("/"));
     } catch (e) {
-      dispatch(setAlert({ type: "warning", content: "" }));
+      setTimeout(() => {
+        dispatch(loginWithAuthToken(loginData));
+      }, 3000);
     }
   }
 );
@@ -153,6 +155,7 @@ export const createNewUser = createAsyncThunk(
     try {
       dispatch(setAuthFetching(true));
       await delaySync(1);
+      const avatarUrl = await FBStorageService.uploadFile(newUserData.avatar);
       const token = loadTokenFromStorage();
       if (!token) {
         dispatch(
@@ -167,7 +170,7 @@ export const createNewUser = createAsyncThunk(
       const resp = await fetch(`${API.uri}/users`, {
         method: "POST",
         headers: getHeaders(token),
-        body: JSON.stringify(newUserData),
+        body: JSON.stringify({ ...newUserData, avatar: avatarUrl }),
       });
       dispatch(setAuthFetching(false));
       const jsonData = await resp.json();
@@ -192,7 +195,6 @@ export const createNewUser = createAsyncThunk(
     }
   }
 );
-
 export const confirmAccount = createAsyncThunk(
   "/verify-email",
   async (confirmData, { rejectWithValue, dispatch }) => {
@@ -222,7 +224,6 @@ export const confirmAccount = createAsyncThunk(
     }
   }
 );
-
 export const requestNewCode = createAsyncThunk(
   "/request-new-code",
   async (email, { rejectWithValue, dispatch }) => {
@@ -282,7 +283,6 @@ export const forgotPassword = createAsyncThunk(
     }
   }
 );
-
 export const confirmForgotPassword = createAsyncThunk(
   "/confirm-forgot-password",
   async (confirmData, { rejectWithValue, dispatch }) => {

@@ -40,3 +40,76 @@ export const CONTACT_SEARCH_MODAL_TYPE = {
   REQUEST: 3,
   SENT_REQUEST: 4,
 };
+export const CONTACT_RESPONSE = {
+  ACCEPT: 1,
+  DENIED: 0,
+};
+export const CONTACT_NOTI_EVENT_TYPE = {
+  NEW_REQUEST: 2,
+  RESPONSE_REQUEST: 1,
+};
+export const getTimeDiff = (time) => {
+  let now = new Date();
+  let pastDate = new Date(time);
+  let timeDifference = now - pastDate;
+
+  // Chuyển đổi khoảng thời gian từ millisecond sang ngày, giờ, phút, giây
+  let millisecondsInADay = 1000 * 60 * 60 * 24;
+  let daysDifference = Math.floor(timeDifference / millisecondsInADay);
+  timeDifference = timeDifference % millisecondsInADay;
+
+  let millisecondsInAnHour = 1000 * 60 * 60;
+  let hoursDifference = Math.floor(timeDifference / millisecondsInAnHour);
+  timeDifference = timeDifference % millisecondsInAnHour;
+
+  let millisecondsInAMinute = 1000 * 60;
+  let minutesDifference = Math.floor(timeDifference / millisecondsInAMinute);
+  timeDifference = timeDifference % millisecondsInAMinute;
+
+  let secondsDifference = Math.floor(timeDifference / 1000);
+
+  return {
+    days: daysDifference,
+    hours: hoursDifference,
+    minutes: minutesDifference,
+    seconds: secondsDifference,
+  };
+};
+
+export const getTimeDiffFrom = (timeStart, timeEnd) => {
+  let timeDifference = timeEnd - timeStart;
+
+  // Chuyển đổi khoảng thời gian từ millisecond sang ngày, giờ, phút, giây
+  let millisecondsInADay = 1000 * 60 * 60 * 24;
+  let daysDifference = Math.floor(timeDifference / millisecondsInADay);
+  timeDifference = timeDifference % millisecondsInADay;
+
+  let millisecondsInAnHour = 1000 * 60 * 60;
+  let hoursDifference = Math.floor(timeDifference / millisecondsInAnHour);
+  timeDifference = timeDifference % millisecondsInAnHour;
+
+  let millisecondsInAMinute = 1000 * 60;
+  let minutesDifference = Math.floor(timeDifference / millisecondsInAMinute);
+  timeDifference = timeDifference % millisecondsInAMinute;
+
+  let secondsDifference = Math.floor(timeDifference / 1000);
+
+  return {
+    days: daysDifference,
+    hours: hoursDifference,
+    minutes: minutesDifference,
+    seconds: secondsDifference,
+  };
+};
+export function bytesToReadable(byte) {
+  const units = ['bytes', 'KB', 'MB', 'GB', 'TB'];
+  let unitIndex = 0;
+  let size = byte;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+      size /= 1024;
+      unitIndex++;
+  }
+
+  return `${size.toFixed(2)} ${units[unitIndex]}`;
+}

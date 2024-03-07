@@ -1,6 +1,9 @@
 .App {
   text-align: center;
 }
+img {
+  object-fit: cover;
+}
 
 .App-logo {
   height: 40vmin;
@@ -47,18 +50,21 @@
 width: 0 !important;
 display: none; 
 }
-.scrollX .scrollX-item {
-  overflow-x: auto;
-  overflow-y: hidden; /* Ẩn thanh cuộn dọc */
+.scrollX .scroll-item {
+  overflow-y: auto;
+  overflow-x: hidden; /* Ẩn thanh cuộn dọc */
   white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.scrollX .scrollX-item::-webkit-scrollbar {
+.scrollX .scroll-item::-webkit-scrollbar {
   width: 2px; /* Chiều rộng của thanh cuộn */
   height: 2px; /* Chiều cao của thanh cuộn */
+  display: none;
 }
 
-.scrollX .scrollX-item::-webkit-scrollbar-thumb {
+.scrollX .scroll-item::-webkit-scrollbar-thumb {
   background-color: gray; /* Màu sắc của đối tượng cuộn */
 }
 

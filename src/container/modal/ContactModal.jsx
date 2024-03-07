@@ -1,5 +1,9 @@
 import {
   faAddressBook,
+  faArrowAltCircleDown,
+  faArrowAltCircleRight,
+  faCheck,
+  faComment,
   faInbox,
   faMagnifyingGlass,
   faUserPlus,
@@ -13,7 +17,11 @@ import ButtonComponent from "../component/ButtonComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { debounce } from "../../app/debounce";
 import { searchContactAsync } from "../../thunks/SearchThunk";
-import { CONTACT_SEARCH_MODAL_TYPE, DEFAULT_AVATAR } from "../../app/static";
+import {
+  CONTACT_RESPONSE,
+  CONTACT_SEARCH_MODAL_TYPE,
+  DEFAULT_AVATAR,
+} from "../../app/static";
 import {
   setSearchContact,
   setSearchContent,
@@ -21,11 +29,12 @@ import {
 } from "../../slices/SearchSlice";
 import { Spinner } from "../component/Spinner";
 import {
-  getAllAddContactRequestByUser,
+  destroyContactRequest,
+  responseContact,
   sendAddContactRequest,
 } from "../../thunks/ContactThunk";
 
-function SearchModal({ setOpen }) {
+function ContactModal({ setOpen }) {
   const [modalType, setModalType] = useState(CONTACT_SEARCH_MODAL_TYPE.SEARCH);
   const { searchContact, searchContent, searching } = useSelector(
     (state) => state.searchReducer
@@ -44,6 +53,7 @@ function SearchModal({ setOpen }) {
     dispatch(setSearchContact([]));
     setOpen(false);
   };
+  useLayoutEffect(() => {}, [addContactRequest, allContact, contactRequest]);
   const dispatch = useDispatch();
   useLayoutEffect(() => {
     console.log("data :: ", searchContact);
@@ -52,16 +62,21 @@ function SearchModal({ setOpen }) {
   const handleSearchContact = (e) => {
     dispatch(setSearchContent(e.target.value || ""));
   };
+
+  const handleResponseAddFriendRequest = (type, contactId) => {
+    const data = {
+      contactId: contactId,
+      command: type,
+    };
+    dispatch(responseContact(data));
+  };
+
   useLayoutEffect(() => {
     if (searchContent?.trim() !== "") {
       dispatch(searchContactAsync(searchContent));
     }
     dispatch(setSearchContact([]));
   }, [searchContent]);
-
-  useLayoutEffect(() => {
-    dispatch(getAllAddContactRequestByUser(user?.id));
-  }, []);
 
   const SearchModalContent = ({ content }) => {
     return (
@@ -90,8 +105,11 @@ function SearchModal({ setOpen }) {
               style={{ minHeight: "50vh", maxHeight: "55vh" }}
             >
               {searchContact &&
-                searchContact?.map((item) => (
-                  <div className={`w-full flex py-2 justify-between`}>
+                searchContact?.map((item, index) => (
+                  <div
+                    key={index.toString()}
+                    className={`w-full flex py-2 justify-between`}
+                  >
                     <UserItem
                       img={item?.avatar || DEFAULT_AVATAR}
                       name={item?.fullName}
@@ -140,34 +158,53 @@ function SearchModal({ setOpen }) {
               className="scroll-item"
               style={{ minHeight: "50vh", maxHeight: "62vh" }}
             >
-              {/* {member.map((item) => (
-              <div className={`w-full flex py-2 justify-between`}>
-                <UserItem
-                  img={item.img}
-                  name={item.name}
-                  widthContent="max-w-40"
-                />
-                <div className="requestBtn flex my-auto">
-                  <button className="text-xs px-1 mx-1 bg-red-500 py-1 text-white">
-                    <FontAwesomeIcon
-                      icon={faX}
-                      className="text-xs"
-                      style={{ marginRight: "2px" }}
-                    />
-                    <span>Từ chối</span>
-                  </button>
+              {contactRequest.map((item) => (
+                <div
+                  key={item?.id.toString()}
+                  className={`w-full flex py-2 justify-between`}
+                >
+                  <UserItem
+                    img={item?.owner?.avatar || DEFAULT_AVATAR}
+                    name={item?.owner?.fullName}
+                    widthContent="max-w-40"
+                  />
+                  <div className="requestBtn flex my-auto">
+                    <button
+                      onClick={() => {
+                        handleResponseAddFriendRequest(
+                          CONTACT_RESPONSE.DENIED,
+                          item?.id
+                        );
+                      }}
+                      className="text-xs px-2 mx-1 rounded-sm bg-red-500 py-1 text-white"
+                    >
+                      <FontAwesomeIcon
+                        icon={faX}
+                        className="text-xs"
+                        style={{ marginRight: "4px" }}
+                      />
+                      <span>Từ chối</span>
+                    </button>
 
-                  <button className="text-xs px-1 mx-1 bg-blue-500 py-1 text-white">
-                    <FontAwesomeIcon
-                      icon={faCheck}
-                      className="text-xs"
-                      style={{ marginRight: "2px" }}
-                    />
-                    <span>Từ chối</span>
-                  </button>
+                    <button
+                      onClick={() => {
+                        handleResponseAddFriendRequest(
+                          CONTACT_RESPONSE.ACCEPT,
+                          item?.id
+                        );
+                      }}
+                      className="text-xs px-2 mx-1 rounded-sm  bg-blue-500 py-1 text-white"
+                    >
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className="text-xs"
+                        style={{ marginRight: "4px" }}
+                      />
+                      <span>Đồng ý</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))} */}
+              ))}
             </div>
           </div>
         </div>
@@ -191,34 +228,32 @@ function SearchModal({ setOpen }) {
               className="scroll-item"
               style={{ minHeight: "50vh", maxHeight: "62vh" }}
             >
-              {/* {member.map((item) => (
-              <div className={`w-full flex py-2 justify-between`}>
-                <UserItem
-                  img={item.img}
-                  name={item.name}
-                  widthContent="max-w-40"
-                />
-                <div className="requestBtn flex my-auto">
-                  <button className="text-xs px-1 mx-1 bg-red-500 py-1 text-white">
-                    <FontAwesomeIcon
-                      icon={faX}
-                      className="text-xs"
-                      style={{ marginRight: "2px" }}
+              {allContact.map((item) => {
+                const me =
+                  user?.id == item?.owner.id ? item?.relate : item?.owner;
+                return (
+                  <div
+                    key={item?.id.toString()}
+                    className={`w-full flex py-2 justify-between`}
+                  >
+                    <UserItem
+                      img={me?.avatar || DEFAULT_AVATAR}
+                      name={me?.fullName}
+                      widthContent="max-w-40"
                     />
-                    <span>Từ chối</span>
-                  </button>
-
-                  <button className="text-xs px-1 mx-1 bg-blue-500 py-1 text-white">
-                    <FontAwesomeIcon
-                      icon={faCheck}
-                      className="text-xs"
-                      style={{ marginRight: "2px" }}
-                    />
-                    <span>Từ chối</span>
-                  </button>
-                </div>
-              </div>
-            ))} */}
+                    <div className="requestBtn flex my-auto">
+                      <button className="text-xs rounded-sm px-2 py-1 bg-slate-700 py-1 text-white">
+                        <FontAwesomeIcon
+                          icon={faArrowAltCircleRight}
+                          className="text-xs"
+                          style={{ marginRight: "4px" }}
+                        />
+                        <span>Nhắn tin</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -226,6 +261,9 @@ function SearchModal({ setOpen }) {
     );
   };
   const ListSentRequest = () => {
+    const handleCancelRequest = (id) => {
+      dispatch(destroyContactRequest(id));
+    };
     return (
       <div
         className={`  ${
@@ -245,14 +283,22 @@ function SearchModal({ setOpen }) {
               style={{ minHeight: "50vh", maxHeight: "62vh" }}
             >
               {addContactRequest.map((item) => (
-                <div className={`w-full flex py-2 justify-between`}>
+                <div
+                  key={item?.id.toString()}
+                  className={`w-full flex py-2 justify-between`}
+                >
                   <UserItem
                     img={item?.avatar || DEFAULT_AVATAR}
                     name={item?.relate?.fullName}
                     widthContent="max-w-40"
                   />
                   <div className="requestBtn flex my-auto">
-                    <button className="text-xs px-2 rounded mx-1 bg-red-500 py-1 text-white">
+                    <button
+                      onClick={() => {
+                        handleCancelRequest(item?.id);
+                      }}
+                      className="text-xs px-2 rounded mx-1 bg-red-500 py-1 text-white"
+                    >
                       <FontAwesomeIcon
                         icon={faX}
                         className="text-xs"
@@ -269,13 +315,63 @@ function SearchModal({ setOpen }) {
       </div>
     );
   };
-
   const handleSendContactRequest = (toId) => {
     dispatch(
       sendAddContactRequest({
         from: user?.id,
         to: toId,
       })
+    );
+  };
+  const ModalHeader = () => {
+    return (
+      <div className="icon-headerSearch flex">
+        <button
+          className="bg-white py-2 px-4 border rounded-tl-md "
+          onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.SEARCH)}
+        >
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className="text-lg text-gray-400"
+          />
+        </button>
+        <button
+          className="bg-white py-2 px-4 border"
+          onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.CONTACT)}
+        >
+          <FontAwesomeIcon
+            icon={faAddressBook}
+            className="text-lg text-gray-400"
+          />
+        </button>
+        <button
+          className="relative z-10 bg-white py-2 px-4 border"
+          onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.REQUEST)}
+        >
+          {contactRequest?.length > 0 && (
+            <div class="text-xs absolute inline-flex items-center justify-center w-5 h-5 font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 border-0">
+              <span style={{ fontSize: 10 }}>{contactRequest.length}</span>
+            </div>
+          )}
+          <FontAwesomeIcon
+            icon={faUserPlus}
+            className="text-md text-gray-400 p-0"
+          />
+        </button>
+
+        <button
+          className="relative bg-white py-2 px-4 border rounded-tr-md"
+          onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.SENT_REQUEST)}
+        >
+          {addContactRequest?.length > 0 && (
+            <div class="text-xs absolute inline-flex items-center justify-center w-5 h-5 font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 border-0">
+              <span style={{ fontSize: 10 }}>{addContactRequest.length}</span>
+            </div>
+          )}
+
+          <FontAwesomeIcon icon={faInbox} className="text-lg text-gray-400" />
+        </button>
+      </div>
     );
   };
 
@@ -288,7 +384,7 @@ function SearchModal({ setOpen }) {
             handleClick={handleClose}
             textButton={"Đóng"}
             style={
-              "btn bg-slate-300 px-3 py-2 font-medium rounded-sm text-sm text-black"
+              "btn bg-slate-700 px-3 py-2 font-medium rounded-sm text-sm text-black"
             }
             type={"button"}
           />
@@ -300,46 +396,7 @@ function SearchModal({ setOpen }) {
     <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#b5b3b354] m-auto rounded-sm">
       <div className="flex h-screen  " style={{ alignItems: "center" }}>
         <div className=" w-11/12 lg:w-3/12 m-auto">
-          <div className="icon-headerSearch flex">
-            <button
-              className="bg-white py-2 px-4 border rounded-tl-md "
-              onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.SEARCH)}
-            >
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="text-lg text-gray-400"
-              />
-            </button>
-            <button
-              className="bg-white py-2 px-4 border"
-              onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.REQUEST)}
-            >
-              <FontAwesomeIcon
-                icon={faUserPlus}
-                className="text-md text-gray-400 p-0"
-              />
-            </button>
-            <button
-              className="bg-white py-2 px-4 border"
-              onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.CONTACT)}
-            >
-              <FontAwesomeIcon
-                icon={faAddressBook}
-                className="text-lg text-gray-400"
-              />
-            </button>
-            <button
-              className="bg-white py-2 px-4 border rounded-tr-md"
-              onClick={() =>
-                setModalType(CONTACT_SEARCH_MODAL_TYPE.SENT_REQUEST)
-              }
-            >
-              <FontAwesomeIcon
-                icon={faInbox}
-                className="text-lg text-gray-400"
-              />
-            </button>
-          </div>
+          <ModalHeader />
           <div className={`bg-white p-2 rounded-md rounded-s-none`}>
             <SearchModalContent content={searchContent} />
             <AddContactRequestModalContent />
@@ -353,4 +410,4 @@ function SearchModal({ setOpen }) {
   );
 }
 
-export default SearchModal;
+export default ContactModal;

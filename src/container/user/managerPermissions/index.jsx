@@ -1,29 +1,66 @@
-
 import ButtonComponent from "../../component/ButtonComponent";
 import Layout from "../../layout";
 import SearchComponent from "../../component/SearchComponent";
 import TableComponent from "../../component/TableComponent";
-import { useLayoutEffect, useState } from "react";
-import { deletePermissions, getAllPermissions, getPerById } from "../../../thunks/PermissionsThunk";
+import { useEffect, useLayoutEffect, useState } from "react";
+import {
+  deletePermissions,
+  getAllPermissions,
+  getPerById,
+} from "../../../thunks/PermissionsThunk";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { debounce } from "../../../app/debounce";
+import { Spinner } from "../../component/Spinner";
+import { Pagination, Stack } from "@mui/material";
 
 function ManagerPermissions() {
-  const { allPermission, singlePermission } = useSelector((state) => state.permissionsReducer);
+  const { allPermission, singlePermission, paginationPer } = useSelector(
+    (state) => state.permissionsReducer
+  );
   const dispatch = useDispatch();
-  const [showPermissionById, setShowPermissionById] = useState(false)
+  const [showPermissionById, setShowPermissionById] = useState(false);
+  const [currentPage, setCurrentPage] = useState(paginationPer?.number + 1);
 
   useLayoutEffect(() => {
     if (allPermission.length <= 0) {
       dispatch(getAllPermissions());
     }
-    
-  }, [])
+  }, []);
+  useLayoutEffect(() => {
+    dispatch(getAllPermissions(0));
+  }, []);
 
-  const handleGetPermissionById =(item) => {
-    setShowPermissionById(!showPermissionById)
+  const [searchData, setSearchData] = useState(allPermission);
+  const [search, setSearch] = useState("");
+
+  const handleGetPermissionById = (item) => {
+    setShowPermissionById(!showPermissionById);
     dispatch(getPerById(item));
-    console.log(singlePermission)
-  }
+  };
+
+  const handleSearchContact = (e) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    const newSearch = allPermission.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+    if (newSearch.length !== 0) {
+      setSearchData(newSearch);
+    } else {
+      setSearchData(allPermission);
+    }
+  }, [search, allPermission]);
+
+  useEffect(() => {
+    setCurrentPage(paginationPer?.number + 1);
+  }, [allPermission]);
+
+  const handlePageChange = (event, pageNumber) => {
+    dispatch(getAllPermissions(pageNumber - 1));
+  };
 
   return (
     <Layout>
@@ -34,22 +71,39 @@ function ManagerPermissions() {
           </span>
         </div>
         <div className="flex justify-between">
-          <SearchComponent placeholder="Nhập tên chức năng" style={"w-2/6"} />
-
+          <SearchComponent
+            placeholder="Nhập tên chức năng"
+            handleSearch={debounce(handleSearchContact, 1000)}
+            SearchingAnimate={
+              <Spinner width={"w-5"} height={"h-5"} color={"fill-gray-400"} />
+            }
+            style={"w-2/6"}
+          />
+          <Link
+            to="/them-chuc-nang"
+            className="text-white bg-blue-700 hover:bg-blue-800 my-2 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2  "
+          >
+            Thêm chức năng
+          </Link>
         </div>
         <div className="table-manager">
           <TableComponent
-            headTable={["id", "Tên chức vụ", "Mô tả", "hành động"]}
+            headTable={["id", "Tên chức năng", "Mô tả", "hành động"]}
           >
-            {allPermission?.map((item, key) => (
+            {searchData?.map((item, key) => (
               <tr className="hover:bg-gray-100" key={key}>
                 <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                   <div className="text-base font-semibold text-gray-900">
-                    {key + 1}
+                    {item?.id}
                   </div>
                 </td>
                 <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                <button className="w-full" onClick={() => handleGetPermissionById(item?.id)}>{item?.name}</button>
+                  <button
+                    className="w-full"
+                    onClick={() => handleGetPermissionById(item?.id)}
+                  >
+                    {item?.name}
+                  </button>
                 </td>
                 <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                   {item?.description}
@@ -62,7 +116,9 @@ function ManagerPermissions() {
                     textButton={"Xóa"}
                     typeButton={2}
                     handleClick={() => {
-                      if (window.confirm("Bạn có muốn xóa chức năng này không?")) {
+                      if (
+                        window.confirm("Bạn có muốn xóa chức năng này không?")
+                      ) {
                         dispatch(deletePermissions(item.id));
                       }
                     }}
@@ -74,7 +130,9 @@ function ManagerPermissions() {
         </div>
       </div>
       <div
-        className={`fixed mx-auto ${showPermissionById? "block": "hidden"} left-0 right-0 z-50 items-center justify-center  overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
+        className={`fixed mx-auto ${
+          showPermissionById ? "block" : "hidden"
+        } left-0 right-0 z-50 items-center justify-center  overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
         id="edit-user-modal"
       >
         <div className="relative w-full h-full max-w-2xl px-4 md:h-auto m-auto">
@@ -85,7 +143,7 @@ function ManagerPermissions() {
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                 data-modal-toggle="edit-user-modal"
-                onClick={()=>setShowPermissionById(false)}
+                onClick={() => setShowPermissionById(false)}
               >
                 <svg
                   className="w-5 h-5"
@@ -142,6 +200,21 @@ function ManagerPermissions() {
           </div>
         </div>
       </div>
+      <Stack
+        spacing={2}
+        justifyContent="center"
+        color="#fff"
+        className="pagination"
+      >
+        <Pagination
+          count={paginationPer?.totalPages}
+          color="primary"
+          className="pagination-item"
+          style={{ margin: "auto" }}
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+      </Stack>
     </Layout>
   );
 }

@@ -39,12 +39,8 @@ function ContactModal({ setOpen }) {
   const { searchContact, searchContent, searching } = useSelector(
     (state) => state.searchReducer
   );
-  const {
-    contactRequest,
-    allContact,
-    addContactLoadingId,
-    addContactRequest,
-  } = useSelector((state) => state.contactReducer);
+  const { contactRequest, allContact, addContactLoadingId, addContactRequest } =
+    useSelector((state) => state.contactReducer);
   const { user } = useSelector((state) => state.authReducer);
 
   const handleCloseModal = () => {
@@ -242,7 +238,7 @@ function ContactModal({ setOpen }) {
                       widthContent="max-w-40"
                     />
                     <div className="requestBtn flex my-auto">
-                      <button className="text-xs rounded-sm px-2 py-1 bg-slate-700 py-1 text-white">
+                      <button className="text-xs rounded-sm px-2  bg-slate-700 py-1 text-white">
                         <FontAwesomeIcon
                           icon={faArrowAltCircleRight}
                           className="text-xs"
@@ -349,7 +345,7 @@ function ContactModal({ setOpen }) {
           onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.REQUEST)}
         >
           {contactRequest?.length > 0 && (
-            <div class="text-xs absolute inline-flex items-center justify-center w-5 h-5 font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 border-0">
+            <div class="text-xs absolute inline-flex items-center justify-center w-5 h-5 font-bold text-white bg-red-500  border-white rounded-full -top-2 -end-2 border-0">
               <span style={{ fontSize: 10 }}>{contactRequest.length}</span>
             </div>
           )}
@@ -364,7 +360,7 @@ function ContactModal({ setOpen }) {
           onClick={() => setModalType(CONTACT_SEARCH_MODAL_TYPE.SENT_REQUEST)}
         >
           {addContactRequest?.length > 0 && (
-            <div class="text-xs absolute inline-flex items-center justify-center w-5 h-5 font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 border-0">
+            <div class="text-xs absolute inline-flex items-center justify-center w-5 h-5 font-bold text-white bg-red-500  border-white rounded-full -top-2 -end-2 border-0">
               <span style={{ fontSize: 10 }}>{addContactRequest.length}</span>
             </div>
           )}

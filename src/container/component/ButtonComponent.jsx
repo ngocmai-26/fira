@@ -22,7 +22,7 @@ function ButtonComponent({
             : typeButton === 2
             ? "bg-red-700 hover:bg-red-800  focus:ring-red-300"
             : "bg-blue-700 hover:bg-blue-800  focus:ring-blue-300"
-        }  focus:ring-4 mx-1 mr-1`
+        }  focus:ring-4 mx-1 mr-1 text-white `
       }`}
     >
       <FontAwesomeIcon icon={icon} className={iconStyles} />

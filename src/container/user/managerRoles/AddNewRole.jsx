@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonComponent from "../../component/ButtonComponent";
 import { ErrorField } from "../../component/ErrorField";
 import { FormField } from "../../component/FormField";
@@ -8,9 +8,33 @@ import { useDispatch } from "react-redux";
 import { addNewRole } from "../../../thunks/RolesThunk";
 
 function AddNewRole() {
-  const [newRoleData, setNewRoleData] = useState({permissionIds: [], roleName: "", description: ""});
-  const [errors, setError] = useState({roleName: "", description: ""});
+  const [newRoleData, setNewRoleData] = useState({
+    permissionIds: [],
+    roleName: "",
+    description: "",
+  });
+  const [errors, setError] = useState({ roleName: "", description: "" });
   const dispatch = useDispatch();
+
+  const nav = useNavigate();
+  const handleAddRole = () => {
+    if (!newRoleData.roleName.trim() || !newRoleData.description.trim()) {
+      setError({
+        roleName: newRoleData.roleName.trim()
+          ? ""
+          : "Vui lòng nhập tên chức vụ",
+        description: newRoleData.description.trim()
+          ? ""
+          : "Vui lòng nhập mô tả",
+      });
+      return;
+    }
+    dispatch(addNewRole(newRoleData)).then((resp) => {
+      if (!resp?.error) {
+        nav("/quan-ly-chuc-vu");
+      }
+    });
+  };
 
   return (
     <Layout>
@@ -42,8 +66,11 @@ function AddNewRole() {
               <div className="description py-5">
                 <div className=" ">
                   <div className="relative">
-                    <label htmlFor="description" className="font-medium text-sm">
-                    description
+                    <label
+                      htmlFor="description"
+                      className="font-medium text-sm"
+                    >
+                      description
                     </label>
                     <FormField
                       name={"description"}
@@ -56,7 +83,7 @@ function AddNewRole() {
                   </div>
                 </div>
               </div>
-              </div>
+            </div>
 
             <div className="text-center py-3 flex justify-end">
               <Link
@@ -70,9 +97,9 @@ function AddNewRole() {
                 type={"button"}
                 textButton={"Hoàn thành"}
                 style={
-                  "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5  mr-3 mb-3"
+                  "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5  mr-3 text-white"
                 }
-                handleClick={() => {dispatch(addNewRole(newRoleData))}}
+                handleClick={handleAddRole}
               />
             </div>
           </form>

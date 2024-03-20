@@ -123,7 +123,7 @@ function Login() {
               <ButtonComponent
                 textButton={isFetching ? <Spinner /> : "Đăng nhập"}
                 style={
-                  "min-w-full sm:min-w-[50%] mr-2 mb-2 bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300"
+                  "min-w-full sm:min-w-[50%] mr-2 mb-2 bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 text-white"
                 }
                 handleClick={handleLogin}
                 type={"button"}

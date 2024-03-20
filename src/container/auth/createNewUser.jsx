@@ -9,13 +9,30 @@ import ButtonComponent from "../component/ButtonComponent";
 import logo from "../../asset/images/logo.png";
 import { ImagePicker } from "../component/ImageBox";
 import { FBStorageService } from "../../services/firebase/StorageService";
+import { logout } from "../../slices/AuthSlice";
 function CreateNewUser() {
   const dispatch = useDispatch();
   const [newUserData, setNewUserData] = useState({});
   const [images, setImages] = useState([]);
   const { isFetching, errors } = useSelector((state) => state.authReducer);
+
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
+
   const handleCreateNewUser = () => {
-    // upload first
+    const today = new Date();
+    const birthDate = new Date(newUserData.birthday);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (age < 18 || (age === 18 && monthDiff < 0)) {
+      alert("Bạn chưa đủ 18 tuổi để đăng ký.");
+      return;
+    }
+
     dispatch(createNewUser({ ...newUserData, avatar: images[0] }));
   };
   return (
@@ -144,12 +161,13 @@ function CreateNewUser() {
             </div>
           </div>
           <div className="text-center py-3 flex flex-col md:flex-row">
-            <Link
-              to="/login"
-              className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 min-w-full sm:min-w-[50%] "
-            >
-              Quay lại
-            </Link>
+            <ButtonComponent
+              handleClick={handleLogout}
+              style={
+                "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-[50%] sm:min-w-[50%]  text-white"
+              }
+              textButton={"Quay lại"}
+            ></ButtonComponent>
 
             <ButtonComponent
               handleClick={handleCreateNewUser}

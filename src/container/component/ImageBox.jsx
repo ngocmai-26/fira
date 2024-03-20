@@ -237,7 +237,6 @@ export const PreviewImage = ({
                 />
               )}
             </button>
-            {console.log(previewImages[current])}
             <div className="w-100 md:w-1/2 lg:1/2 xl:1/2 h-auto rounded">
               <img
                 className="w-full object-cover rounded"

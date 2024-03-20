@@ -124,6 +124,7 @@ const RoomInput = ({ room, contentRef }) => {
     addImageInputRef.current.click();
   };
   const handleAddImageChange = (e) => {
+    console.log(".e.target.files", selectedImages)
     setSelectedImages([...selectedImages, ...e.target.files]);
   };
   const handleSendMessage = () => {
@@ -131,7 +132,7 @@ const RoomInput = ({ room, contentRef }) => {
       dispatch(setAlert({ type: TOAST_ERROR, content: "Hãy nhập gì đó" }));
       return;
     }
-    // handle media
+    
     const selectedMedia = selectedImages.map((image) => {
       return {
         mediaLink: image,
@@ -159,7 +160,7 @@ const RoomInput = ({ room, contentRef }) => {
     <div className="absolute border-t-gray-100 border-t-2 w-full bottom-2 p-2 bg-white">
       <div className="flex w-full gap-2 justify-center">
         <div className="w-4/5">
-          <div className="flex gap-2 justify-start gap-1 items-center flex-wrap">
+          <div className="flex gap-2 justify-start items-center flex-wrap">
             {selectedImages.map((image, index) => (
               <div key={index} className="py-2">
                 <img

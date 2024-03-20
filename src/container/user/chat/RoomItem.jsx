@@ -14,7 +14,6 @@ export const RoomItem = ({
   const { addContactRequest, contactRequest } = useSelector(
     (state) => state.contactReducer
   );
-  console.log(rooms);
   return (
     <div className="p-2 col-span-3 md:col-span-1 border-e-gray-100 border-e-2 h-screen">
       <div className="flex justify-between border-b-gray-100 border-b-2 py-2">

@@ -11,10 +11,8 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
-    console.log(email.email)
     dispatch(forgotPassword(email?.email))
     .then((reps) => {
-      console.log(reps?.error)
       if (!reps?.error) {
         localStorage.setItem("email", JSON.stringify(email));
         nav("/confirm-forgot-password");

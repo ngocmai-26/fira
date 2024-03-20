@@ -41,6 +41,7 @@ function NavBarAdmin() {
       });
       client.subscribe("/room", (resp) => {
         const newMessage = JSON.parse(resp.body);
+        console.log("newMessage", newMessage)
         dispatch(pushMessageToRoom(newMessage));
       });
     });

@@ -20,116 +20,103 @@ function Chat() {
     {
       id: 1,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
     {
       id: 1,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "PNG",
       capacity: "29MB",
     },
     {
       id: 2,
       name: "loremipsum.png",
-      img:
-        "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
+      img: "https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg",
       type: "MP4",
       capacity: "29MB",
     },
   ];
+
 
   useLayoutEffect(() => {
     dispatch(getRoomTags());

@@ -36,17 +36,18 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
   const handleSearch = (q) => {
     const temp = [];
     q = q.trim();
-
     if (q == "") {
       setSearchContact(allContact);
       return;
     }
 
     allContact.forEach((element) => {
+      const me =
+        user?.id == element?.owner.id ? element?.relate : element?.owner;
       if (
-        element.relate?.fullName?.includes(q) ||
-        element.relate?.email?.includes(q) ||
-        element.relate?.phone?.includes(q)
+        me?.fullName?.includes(q) ||
+        me?.email?.includes(q) ||
+        me?.phone?.includes(q)
       ) {
         temp.push(element);
       }
@@ -94,7 +95,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
       dispatch(setAlert({ type: TOAST_ERROR, content: "Hãy nhập tên nhóm" }));
       return;
     }
-    const selectedMember = selectedButtons.map((btn) => btn.relate.id);
+    const selectedMember = selectedButtons.map((btn) => btn.id);
     selectedMember.push(user?.id);
 
     const roomData = {
@@ -110,9 +111,10 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
     });
   };
 
+
   useLayoutEffect(() => {
     setSearchContact(allContact);
-  }, []);
+  }, [allContact]);
   useLayoutEffect(() => {
     handleSearch(query);
   }, [query]);
@@ -179,28 +181,32 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
                     className="scroll-item"
                     style={{ minHeight: "50vh", maxHeight: "55vh" }}
                   >
-                    {searchContact.map((item) => (
-                      <button
-                        className={`w-full flex py-1 hover:bg-gray-100 rounded px-2 flex gap-2`}
-                        onClick={() => handleRadioClick(item)}
-                      >
-                        <input
-                          type="radio"
-                          checked={selectedButtons.some(
-                            (props) => props.id === item.id
-                          )}
-                          onChange={() => {}}
-                          onClick={() => handleRadioClick(item)}
-                          className="my-auto w-4 h-4"
-                        />
-                        <UserItem
-                          img={item.relate.avatar}
-                          name={item.relate.fullName}
-                          email={item.relate.email}
-                          widthContent="max-w-full"
-                        />
-                      </button>
-                    ))}
+                    {searchContact.map((item) => {
+                      const me =
+                        user?.id == item?.owner.id ? item?.relate : item?.owner;
+                      return (
+                        <button
+                          className={`w-full py-1 hover:bg-gray-100 rounded px-2 flex gap-2`}
+                          onClick={() => handleRadioClick(me)}
+                        >
+                          <input
+                            type="radio"
+                            checked={selectedButtons.some(
+                              (props) => props.id === me.id
+                            )}
+                            onChange={() => {}}
+                            onClick={() => handleRadioClick(me)}
+                            className="my-auto w-4 h-4"
+                          />
+                          <UserItem
+                            img={me.avatar}
+                            name={me.fullName}
+                            email={me.email}
+                            widthContent="max-w-full"
+                          />
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
                 <div className="w-5/12 border py-1.5 hidden sm:block">

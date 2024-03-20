@@ -18,6 +18,7 @@ import ManagerRoles from "../container/user/managerRoles";
 import AddNewRole from "../container/user/managerRoles/AddNewRole";
 import ManagerPermissions from "../container/user/managerPermissions";
 import Account from "../container/user/profile/account";
+import AddNewPermission from "../container/user/managerPermissions/AddNewPermission";
 
 export const GeneralRoute = () => {
   return (
@@ -50,7 +51,7 @@ export const LoggedRoute = () => {
         <Route path="/quan-ly-chuc-nang" element={<ManagerPermissions />} />
         <Route path="/them-chuc-vu" element={<AddNewRole />} />
         <Route path="/them-tai-khoan" element={<AddNewAccount />} />
-        <Route path="/them-chuc-nang" element={<AddNewAccount />} />
+        <Route path="/them-chuc-nang" element={<AddNewPermission />} />
         <Route path="/tai-khoan" element={<Account />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
@@ -60,7 +61,7 @@ export const LoggedRoute = () => {
 
 function Router() {
   const { logged } = useSelector((state) => state.authReducer);
-  
+
   return (
     <BrowserRouter>
       {logged ? <LoggedRoute /> : <GeneralRoute />}

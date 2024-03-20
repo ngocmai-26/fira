@@ -1,26 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const initState = {
   allRole: [],
   searchRole: [],
-  singleRole: {}
-};
+  singleRole: {},
+  paginationRole: {},
+}
 const RolesSlice = createSlice({
-  name: "roles",
+  name: 'roles',
   initialState: initState,
   reducers: {
     setAllRole: (state, { payload }) => {
-      state.allRole = payload;
+      state.allRole = payload
     },
     setSearchRole: (state, { payload }) => {
-      state.searchRole = payload;
+      state.searchRole = payload
     },
     setSingleRole: (state, { payload }) => {
-      state.singleRole = payload;
+      state.singleRole = payload
+    },
+    setPaginationRole: (state, { payload }) => {
+      state.paginationRole = payload
     },
   },
-});
+})
 
-export const { setAllRole, setSearchRole, setSingleRole } = RolesSlice.actions;
+export const { setAllRole, setSearchRole, setSingleRole, setPaginationRole } = RolesSlice.actions
 
-export default RolesSlice.reducer;
+export default RolesSlice.reducer

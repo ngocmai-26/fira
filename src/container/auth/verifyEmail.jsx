@@ -13,7 +13,7 @@ function VerifyEmail() {
   const handleSubmit = () => {
     dispatch(requestNewCode(email?.email)).then((reps) => {
       if (!reps.error) {
-        localStorage.setItem("email", JSON.stringify(email));
+        localStorage.setItem("email", JSON.stringify(email.email));
         nav("/confirm-account");
       }
     });

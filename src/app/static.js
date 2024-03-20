@@ -111,5 +111,5 @@ export function bytesToReadable(byte) {
       unitIndex++;
   }
 
-  return `${size.toFixed(2)} ${units[unitIndex]}`;
+  return `${size?.toFixed(2)} ${units[unitIndex]}`;
 }

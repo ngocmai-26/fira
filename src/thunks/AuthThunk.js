@@ -51,7 +51,7 @@ export const register = createAsyncThunk(
         dispatch(setErrors({}));
         return rejectWithValue("something error");
       }
-      dispatch(setAlert({ type: "success", content: "Đăng ký thành công" }));
+      dispatch(setAlert({ type: TOAST_SUCCESS, content: "Đăng ký thành công" }));
       return jsonData;
     } catch (e) {
       dispatch(setAlert({ type: "warning", content: "" }));
@@ -216,9 +216,8 @@ export const confirmAccount = createAsyncThunk(
         );
         return rejectWithValue("something error");
       }
-      dispatch(setAlert({ type: "success", content: "Xác nhận thành công" }));
       dispatch(setRefresh(true));
-      return dataJson;
+      dispatch(setAlert({ type: TOAST_SUCCESS, content: "Xác nhận thành công" }));
     } catch (e) {
       dispatch(setAlert({ type: "warning", content: "" }));
     }
@@ -247,7 +246,7 @@ export const requestNewCode = createAsyncThunk(
         );
         return rejectWithValue("something error");
       }
-      dispatch(setAlert({ type: "success", content: "Đã gửi mã mới" }));
+      dispatch(setAlert({ type: TOAST_SUCCESS, content: "Đã gửi mã mới" }));
     } catch (e) {
       dispatch(setAlert({ type: "warning", content: "" }));
     }
@@ -267,7 +266,6 @@ export const forgotPassword = createAsyncThunk(
         }
       );
       const dataJson = await resp.json();
-      console.log(dataJson, resp.status);
       if (resp.status >= 300) {
         dispatch(
           setAlert({
@@ -277,7 +275,7 @@ export const forgotPassword = createAsyncThunk(
         );
         return rejectWithValue("something error");
       }
-      dispatch(setAlert({ type: "success", content: "Đã gửi mã mới" }));
+      dispatch(setAlert({ type: TOAST_SUCCESS, content: "Đã gửi mã mới" }));
     } catch (e) {
       dispatch(setAlert({ type: "warning", content: "" }));
     }
@@ -306,7 +304,7 @@ export const confirmForgotPassword = createAsyncThunk(
         );
         return rejectWithValue("something error");
       }
-      dispatch(setAlert({ type: "success", content: "Xác nhận thành công" }));
+      dispatch(setAlert({ type: TOAST_SUCCESS, content: "Xác nhận thành công" }));
       dispatch(setRefresh(true));
       return dataJson;
     } catch (e) {

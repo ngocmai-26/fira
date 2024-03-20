@@ -19,6 +19,10 @@ function Register() {
   
   const { errorsRegister } = useSelector((state) => state.authReducer);
 
+ 
+  const newFormErrors = {...errorsRegister};
+  const [formErrors, setFormErrors] = useState(newFormErrors);
+  
   const checkPasswordStrength = (password) => {
     // Đặt các yêu cầu mật khẩu của bạn ở đây
     const minLength = 8;
@@ -36,10 +40,6 @@ function Register() {
       hasSpecialChars;
     return isStrongPassword;
   };
-  const newFormErrors = {...errorsRegister};
-  const [formErrors, setFormErrors] = useState(newFormErrors);
-  
-
   const handleRegister = () => {
     const isStrong = checkPasswordStrength(registerData?.password);
     
@@ -142,7 +142,7 @@ function Register() {
                     values={registerData}
                     id={"confirmPassword"}
                     setValue={setRegisterData}
-                    type={showPassword? "text": "password"}
+                    type={showPasswordConfirm? "text": "password"}
                     required={"required"}
                   />
                   <div
@@ -166,7 +166,7 @@ function Register() {
               Đăng Nhập
             </Link>
          
-            <ButtonComponent textButton={"Đăng Ký"} handleClick={handleRegister} type={"button"} style={"bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-[50%] sm:min-w-[50%]" }/>
+            <ButtonComponent textButton={"Đăng Ký"} handleClick={handleRegister} type={"button"} style={"text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 mr-2 mb-2 min-w-[50%] sm:min-w-[50%]" }/>
           </div>
         </form>
       </div>

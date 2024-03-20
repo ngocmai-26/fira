@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -15,6 +16,7 @@ function BoxMsg({ data }) {
       height: "100%",
     });
   }, []);
+
   return (
     <div
       className={`${
@@ -66,12 +68,12 @@ function BoxMsg({ data }) {
             <div
               className={`${
                 data?.sender?.id === user.id ? " bg-blue-200" : " bg-slate-200"
-              } flex max-w-80 w-fit content-msg p-2 w-auto rounded-md`}
+              } flex max-w-80 content-msg p-2 w-auto rounded-md`}
             >
               <span>{data?.content}</span>
             </div>
             <span className="absolute z-50 time text-xs bottom-[-25px] bg-gray-200 py-1 h-auto px-3 rounded-sm shadow-md">
-              17:55
+            {moment(data.sentAt).format('HH:mm')}
             </span>
           </div>
         </>

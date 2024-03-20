@@ -52,7 +52,8 @@ const AuthSlice = createSlice({
       }
     },
     logout: (state) => {
-      localStorage.removeItem("auth_token");
+      localStorage.removeItem('auth_info')
+      localStorage.removeItem('auth_token')
       state = initState;
       window.location.assign(window.location.href);
     },

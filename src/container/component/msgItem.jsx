@@ -32,11 +32,11 @@ function MsgItem({ data, type }) {
             </div>
             <div className="flex flex-col justify-center items-start">
               <p className="text-xs font-semibold">
-                {data.mediaName
-                  .replace("-", "_")
+                {data?.mediaName
+                  ?.replace("-", "_")
                   .replace(/\.(jpg|jpeg|png|gif)$/gm, "")
                   .slice(0, 20)}
-                .{data.mediaType.split("/")[1]}
+                .{data?.mediaType?.split("/")[1]}
               </p>
               <p className="text-xs">{bytesToReadable(data.mediaSize)}</p>
               <p className="text-xs">

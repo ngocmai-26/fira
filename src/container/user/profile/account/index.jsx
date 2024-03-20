@@ -4,19 +4,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormField } from "../../../component/FormField";
 import { ErrorField } from "../../../component/ErrorField";
 import ButtonComponent from "../../../component/ButtonComponent";
+import { logout } from "../../../../slices/AuthSlice";
 
 function Account() {
+  
   const [changePassword, setChangePassword] = useState(false);
   const dispatch = useDispatch();
-  const [newUserData, setNewUserData] = useState({});
+  const { isFetching, errors, user } = useSelector(
+    (state) => state.authReducer
+  );
+  const [newUserData, setNewUserData] = useState(user);
 
-  const { isFetching, errors } = useSelector((state) => state.authReducer);
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
+  
+  const handleSubmit = () => {
+    console.log("newUserData", newUserData);
+  };
 
   return (
     <>
       <Layout>
-        <form action="">
-          <div className="profile-content p-5">
+        <form
+          action=""
+          className=" xl:max-w-[900px] justify-center m-auto my-5"
+        >
+          <div className="profile-content p-5]">
             <p className="text-base font-medium">Thông tin cá nhân</p>
             <div className="general py-4">
               <p className="text-sky-500 border-b-2 border-b-stone-100">
@@ -151,7 +166,7 @@ function Account() {
             </div>
 
             <div className="button text-right">
-            <ButtonComponent  type={"button"} textButton={"Lưu"} />
+              <ButtonComponent type={"button"} textButton={"Lưu"} />
             </div>
           </div>
         </form>
@@ -234,7 +249,7 @@ function Account() {
                       Mật khẩu mới:
                     </label>
                     <div className="col-span-2">
-                    <FormField
+                      <FormField
                         name={"newPassword"}
                         values={newUserData}
                         id={"newPassword"}
@@ -250,7 +265,7 @@ function Account() {
                       Nhập lại mật khẩu mới:
                     </label>
                     <div className="col-span-2">
-                    <FormField
+                      <FormField
                         name={"confirmPassword"}
                         values={newUserData}
                         id={"confirmPassword"}
@@ -262,7 +277,11 @@ function Account() {
                   </div>
                 </div>
                 <div className="button text-right pt-5">
-              <ButtonComponent  type={"button"} textButton={"Lưu"} />
+                  <ButtonComponent
+                    type={"button"}
+                    textButton={"Lưu"}
+                    handleClick={handleSubmit}
+                  />
                 </div>
               </form>
             </div>

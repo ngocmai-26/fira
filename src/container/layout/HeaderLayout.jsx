@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import logo from "../../asset/images/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+
+import { logout } from "../../slices/AuthSlice";
 
 function HeaderAdmin() {
+  const dispatch = useDispatch();
+  
+  const { user } = useSelector((state) => state.authReducer);
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
   return (
     <header className="relative bg-white">
       <div className="flex items-center justify-between p-2 border-b">
@@ -68,16 +78,16 @@ function HeaderAdmin() {
               aria-haspopup="true"
               className="transition-opacity duration-200 rounded-full focus:outline-none focus:ring"
             >
-              <span className="sr-only">User menu</span>
               <img
                 className="w-10 h-10 rounded-full"
-                src="build/images/avatar.jpg"
+                src={user?.avatar}
                 alt="Ahmed Kamel"
               />
             </button>
 
             <div className="absolute menu-account right-0 w-48 py-1 bg-white rounded-md shadow-lg top-10 ring-1 ring-black  focus:outline-none">
-              <Link to="/tai-khoan"
+              <Link
+                to="/tai-khoan"
                 role="menuitem"
                 className="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 "
               >
@@ -94,6 +104,7 @@ function HeaderAdmin() {
                 href="#"
                 role="menuitem"
                 className="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 "
+                onClick={handleLogout}
               >
                 Logout
               </a>
@@ -146,7 +157,8 @@ function HeaderAdmin() {
               aria-orientation="vertical"
               aria-label="User menu"
             >
-              <Link to="/tai-khoan"
+              <Link
+                to="/tai-khoan"
                 role="menuitem"
                 className="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 "
               >
@@ -163,6 +175,7 @@ function HeaderAdmin() {
                 href="#"
                 role="menuitem"
                 className="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 "
+                onClick={handleLogout}
               >
                 Logout
               </a>

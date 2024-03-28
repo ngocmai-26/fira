@@ -11,6 +11,7 @@ import { TOAST_ERROR, TOAST_SUCCESS } from '../constants/toast'
 export const getAllPermissions = createAsyncThunk(
   '/permissions',
   async (data, { dispatch, rejectWithValue }) => {
+    try{
     const token = localStorage.getItem('auth_token')
     const resp = await fetch(
       `${API.uri}/permissions?page=${data || 0}&size=20`,
@@ -30,12 +31,16 @@ export const getAllPermissions = createAsyncThunk(
     }
     dispatch(setAllPermissions(dataJson.data.content))
     dispatch(setPaginationPer(dataJson.data))
-  },
+  } catch (e) {
+    dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+  }
+},
 )
 
 export const getPerById = createAsyncThunk(
   '/permissions/id',
   async (id, { dispatch, rejectWithValue }) => {
+    try{
     const token = localStorage.getItem('auth_token')
     const resp = await fetch(`${API.uri}/permissions/${id}`, {
       method: 'GET',
@@ -50,7 +55,10 @@ export const getPerById = createAsyncThunk(
       return rejectWithValue()
     }
     dispatch(setSinglePermission(dataJson.data))
-  },
+  } catch (e) {
+    dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+  }
+},
 )
 
 export const deletePermissions = createAsyncThunk(
@@ -85,6 +93,7 @@ export const deletePermissions = createAsyncThunk(
 export const addNewPermission = createAsyncThunk(
   'roles',
   async (data, { dispatch, rejectWithValue }) => {
+    try{
     const token = localStorage.getItem('auth_token')
     if (!token) {
       dispatch(
@@ -111,7 +120,10 @@ export const addNewPermission = createAsyncThunk(
       setAlert({ type: TOAST_SUCCESS, content: 'Thêm chức năng thành công' }),
     )
     dispatch(getAllPermissions())
-  },
+  } catch (e) {
+    dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+  }
+},
 )
 
 // export const searchPermissionAsync = createAsyncThunk(

@@ -19,6 +19,7 @@ import AddNewRole from "../container/user/managerRoles/AddNewRole";
 import ManagerPermissions from "../container/user/managerPermissions";
 import Account from "../container/user/profile/account";
 import AddNewPermission from "../container/user/managerPermissions/AddNewPermission";
+import ManagerJobs from "../container/user/managerJobs";
 
 export const GeneralRoute = () => {
   return (
@@ -49,6 +50,7 @@ export const LoggedRoute = () => {
         <Route path="/quan-ly-tai-khoan" element={<ManagerAccount />} />
         <Route path="/quan-ly-chuc-vu" element={<ManagerRoles />} />
         <Route path="/quan-ly-chuc-nang" element={<ManagerPermissions />} />
+        <Route path="/quan-ly-cong-viec" element={<ManagerJobs />} />
         <Route path="/them-chuc-vu" element={<AddNewRole />} />
         <Route path="/them-tai-khoan" element={<AddNewAccount />} />
         <Route path="/them-chuc-nang" element={<AddNewPermission />} />

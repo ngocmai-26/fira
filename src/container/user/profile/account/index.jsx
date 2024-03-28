@@ -5,23 +5,28 @@ import { FormField } from "../../../component/FormField";
 import { ErrorField } from "../../../component/ErrorField";
 import ButtonComponent from "../../../component/ButtonComponent";
 import { logout } from "../../../../slices/AuthSlice";
+import { updateUser } from "../../../../thunks/UsersThunk";
 
 function Account() {
-  
   const [changePassword, setChangePassword] = useState(false);
   const dispatch = useDispatch();
   const { isFetching, errors, user } = useSelector(
     (state) => state.authReducer
   );
+
   const [newUserData, setNewUserData] = useState(user);
 
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
   };
-  
+
   const handleSubmit = () => {
     console.log("newUserData", newUserData);
+  };
+
+  const handleUpdate = () => {
+    dispatch(updateUser(newUserData));
   };
 
   return (
@@ -166,7 +171,11 @@ function Account() {
             </div>
 
             <div className="button text-right">
-              <ButtonComponent type={"button"} textButton={"Lưu"} />
+              <ButtonComponent
+                type={"button"}
+                textButton={"Lưu"}
+                handleClick={handleUpdate}
+              />
             </div>
           </div>
         </form>

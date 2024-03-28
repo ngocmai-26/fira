@@ -13,7 +13,7 @@ import { AdminSideNavItem } from "../interfaces/AdminSideNavItem";
 const ADMIN_NAVBAR_ITEMS = [
   new AdminSideNavItem(1, "", faChartPie, "Dashboards"),
   new AdminSideNavItem(2, "/quan-ly-tai-khoan", faUsers, "Quản lý tài khoản"),
-  new AdminSideNavItem(3, "", faListCheck, " Quản lý công việc"),
+  new AdminSideNavItem(3, "/quan-ly-cong-viec", faListCheck, " Quản lý công việc"),
   new AdminSideNavItem(4, "", faCalendar, "Quản lý lịch làm việc"),
   new AdminSideNavItem(
     5,

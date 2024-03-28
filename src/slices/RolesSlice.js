@@ -5,6 +5,7 @@ const initState = {
   searchRole: [],
   singleRole: {},
   paginationRole: {},
+  listPermission: [],
 }
 const RolesSlice = createSlice({
   name: 'roles',
@@ -22,9 +23,12 @@ const RolesSlice = createSlice({
     setPaginationRole: (state, { payload }) => {
       state.paginationRole = payload
     },
+    setListPermission: (state, {payload}) => {
+      state.listPermission = payload
+    },
   },
 })
 
-export const { setAllRole, setSearchRole, setSingleRole, setPaginationRole } = RolesSlice.actions
+export const { setAllRole, setSearchRole, setSingleRole, setPaginationRole, setListPermission } = RolesSlice.actions
 
 export default RolesSlice.reducer

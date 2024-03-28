@@ -2,46 +2,58 @@ import { API } from '../constants/api'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { setAlert } from '../slices/AlertSlice'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../constants/toast'
-import { setAllRole, setPaginationRole, setSingleRole } from '../slices/RolesSlice'
+import {
+  setAllRole,
+  setPaginationRole,
+  setSingleRole,
+} from '../slices/RolesSlice'
 import { setListPermission } from '../slices/PermissionsSlice'
 
 export const getAllRole = createAsyncThunk(
   '/roles',
   async (data, { dispatch, rejectWithValue }) => {
-    const token = localStorage.getItem('auth_token')
-    const resp = await fetch(`${API.uri}/roles?page=${data || 0}&size=20`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    const dataJson = await resp.json()
-    if (resp.status >= 300) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
-      return rejectWithValue()
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/roles?page=${data || 0}&size=20`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(setAllRole(dataJson.data.content))
+      dispatch(setPaginationRole(dataJson.data))
+    } catch (e) {
+      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
     }
-    dispatch(setAllRole(dataJson.data.content))
-    dispatch(setPaginationRole(dataJson.data))
   },
 )
 export const getRoleById = createAsyncThunk(
   '/roles/id',
   async (id, { dispatch, rejectWithValue }) => {
-    const token = localStorage.getItem('auth_token')
-    const resp = await fetch(`${API.uri}/roles/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    const dataJson = await resp.json()
-    if (resp.status >= 300) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
-      return rejectWithValue()
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/roles/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(setSingleRole(dataJson.data))
+    } catch (e) {
+      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
     }
-    dispatch(setSingleRole(dataJson.data))
   },
 )
 export const deleteRoles = createAsyncThunk(
@@ -71,24 +83,24 @@ export const deleteRoles = createAsyncThunk(
   },
 )
 export const updatePermission = createAsyncThunk(
-  '/permission',
+  '/add-perm/id',
   async (data, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const resp = await fetch(
-        `${API.uri}/roles/give_permission_for_role/${data.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(data),
+      const resp = await fetch(`${API.uri}/roles/add-perm/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-      )
+        body: JSON.stringify(data.list),
+      })
       if (resp.status >= 200 && resp.status < 300) {
         dispatch(
-          setAlert({ type: TOAST_SUCCESS, content: 'Update product success' }),
+          setAlert({
+            type: TOAST_SUCCESS,
+            content: 'Update permission success',
+          }),
         )
 
         dispatch(setListPermission(resp))
@@ -97,7 +109,43 @@ export const updatePermission = createAsyncThunk(
         dispatch(
           setAlert({
             type: 'error',
-            content: resp.json()?.defaultMessage ?? 'Update product error ',
+            content: resp.json()?.defaultMessage ?? 'Update permission error ',
+          }),
+        )
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
+export const removePermission = createAsyncThunk(
+  '/remove-perm/id',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/roles/remove-perm/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data.list),
+      })
+      if (resp.status >= 200 && resp.status < 300) {
+        dispatch(
+          setAlert({
+            type: TOAST_SUCCESS,
+            content: 'Remove permission success',
+          }),
+        )
+
+        dispatch(setListPermission(resp))
+        return rejectWithValue()
+      } else {
+        dispatch(
+          setAlert({
+            type: 'error',
+            content: resp.json()?.defaultMessage ?? 'Remove permission error ',
           }),
         )
       }
@@ -155,7 +203,12 @@ export const updateRole = createAsyncThunk(
         dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
         return rejectWithValue()
       }
-      dispatch(setAlert({ type: TOAST_SUCCESS, content: "Cập nhật chức vụ thành công" }))
+      dispatch(
+        setAlert({
+          type: TOAST_SUCCESS,
+          content: 'Cập nhật chức vụ thành công',
+        }),
+      )
       dispatch(getAllRole())
     } catch (e) {
       console.log(e)

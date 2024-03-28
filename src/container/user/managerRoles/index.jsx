@@ -46,6 +46,7 @@ function ManagerRoles() {
     dispatch(getAllRole(0));
   }, []);
 
+
   const [searchData, setSearchData] = useState(allRole);
   const [search, setSearch] = useState("");
 
@@ -54,13 +55,17 @@ function ManagerRoles() {
     dispatch(getRoleById(item));
   };
 
-  const handleUpdatePer = () => {
+  const handleUpdate = () => {
     const data = {
       id: perUpdate.id,
       description: perUpdate.id,
       permissionIds: taskList,
     };
     dispatch(updateRole(data));
+  };
+
+  const handleUpdatePer = () => {
+    dispatch(updatePermission({ id: perUpdate.id, list: { ids: taskList } }));
   };
 
   const handleAddTaskList = (item) => {
@@ -358,22 +363,6 @@ function ManagerRoles() {
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    <div className="col-span-6">
-                      <label
-                        htmlFor="biography"
-                        className="block mb-2 text-sm font-medium text-gray-900 "
-                      >
-                        Mô tả
-                      </label>
-                      <textarea
-                        id="biography"
-                        rows="4"
-                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                        value={perUpdate?.description}
-                        disabled
-                      ></textarea>
                     </div>
                   </div>
                   <div className=" py-6 border-t border-gray-200 rounded-b flex justify-end  ">

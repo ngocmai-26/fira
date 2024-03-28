@@ -71,6 +71,7 @@ export const {
   setErrors,
   setAuthFetching,
   setErrorsRegister,
+  setAccount
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

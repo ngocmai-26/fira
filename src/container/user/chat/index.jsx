@@ -8,11 +8,15 @@ import { RoomItem } from "./RoomItem";
 import { RoomInfo } from "./RoomInfo";
 import { getRoomTags } from "../../../thunks/RoomThunk";
 import { RoomMessageGenerator } from "./RoomMessageGenerator";
+import AddMember from "../../modal/AddMemberModal";
 
 function Chat() {
   const [roomModalVisible, setRoomModalVisible] = useState(false);
   const [contactModalVisible, setContactNodalVisible] = useState(false);
   const [qrCodeModalVisible, setQrCodeModalVisible] = useState(false);
+  const [addNewMemberModalVisible, setAddNewMemberModalVisible] =
+    useState(false);
+  const [roomAddMember, setRoomAddMember] = useState({});
   const [activeRoom, setActiveRoom] = useState("");
   const { userRoom } = useSelector((state) => state.roomReducer);
   const dispatch = useDispatch();
@@ -117,7 +121,6 @@ function Chat() {
     },
   ];
 
-
   useLayoutEffect(() => {
     dispatch(getRoomTags());
     if (activeRoom == "" && userRoom.length > 0) {
@@ -125,6 +128,10 @@ function Chat() {
     }
   }, []);
 
+  const handleHiddenAddMember = (item) => {
+    setRoomAddMember(item);
+    setAddNewMemberModalVisible(!addNewMemberModalVisible);
+  };
   const handleExpandBox = (id, roomMember) => {
     setActiveRoom(id);
   };
@@ -150,6 +157,7 @@ function Chat() {
               room={room}
               key={index.toString()}
               activeRoom={activeRoom}
+              handleHiddenAddMember={handleHiddenAddMember}
             />
           );
         })}
@@ -163,6 +171,11 @@ function Chat() {
       <QRCodeModal
         setQrModalVisible={setQrCodeModalVisible}
         qrModalVisible={qrCodeModalVisible}
+      />
+      <AddMember
+        modalVisible={addNewMemberModalVisible}
+        roomAddMember={roomAddMember}
+        setModalVisible={handleHiddenAddMember}
       />
     </article>
   );

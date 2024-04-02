@@ -11,54 +11,54 @@ import { TOAST_ERROR, TOAST_SUCCESS } from '../constants/toast'
 export const getAllPermissions = createAsyncThunk(
   '/permissions',
   async (data, { dispatch, rejectWithValue }) => {
-    try{
-    const token = localStorage.getItem('auth_token')
-    const resp = await fetch(
-      `${API.uri}/permissions?page=${data || 0}&size=20`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(
+        `${API.uri}/permissions?page=${data || 0}&size=20`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         },
-      },
-    )
-    const dataJson = await resp.json()
-    console.log('dataJson', dataJson)
-    if (resp.status >= 300) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
-      return rejectWithValue()
+      )
+      const dataJson = await resp.json()
+      console.log('dataJson', dataJson)
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(setAllPermissions(dataJson.data.content))
+      dispatch(setPaginationPer(dataJson.data))
+    } catch (e) {
+      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
     }
-    dispatch(setAllPermissions(dataJson.data.content))
-    dispatch(setPaginationPer(dataJson.data))
-  } catch (e) {
-    dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
-  }
-},
+  },
 )
 
 export const getPerById = createAsyncThunk(
   '/permissions/id',
   async (id, { dispatch, rejectWithValue }) => {
-    try{
-    const token = localStorage.getItem('auth_token')
-    const resp = await fetch(`${API.uri}/permissions/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    const dataJson = await resp.json()
-    if (resp.status >= 300) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
-      return rejectWithValue()
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/permissions/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(setSinglePermission(dataJson.data))
+    } catch (e) {
+      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
     }
-    dispatch(setSinglePermission(dataJson.data))
-  } catch (e) {
-    dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
-  }
-},
+  },
 )
 
 export const deletePermissions = createAsyncThunk(
@@ -93,37 +93,37 @@ export const deletePermissions = createAsyncThunk(
 export const addNewPermission = createAsyncThunk(
   'roles',
   async (data, { dispatch, rejectWithValue }) => {
-    try{
-    const token = localStorage.getItem('auth_token')
-    if (!token) {
+    try {
+      const token = localStorage.getItem('auth_token')
+      if (!token) {
+        dispatch(
+          setAlert({
+            type: TOAST_ERROR,
+            content: 'Phiên đăng nhập đã hết hạn vui lòng thử lại',
+          }),
+        )
+      }
+      const resp = await fetch(`${API.uri}/permissions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
       dispatch(
-        setAlert({
-          type: TOAST_ERROR,
-          content: 'Phiên đăng nhập đã hết hạn vui lòng thử lại',
-        }),
+        setAlert({ type: TOAST_SUCCESS, content: 'Thêm chức năng thành công' }),
       )
+      dispatch(getAllPermissions())
+    } catch (e) {
+      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
     }
-    const resp = await fetch(`${API.uri}/permissions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    })
-    const dataJson = await resp.json()
-    if (resp.status >= 300) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
-      return rejectWithValue()
-    }
-    dispatch(
-      setAlert({ type: TOAST_SUCCESS, content: 'Thêm chức năng thành công' }),
-    )
-    dispatch(getAllPermissions())
-  } catch (e) {
-    dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
-  }
-},
+  },
 )
 
 // export const searchPermissionAsync = createAsyncThunk(
@@ -153,3 +153,56 @@ export const addNewPermission = createAsyncThunk(
 //     }
 //   }
 // );
+
+export const updatePermission = createAsyncThunk(
+  '/permissions/id',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/permissions/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data.data),
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(
+        setAlert({
+          type: TOAST_SUCCESS,
+          content: 'Cập nhật chức năng thành công',
+        }),
+      )
+      dispatch(getAllPermissions())
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
+
+export const searchPermissionAsync = createAsyncThunk(
+  '/permissions',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/permissions/search?name=${data}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (resp.status >= 200 && resp.status < 300) {
+        const dataJson = await resp.json()
+        dispatch(setAllPermissions(dataJson.data.content))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)

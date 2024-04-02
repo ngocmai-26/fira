@@ -123,7 +123,7 @@ export const sendMessage = createAsyncThunk(
         }
         dispatch(showMediaUploadInRoom(queueMsg))
         const medias = messageData.media.map((m) => m.mediaLink)
-        
+
         const uploadedMedia = await FBStorageService.uploadFiles(medias)
         messageData.media = messageData.media.map((m, index) => {
           return {
@@ -131,7 +131,7 @@ export const sendMessage = createAsyncThunk(
             mediaLink: uploadedMedia[index],
           }
         })
-        console.log("messageData",messageData)
+        console.log('messageData', messageData)
       }
       // then upload image
       messageData['memberId'] = user.id
@@ -159,6 +159,96 @@ export const sendMessage = createAsyncThunk(
           type: TOAST_ERROR,
           content: 'Có lỗi xảy ra vui lòng thử lại sau',
         }),
+      )
+    }
+  },
+)
+
+export const addNewMember = createAsyncThunk(
+  'rooms',
+  async (data, { dispatch, rejectWithValue }) => {
+    const token = localStorage.getItem('auth_token')
+    if (!token) {
+      dispatch(
+        setAlert({
+          type: TOAST_ERROR,
+          content: 'Phiên đăng nhập đã hết hạn vui lòng thử lại',
+        }),
+      )
+    }
+    const resp = await fetch(`${API.uri}/rooms/add-member/${data.roomId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data.data),
+    })
+    const dataJson = await resp.json()
+    if (resp.status >= 300) {
+      dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+      return rejectWithValue()
+    }
+    dispatch(setAlert({ type: TOAST_SUCCESS, content: 'Thêm thành công' }))
+  },
+)
+
+export const removeMember = createAsyncThunk(
+  'rooms',
+  async (data, { dispatch, rejectWithValue }) => {
+    const token = localStorage.getItem('auth_token')
+    if (!token) {
+      dispatch(
+        setAlert({
+          type: TOAST_ERROR,
+          content: 'Phiên đăng nhập đã hết hạn vui lòng thử lại',
+        }),
+      )
+    }
+    const resp = await fetch(`${API.uri}/rooms/remove-member/${data.roomId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data.data),
+    })
+    const dataJson = await resp.json()
+    if (resp.status >= 300) {
+      dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+      return rejectWithValue()
+    }
+    dispatch(setAlert({ type: TOAST_SUCCESS, content: 'Xóa thành công' }))
+  },
+)
+
+export const deleteRooms = createAsyncThunk(
+  '/rooms/id',
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/rooms/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: 'Đã xảy ra lỗi' }))
+        return rejectWithValue()
+      }
+      dispatch(
+        setAlert({
+          type: TOAST_SUCCESS,
+          content: 'Xóa cuộc trò truyện thành công',
+        }),
+      )
+      dispatch(getAllRoomByUser())
+    } catch (e) {
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
       )
     }
   },

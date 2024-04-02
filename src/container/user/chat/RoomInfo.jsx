@@ -1,8 +1,9 @@
 import { useLayoutEffect, useState } from "react";
 import MsgItem from "../../component/MsgItem";
 import { useSelector } from "react-redux";
+import ButtonComponent from "../../component/ButtonComponent";
 
-export const RoomInfo = ({ activeRoom, room }) => {
+export const RoomInfo = ({ activeRoom, room, handleHiddenAddMember }) => {
   const { expandFileMedia } = useSelector((state) => state.toggleReducer).room;
   useLayoutEffect(() => {}, [expandFileMedia]);
   return (
@@ -19,8 +20,14 @@ export const RoomInfo = ({ activeRoom, room }) => {
       <div className="h-screen">
         <div className="flex flex-col">
           <div className="teams">
-            <div className="number-title">
+            <div className="number-title flex justify-between">
               <span className="text-sm font-bold">Thành viên nhóm</span>
+              <button
+                onClick={() => handleHiddenAddMember(room)}
+                className="font-medium rounded-sm text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4me-1 px-3"
+              >
+                +
+              </button>
             </div>
             <div
               className="scroll h-1/3 overflow-x-hidden overflow-y-scroll"

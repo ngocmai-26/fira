@@ -104,12 +104,13 @@ export const updatePermission = createAsyncThunk(
         )
 
         dispatch(setListPermission(resp))
+        dispatch(getAllRole())
         return rejectWithValue()
       } else {
         dispatch(
           setAlert({
-            type: 'error',
-            content: resp.json()?.defaultMessage ?? 'Update permission error ',
+            type: TOAST_ERROR,
+            content: resp.json()?.defaultMessage,
           }),
         )
       }
@@ -132,23 +133,10 @@ export const removePermission = createAsyncThunk(
         body: JSON.stringify(data.list),
       })
       if (resp.status >= 200 && resp.status < 300) {
-        dispatch(
-          setAlert({
-            type: TOAST_SUCCESS,
-            content: 'Remove permission success',
-          }),
-        )
-
         dispatch(setListPermission(resp))
         return rejectWithValue()
-      } else {
-        dispatch(
-          setAlert({
-            type: 'error',
-            content: resp.json()?.defaultMessage ?? 'Remove permission error ',
-          }),
-        )
       }
+      dispatch(getAllRole())
     } catch (e) {
       console.log(e)
     }
@@ -196,7 +184,7 @@ export const updateRole = createAsyncThunk(
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data.data),
       })
       const dataJson = await resp.json()
       if (resp.status >= 300) {
@@ -210,6 +198,31 @@ export const updateRole = createAsyncThunk(
         }),
       )
       dispatch(getAllRole())
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
+
+export const searchRolesAsync = createAsyncThunk(
+  '/roles',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(
+        `${API.uri}/roles/search/by-name?name=${data}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      if (resp.status >= 200 && resp.status < 300) {
+        const dataJson = await resp.json()
+        dispatch(setAllRole(dataJson.data.content))
+      }
     } catch (e) {
       console.log(e)
     }

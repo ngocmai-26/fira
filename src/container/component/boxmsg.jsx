@@ -31,19 +31,19 @@ function BoxMsg({ data }) {
         <>
           <div className="rounded-lg ">
             <img
-              src={data?.sender.avatar || data.avatar}
+              src={data?.sender?.avatar || data?.avatar}
               alt=""
               className="rounded-lg w-10 h-10"
             />
           </div>
           <div
             className={`flex ${
-              data.media.length > 0 ? "flex-col" : ""
+              data?.media?.length > 0 ? "flex-col" : ""
             } relative boxMsg-chat ${
               data?.sender?.id === user.id ? "items-end" : "items-start"
             } `}
           >
-            {data?.media.length > 0 && (
+            {data?.media?.length > 0 && (
               <div
                 className={`w-fit max-w-80 pb-1 flex ${
                   data?.sender?.id === user.id ? "flex-row-reverse" : ""
@@ -67,13 +67,13 @@ function BoxMsg({ data }) {
             )}
             <div
               className={`${
-                data?.sender?.id === user.id ? " bg-blue-200" : " bg-slate-200"
+                data?.sender?.id === user?.id ? " bg-blue-200" : " bg-slate-200"
               } flex max-w-80 content-msg p-2 w-auto rounded-md`}
             >
               <span>{data?.content}</span>
             </div>
             <span className="absolute z-50 time text-xs bottom-[-25px] bg-gray-200 py-1 h-auto px-3 rounded-sm shadow-md">
-            {moment(data.sentAt).format('HH:mm')}
+            {moment(data?.sentAt).format('HH:mm')}
             </span>
           </div>
         </>

@@ -10,6 +10,7 @@ import {
   deleteAccount,
   getAccountById,
   getAllAccount,
+  updateAccount,
 } from "../../../thunks/AccountsThunk";
 import { debounce } from "../../../app/debounce";
 import { Pagination, Stack } from "@mui/material";
@@ -52,8 +53,7 @@ function ManagerAccount() {
     } else {
       setSearchData(allAccount);
     }
-    console.log("search", newSearch?.length);
-  }, [search]);
+  }, [search, allAccount]);
 
   useEffect(() => {
     setCurrentPage(paginationAccount?.number + 1);
@@ -61,6 +61,9 @@ function ManagerAccount() {
 
   const handlePageChange = (event, pageNumber) => {
     dispatch(getAllAccount(pageNumber - 1));
+  };
+  const handleChangeActive = (item) => {
+    dispatch(updateAccount({ id: item, data: { active: true } }));
   };
 
   return (
@@ -154,11 +157,18 @@ function ManagerAccount() {
                       />
                     </>
                   ) : (
-                    <ButtonComponent
-                      type={"button"}
-                      textButton={"Tài khoản đã bị vô hiệu hóa"}
-                      style={"text-white bg-red-300  mx-1.5 cursor-default"}
-                    />
+                    <>
+                      <ButtonComponent
+                        type={"button"}
+                        textButton={"Tài khoản đã bị vô hiệu hóa"}
+                        style={"text-white bg-red-300  mx-1.5 cursor-default"}
+                      />
+                      <ButtonComponent
+                        type={"button"}
+                        textButton={"Duyệt tài khoản"}
+                        handleClick={() => handleChangeActive(item?.id)}
+                      />
+                    </>
                   )}
                 </td>
               </tr>

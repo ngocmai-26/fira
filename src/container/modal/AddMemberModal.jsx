@@ -1,121 +1,116 @@
-import {
-  faSearch,
-  faX,
-  faXmark,
-  faXmarkCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useLayoutEffect, useState } from "react";
-import UserItem from "../component/UserItem";
-import SearchComponent from "../component/SearchComponent";
 import { FormField } from "../component/FormField";
+import SearchComponent from "../component/SearchComponent";
+import UserItem from "../component/UserItem";
 import ButtonComponent from "../component/ButtonComponent";
-import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "../component/Spinner";
-import { setAlert } from "../../slices/AlertSlice";
-import { TOAST_ERROR } from "../../constants/toast";
-import { createNewRoom } from "../../thunks/RoomThunk";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllAccount } from "../../thunks/AccountsThunk";
+import { addNewMember, removeMember } from "../../thunks/RoomThunk";
+import { getAllContactByUser } from "../../thunks/ContactThunk";
 
-function ModalRoomChat({ setModalVisible, modalVisible }) {
+function AddMember({ setModalVisible, modalVisible, roomAddMember }) {
   const [selectedButtons, setSelectedButtons] = useState([]);
-  const [selectedTag, setSelectedTag] = useState([]);
-  const [room, setRoom] = useState("");
   const [searchContact, setSearchContact] = useState([]);
 
-  const { roomTags, isLoading } = useSelector((state) => state.roomReducer);
+  const { isLoading } = useSelector((state) => state.roomReducer);
+  const { allAccount } = useSelector((state) => state.accountsReducer);
   const { allContact } = useSelector((state) => state.contactReducer);
   const { user } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+  useLayoutEffect(() => {
+    if (allAccount.length <= 0) {
+      dispatch(getAllAccount());
+    }
+    if (allContact.length <= 0) {
+      dispatch(getAllContactByUser());
+    }
+  }, []);
 
   const [query, setQuery] = useState("");
+  console.log("user", allContact);
   const [searching, setSearching] = useState(false);
   const SearchAni = () => {
     return <Spinner width={4} height={4} />;
   };
 
   const handleSearch = (q) => {
-    const temp = [];
-    q = q.trim();
-    if (q == "") {
-      setSearchContact(allContact);
-      return;
-    }
-
-    allContact.forEach((element) => {
-      const me =
-        user?.id == element?.owner.id ? element?.relate : element?.owner;
-      if (
-        me?.fullName?.includes(q) ||
-        me?.email?.includes(q) ||
-        me?.phone?.includes(q)
-      ) {
-        temp.push(element);
-      }
-    });
-
-    setSearchContact(temp);
+    // const temp = [];
+    // q = q.trim();
+    // if (q == "") {
+    //   setSearchContact(allContact);
+    //   return;
+    // }
+    // allContact.forEach((element) => {
+    //   const me =
+    //     user?.id == element?.owner.id ? element?.relate : element?.owner;
+    //   if (
+    //     me?.fullName?.includes(q) ||
+    //     me?.email?.includes(q) ||
+    //     me?.phone?.includes(q)
+    //   ) {
+    //     temp.push(element);
+    //   }
+    // });
+    // setSearchContact(temp);
   };
 
   const handleRadioClick = (buttonId) => {
-    if (selectedButtons.some((item) => item.id === buttonId.id)) {
+    console.log("handleRadioClick", buttonId);
+    if (selectedButtons?.some((item) => item.id === buttonId.id)) {
       setSelectedButtons(
-        selectedButtons.filter((item) => item.id !== buttonId.id)
+        selectedButtons?.filter((item) => item.id !== buttonId.id)
       );
     } else {
       setSelectedButtons([...selectedButtons, buttonId]);
     }
-  };
 
-  console.log("selectedButtons", selectedButtons);
+    dispatch(
+      addNewMember({
+        roomId: roomAddMember.id,
+        data: { userId: buttonId.id, adderId: user.id },
+      })
+    );
+  };
+  const handleRemoveClick = (buttonId) => {
+    console.log("button", buttonId);
+    if (selectedButtons?.some((item) => item.id === buttonId.id)) {
+      setSelectedButtons(
+        selectedButtons?.filter((item) => item.id === buttonId.id)
+      );
+    } else {
+      setSelectedButtons([...selectedButtons, buttonId]);
+    }
+
+    dispatch(
+      removeMember({
+        roomId: roomAddMember.id,
+        data: { userId: buttonId.id, adderId: user.id },
+      })
+    );
+  };
 
   const handleRemoveSelectUser = (item) => {
     setSelectedButtons(selectedButtons.filter((props) => item.id !== props.id));
   };
 
-  const handleTagClick = (tagId) => {
-    const sel = [...selectedTag];
-    if (sel.includes(tagId)) {
-      sel.splice(sel.indexOf(tagId), 1);
-    } else {
-      sel.push(tagId);
-    }
-    setSelectedTag(sel);
-  };
   const handleCreateRoom = () => {
-    if (selectedButtons.length == 0) {
-      dispatch(
-        setAlert({ type: TOAST_ERROR, content: "Hãy chọn một thành viên" })
-      );
-      return;
-    }
-    if (selectedTag.length == 0) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: "Hãy chọn một thẻ" }));
-      return;
-    }
-
-    if (room["roomName"].trim().length == 0) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: "Hãy nhập tên nhóm" }));
-      return;
-    }
-    const selectedMember = selectedButtons.map((btn) => btn.id);
-    selectedMember.push(user?.id);
-
-    const roomData = {
-      roomName: room["roomName"],
-      maxCountMember: 50,
-      roomTagsId: selectedTag,
-      initMember: selectedMember,
-    };
-    dispatch(createNewRoom(roomData)).then((resp) => {
-      if (resp?.payload) {
-        setModalVisible(false);
-      }
-    });
+    console.log("selectedButtons", selectedButtons);
   };
 
-  useLayoutEffect(() => {
-    setSearchContact(allContact);
-  }, [allContact]);
+  useEffect(() => {
+    console.log("allContact", allContact);
+    const accountRoom = roomAddMember?.members?.filter((item1) =>
+      allContact?.some(
+        (item2) =>
+          item2?.relate?.id === item1?.id || item2?.owner?.id === item1?.id
+      )
+    );
+    setSelectedButtons(accountRoom);
+  }, [roomAddMember]);
+
   useLayoutEffect(() => {
     handleSearch(query);
   }, [query]);
@@ -128,7 +123,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
       <div className="flex h-screen my-2" style={{ alignItems: "center" }}>
         <div className=" bg-white w-11/12 lg:w-5/12 m-auto p-4 rounded-md">
           <div className="title text-md font-bold pt-1.5 pb-3.5 flex justify-between">
-            <span>Tạo nhóm</span>
+            <span>Thêm thành viên</span>
             <button
               className="text-end mx-3"
               onClick={() => {
@@ -140,14 +135,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
             </button>
           </div>
           <hr></hr>
-          <div className="new-name py-3">
-            <FormField
-              name={"roomName"}
-              values={room}
-              setValue={setRoom}
-              placeholder={"Nhập tên nhóm"}
-            />
-          </div>
+
           <hr />
           <SearchComponent
             handleSearch={(e) => setQuery(e.target.value)}
@@ -156,24 +144,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
             state={query}
             placeholder="Nhập tên, số điện thoại , Email"
           />
-          <div className="tags py-2 scrollX max-w-full">
-            <ul className="flex scrollX-item  pb-2">
-              {roomTags.map((item) => (
-                <li
-                  key={item.id}
-                  className={`px-2 mx-1 my-0 rounded-sm cursor-pointer ${
-                    selectedTag.includes(item.id)
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100 hover:bg-gray-300"
-                  }`}
-                  onClick={() => handleTagClick(item.id)}
-                >
-                  <span className="text-xs">{item.name}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <hr />
+
           <div className="group">
             <div className="title-group py-2">
               <span className="text-sm font-bold ">Danh sách người dùng</span>
@@ -183,7 +154,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
                     className="scroll-item"
                     style={{ minHeight: "50vh", maxHeight: "55vh" }}
                   >
-                    {searchContact.map((item) => {
+                    {allContact?.map((item) => {
                       const me =
                         user?.id == item?.owner.id ? item?.relate : item?.owner;
                       return (
@@ -193,8 +164,8 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
                         >
                           <input
                             type="radio"
-                            checked={selectedButtons.some(
-                              (props) => props.id === me.id
+                            checked={selectedButtons?.some(
+                              (props) => props?.id === me?.id
                             )}
                             onChange={() => {}}
                             onClick={() => handleRadioClick(me)}
@@ -220,7 +191,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
                       className="scroll-item"
                       style={{ minHeight: "50vh", maxHeight: "55vh" }}
                     >
-                      {selectedButtons.map((item) => (
+                      {selectedButtons?.map((item) => (
                         <div
                           onClick={() => handleRemoveSelectUser(item)}
                           className={`w-11/12 my-2 mx-auto flex py-1 px-1 cursor-pointer justify-between rounded bg-gray-100`}
@@ -228,8 +199,11 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
                           <UserItem
                             img={item?.avatar}
                             name={item?.fullName}
-                            widthContent="max-w-24"
+                            widthContent="max-w-30"
                           />
+                          <button onClick={() => handleRemoveClick(item)}>
+                            <FontAwesomeIcon icon={faX} className="text-xs" />
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -239,7 +213,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
             </div>
           </div>
           <hr />
-          <div className="group-btn flex justify-end my-2">
+          {/* <div className="group-btn flex justify-end my-2">
             <ButtonComponent
               textButton={"Hủy"}
               style={
@@ -255,11 +229,11 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
               }
               type={"button"}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
   );
 }
 
-export default ModalRoomChat;
+export default AddMember;

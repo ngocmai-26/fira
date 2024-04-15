@@ -1,21 +1,92 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LayoutJob from ".";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteJob, getAllJob } from "../../../thunks/JobsThunk";
-import { useLayoutEffect } from "react";
+import {
+  comFirmJob,
+  deleteJob,
+  getAllJob,
+  getAllJobById,
+  getJobById,
+} from "../../../thunks/JobsThunk";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { Pagination, Stack } from "@mui/material";
+import ReportJobModel from "../../modal/job/ReportJobModal";
+import EValueJobModal from "../../modal/job/EValueModal";
+import DetailJobModel from "../../modal/job/DetailJobModal";
 
 function ManagerJobs() {
-  const { allJob } = useSelector((state) => state.jobsReducer);
+  const { allJob, paginationJob } = useSelector((state) => state.jobsReducer);
+  const { account } = useSelector((state) => state.authReducer);
+  const [currentPage, setCurrentPage] = useState(paginationJob?.number + 1);
+  const { user } = useSelector((state) => state.authReducer);
+  const [evaluateData, setEvaluateData] = useState({});
+
+  const [isHiddenReport, setIsHiddenReport] = useState(false);
+
+  const [report, setReport] = useState({});
+
+  const [hiddenEValue, isHiddenEValue] = useState(false);
+
   const dispatch = useDispatch();
+  const nav = useNavigate();
+
   useLayoutEffect(() => {
+    // if (account?.role?.id === 1) {
+    //   if (allJob?.length <= 0) {
+    //     dispatch(getAllJob());
+    //   }
+    // } else {
+    //   if (allJob?.length <= 0) {
+    //     dispatch(getAllJobById({ id: account?.user?.id }));
+    //   }
+    // }
     if (allJob?.length <= 0) {
       dispatch(getAllJob());
     }
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(paginationJob?.number + 1);
+  }, [allJob]);
+
+  const handlePageChange = (event, pageNumber) => {
+    dispatch(getAllJob(pageNumber - 1));
+    // dispatch(
+    //   getAllJobById({ id: account?.user?.id, pagination: pageNumber - 1 })
+    // );
+  };
+
+  const handJobDetail = (item) => {
+    dispatch(getJobById(item)).then((reps) => {
+      if (!reps.error) {
+        nav("/chi-tiet-cong-viec");
+      }
+    });
+  };
+
   useLayoutEffect(() => {
     dispatch(getAllJob(0));
+    // if (account?.role?.id === 1) {
+    //   dispatch(getAllJob(0));
+    // } else {
+    //   dispatch(getAllJobById({ id: account?.user?.id, pagination: 0 }));
+    // }
   }, []);
+
+  const handleHiddenEValue = (item) => {
+    isHiddenEValue(!hiddenEValue);
+    setEvaluateData(item);
+  };
+
+  const handleConfirm = (item) => {
+    dispatch(comFirmJob({ id: item, data: { status: "PROCESSING" } }));
+  };
+
+  const handleHiddenReport = (item) => {
+    setReport(item);
+    setIsHiddenReport(!isHiddenReport);
+  };
+
   return (
     <LayoutJob>
       <div className="flex flex-col">
@@ -86,7 +157,7 @@ function ManagerJobs() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {allJob.map((item) =>
+                  {allJob?.map((item) =>
                     item?.jobDetail?.note?.length !== 0 &&
                     item?.jobDetail?.verifyLink?.length !== 0 &&
                     item?.status !== 4 ? (
@@ -109,9 +180,12 @@ function ManagerJobs() {
                         </td>
 
                         <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                          <Link to="/detail-task" className="underline">
+                          <button
+                            className="underline"
+                            onClick={() => handJobDetail(item?.id)}
+                          >
                             {item?.title}
-                          </Link>
+                          </button>
                         </td>
                         <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                           {item?.manager?.fullName}
@@ -122,7 +196,7 @@ function ManagerJobs() {
                           ))}
                         </td>
                         <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                          {(item?.kpiCount / +item?.jobDetail?.target) * 100} %
+                          {item?.progress} %
                         </td>
                         <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
                           <Link
@@ -148,28 +222,123 @@ function ManagerJobs() {
                           }
                         </td>
 
-                        <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          <button
-                            className="bg-blue-500 text-white text-xs p-1"
-                            // onClick={() => handleHidden(item)}
-                          >
-                            Đánh giá
-                          </button>
-                          <button
-                            className="bg-red-500 text-white text-xs p-1"
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  "Bạn có muốn xóa công việc này không?"
-                                )
-                              ) {
-                                dispatch(deleteJob(item.id));
-                              }
-                            }}
-                          >
-                            Xóa
-                          </button>
-                        </td>
+                        {account?.role?.id === 1 ? (
+                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                            <button
+                              className="bg-blue-500 text-white text-xs p-1"
+                              onClick={() => handleHiddenEValue(item)}
+                            >
+                              Đánh giá
+                            </button>
+                            <button className="bg-blue-500 text-white text-xs p-1">
+                              Chỉnh sửa
+                            </button>
+                            <button
+                              className="bg-red-500 text-white text-xs p-1"
+                              onClick={() => {
+                                if (
+                                  window.confirm(
+                                    "Bạn có muốn xóa công việc này không?"
+                                  )
+                                ) {
+                                  dispatch(deleteJob(item?.id));
+                                }
+                              }}
+                            >
+                              Xóa
+                            </button>
+                            {item?.status === null ? (
+                              <button
+                                className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                onClick={() =>
+                                  dispatch(
+                                    comFirmJob({
+                                      id: item.id,
+                                      data: { status: "PENDING" },
+                                    })
+                                  )
+                                }
+                              >
+                                PENDING
+                              </button>
+                            ) : (
+                              <></>
+                            )}
+                          </td>
+                        ) : (
+                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                            {item?.jobDetail?.denyReason?.length > 0 ? (
+                              <button
+                                className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                type="button"
+                                // onClick={() => handleShowReason(item)}
+                              >
+                                Xem ly do
+                              </button>
+                            ) : item?.status === "PENDING" ? (
+                              <>
+                                <button
+                                  className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                  onClick={() => handleConfirm(item.id)}
+                                >
+                                  Xác nhận
+                                </button>
+                                {/* <button
+                              className="bg-blue-500 text-white text-xs p-1 mr-2"
+                              onClick={() => handleConfirm(item.id)}
+                            >
+                              Từ chối
+                            </button> */}
+                              </>
+                            ) : (
+                              // : item?.status !== 4 &&
+                              // item?.staffs.map((staff) => (
+                              //   <div key={staff.id}>
+                              //     {staff.id === account.id ? (
+                              //       <button className="bg-blue-500 text-white text-xs p-1 mr-2">
+                              //         Báo cáo
+                              //       </button>
+                              //     ) : null}
+                              //   </div>
+                              // ))
+                              // (
+                              //   <button
+                              //     className="bg-blue-500 text-white text-xs p-1 mr-2"
+                              //     // onClick={() => handleHiddenCreate(item)}
+                              //   >
+                              //     Báo cáo
+                              //   </button>
+                              // ) : (
+                              //   <></>
+                              // )}
+                              // {auth_role?.id === 3 &&
+                              // item.jobDetail.denyReason.length === 0 &&
+                              // item?.status !== 4 ? (
+                              //   <button
+                              //     className="bg-blue-500 text-white text-xs p-1 "
+                              //     // onClick={() => handleHiddenUpdate(item)}
+                              //   >
+                              //     Cập nhật
+                              //   </button>
+                              // )
+                              <></>
+                            )}
+                            {item?.status === "PROCESSING" &&
+                              item?.staffs.map((staff) => (
+                                <div key={staff.id}>
+                                  {staff.id === account?.user?.id ? (
+                                    <button
+                                      className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                      onClick={() => handleHiddenReport(item)}
+                                    >
+                                      Báo cáo
+                                    </button>
+                                  ) : null}
+                                </div>
+                              ))}
+                          </td>
+                        )}
+
                         <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
                       </tr>
                     ) : (
@@ -182,73 +351,38 @@ function ManagerJobs() {
           </div>
         </div>
       </div>
-      <div
-        className={`fixed left-0 right-0 z-50  hidden
-         items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full `}
-        id="new-task-modal"
+
+      <Stack
+        spacing={2}
+        justifyContent="center"
+        color="#fff"
+        className="pagination"
       >
-        <div className="relative w-full h-full max-w-3xl m-auto px-4 md:h-auto">
-          <div className="relative bg-white rounded-lg shadow ">
-            <div className="flex items-start justify-between p-5 border-b rounded-t ">
-              <h3 className="text-xl font-semibold">
-                Chi tiết tiến độ công việc
-              </h3>
-              <button
-                type="button"
-                // onClick={() => handleHidden()}
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
-                data-modal-toggle="add-user-modal"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-            <div className="content p-5  border-b">
-              <div className="border-b">
-                <h5 className="font-semibold te">
-                  Mô tả công việc đã hoàn thành
-                </h5>
-                {/* <ul>{evaluateData?.jobDetail?.note}</ul> */}
-              </div>
-              <div className="border-b py-3">
-                <h5 className="font-semibold">Tiến độ hoàn thành</h5>
-                <div className="font-bold text-blue-500">
-                  {/* {(evaluateData?.kpi / evaluateData?.jobDetail?.target) * 100}{" "} */}
-                  %
-                </div>
-              </div>
-              <div className="py-3">
-                <h5 className="font-semibold">Đường link tài liệu báo cáo</h5>
-                {/* <a
-                  href={evaluateData?.jobDetail?.verifyLink}
-                  _blank
-                  className="text-xs underline"
-                >
-                  {evaluateData?.jobDetail?.verifyLink}
-                </a> */}
-              </div>
-            </div>
-            <div className="text-right p-4">
-              <button className="bg-red-500 text-white text-xs p-1 mx-1">
-                Đánh giá lại
-              </button>
-              <button className="bg-blue-500 text-white text-xs p-1 mx-1">
-                Xác nhận
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <Pagination
+          count={paginationJob?.totalPages}
+          color="primary"
+          className="pagination-item"
+          style={{ margin: "auto" }}
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+      </Stack>
+      {/* Chi tiết công việc đã hoàn thành */}
+      {/* <DetailJobModel /> */}
+      {/* Đánh giá công việc */}
+      {hiddenEValue && (
+        <EValueJobModal
+          handleHiddenEValue={handleHiddenEValue}
+          evaluateData={evaluateData}
+        />
+      )}
+      {/* Báo cáo công việc */}
+      {isHiddenReport && (
+        <ReportJobModel
+          handleHiddenReport={handleHiddenReport}
+          report={report}
+        />
+      )}
     </LayoutJob>
   );
 }

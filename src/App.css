@@ -108,3 +108,23 @@ body {
 .boxMsg-chat:hover .time {
   display: block
 }
+
+.Plan {
+  position: relative;
+
+}
+
+.planNote {
+  position: absolute;
+  width: 100px;
+  background-color: white;
+  border: 1px solid #dadada;
+  z-index: 1000;
+  left: 5px;
+  top: 10px;
+  display: none;
+}
+
+.Plan:hover > .planNote {
+  display: block;
+}

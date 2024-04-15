@@ -2,5 +2,6 @@
     display: none;
 }
 .account:hover .menu-account{
+    z-index: 100;
     display: block;
 }

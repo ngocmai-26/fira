@@ -29,13 +29,13 @@ function JobsBoard() {
                     <div className="plan-header bg-violet-100 px-4 py-3 border-b-violet-300 border-b-2">
                       <p className="text-black text-sm py-1">Kế hoạch</p>
                       <p className="text-black text-xs">
-                        {allJob.filter((item) => item.status === 1).length}
+                        {allJob.filter((item) => item.status === "PENDING").length}
                         công việc
                       </p>
                     </div>
                     <div className="plan-content px-2">
                       {allJob.map((item, key) =>
-                        item.status === 1 ? (
+                        item.status === "PENDING" ? (
                           <div
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
                             key={key}
@@ -49,7 +49,7 @@ function JobsBoard() {
                                   className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
                                   style={{
                                     width: `${
-                                      (item.kpi / item.jobDetail?.target) * 100
+                                      (item?.progress) * 100
                                     }%`,
                                   }}
                                 ></div>
@@ -115,13 +115,13 @@ function JobsBoard() {
                     <div className="progress-header bg-green-100 px-4 py-3 border-b-green-300 border-b-2">
                       <p className="text-black text-sm py-1">Đang tiến hành</p>
                       <p className="text-black text-xs">
-                        {allJob.filter((item) => item.status === 2).length}
+                        {allJob.filter((item) => item.status === "PROCESSING").length}
                         công việc
                       </p>
                     </div>
                     <div className="plan-content px-2">
                       {allJob.map((item, key) =>
-                        item.status === 2 ? (
+                        item.status === "PROCESSING" ? (
                           <div
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
                             key={key}
@@ -154,13 +154,13 @@ function JobsBoard() {
                     <div className="completed-header bg-emerald-200 px-4 py-3 border-b-emerald-500 border-b-2">
                       <p className="text-black text-sm py-1">Hoàn thành</p>
                       <p className="text-black text-xs">
-                        {allJob.filter((item) => item.status === 4).length}
+                        {allJob.filter((item) => item.status === "DONE").length}
                         công việc
                       </p>
                     </div>
                     <div className="plan-content px-2">
                       {allJob.map((item, key) =>
-                        item.status === 4 ? (
+                        item.status === "DONE" ? (
                           <div
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
                             key={key}

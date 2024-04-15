@@ -21,7 +21,9 @@ import Account from "../container/user/profile/account";
 import AddNewPermission from "../container/user/managerPermissions/AddNewPermission";
 import ManagerJobs from "../container/user/managerJobs/listJob";
 import JobsBoard from "../container/user/managerJobs/jobsBoard";
-import LayoutPlan from "../container/user/ManagerPlans";
+import JobDetail from "../container/user/managerJobs/jobDetail";
+import ManagerNote from "../container/user/managerPlans/ListNote";
+import ManagerTimeKeep from "../container/user/managerTimeKeep";
 
 export const GeneralRoute = () => {
   return (
@@ -54,11 +56,13 @@ export const LoggedRoute = () => {
         <Route path="/quan-ly-chuc-nang" element={<ManagerPermissions />} />
         <Route path="/quan-ly-cong-viec" element={<ManagerJobs />} />
         <Route path="/quan-ly-cong-viec-dang-bang" element={<JobsBoard />} />
-        <Route path="/quan-ly-ke-hoach" element={<LayoutPlan />} />
+        <Route path="/quan-ly-diem-danh" element={<ManagerTimeKeep />} />
+        <Route path="/quan-ly-ke-hoach" element={<ManagerNote />} />
         <Route path="/them-chuc-vu" element={<AddNewRole />} />
         <Route path="/them-tai-khoan" element={<AddNewAccount />} />
         <Route path="/them-chuc-nang" element={<AddNewPermission />} />
         <Route path="/tai-khoan" element={<Account />} />
+        <Route path="/chi-tiet-cong-viec" element={<JobDetail />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AppMiddleware>

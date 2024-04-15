@@ -39,13 +39,68 @@ const ADMIN_NAVBAR_ITEMS = [
     'Quản lý lịch chức năng',
   ),
   new AdminSideNavItem(7, '', faPenToSquare, ' Quản lý danh sách kpi'),
-  new AdminSideNavItem(7, '', faCalendarCheck, ' Quản lý điểm danh cá nhân'),
+  new AdminSideNavItem(7, '/quan-ly-diem-danh', faCalendarCheck, ' Quản lý điểm danh cá nhân'),
+  new AdminSideNavItem(8, '/chat', faComments, 'Tin nhắn'),
+]
+
+const ANONYMOUS = [
+  new AdminSideNavItem(1, '', faChartPie, 'Dashboards'),
+  new AdminSideNavItem(2, '/quan-ly-tai-khoan', faUsers, 'Quản lý tài khoản'),
+  new AdminSideNavItem(
+    3,
+    '/quan-ly-cong-viec',
+    faListCheck,
+    ' Quản lý công việc',
+  ),
+  new AdminSideNavItem(
+    4,
+    '/quan-ly-ke-hoach',
+    faCalendar,
+    'Quản lý lịch làm việc',
+  ),
+  new AdminSideNavItem(7, '', faPenToSquare, ' Quản lý danh sách kpi'),
+  new AdminSideNavItem(7, '/quan-ly-diem-danh', faCalendarCheck, ' Quản lý điểm danh cá nhân'),
+  new AdminSideNavItem(8, '/chat', faComments, 'Tin nhắn'),
+]
+const MANAGER_NAVBAR_ITEMS = [
+  new AdminSideNavItem(1, '', faChartPie, 'Dashboards'),
+  new AdminSideNavItem(
+    3,
+    '/quan-ly-cong-viec',
+    faListCheck,
+    ' Quản lý công việc',
+  ),
+  new AdminSideNavItem(
+    4,
+    '/quan-ly-ke-hoach',
+    faCalendar,
+    'Quản lý lịch làm việc',
+  ),
+  new AdminSideNavItem(7, '', faPenToSquare, ' Quản lý danh sách kpi'),
+  new AdminSideNavItem(7, '/quan-ly-diem-danh', faCalendarCheck, ' Quản lý điểm danh cá nhân'),
+  new AdminSideNavItem(8, '/chat', faComments, 'Tin nhắn'),
+]
+const STAFF_NAVBAR_ITEMS = [
+  new AdminSideNavItem(1, '', faChartPie, 'Dashboards'),
+  new AdminSideNavItem(
+    3,
+    '/quan-ly-cong-viec',
+    faListCheck,
+    ' Quản lý công việc',
+  ),
+  new AdminSideNavItem(
+    4,
+    '/quan-ly-ke-hoach',
+    faCalendar,
+    'Quản lý lịch làm việc',
+  ),
+  new AdminSideNavItem(7, '', faPenToSquare, ' Quản lý danh sách kpi'),
   new AdminSideNavItem(8, '/chat', faComments, 'Tin nhắn'),
 ]
 export const DEFAULT_AVATAR =
   'https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg'
 
-export { ADMIN_NAVBAR_ITEMS }
+export { ADMIN_NAVBAR_ITEMS, ANONYMOUS, MANAGER_NAVBAR_ITEMS, STAFF_NAVBAR_ITEMS }
 export const CONTACT_SEARCH_MODAL_TYPE = {
   SEARCH: 1,
   CONTACT: 2,

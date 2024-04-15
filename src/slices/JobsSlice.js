@@ -5,6 +5,7 @@ const initState = {
   allJob: [],
   singleJob: {},
   listJob: [],
+  paginationJob: {},
 };
 const JobsSlice = createSlice({
   name: "job",
@@ -22,10 +23,13 @@ const JobsSlice = createSlice({
     setListJob: (state, {payload}) => {
       state.listJob = payload
     },
+    setPaginationJob: (state, { payload }) => {
+      state.paginationJob = payload
+    },
 
   },
 });
 
-export const { setJobs, setAllJob,setSingleJob, setListJob } = JobsSlice.actions;
+export const { setJobs, setAllJob,setSingleJob, setListJob, setPaginationJob } = JobsSlice.actions;
 
 export default JobsSlice.reducer;

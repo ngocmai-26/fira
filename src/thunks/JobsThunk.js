@@ -1,15 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { setAllJob, setSingleJob } from '../slices/JobsSlice'
+import { setAllJob, setPaginationJob, setSingleJob } from '../slices/JobsSlice'
 import { API } from '../constants/api'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../constants/toast'
 import { setAlert } from '../slices/AlertSlice'
 
 export const getAllJob = createAsyncThunk(
   '/jobs',
-  async (_, { dispatch, rejectWithValue }) => {
+  async (data, { dispatch, rejectWithValue }) => {
     try {
+      console.log('data', data)
       const token = localStorage.getItem('auth_token')
-      const resp = await fetch(`${API.uri}/jobs`, {
+      const resp = await fetch(`${API.uri}/jobs?page=${data || 0}&size=20`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -20,6 +21,36 @@ export const getAllJob = createAsyncThunk(
         const dataJson = await resp.json()
         const contents = dataJson?.data?.content || dataJson?.response
         dispatch(setAllJob(contents))
+        dispatch(setPaginationJob(dataJson?.data))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
+export const getAllJobById = createAsyncThunk(
+  '/jobs',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      console.log('data', data)
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(
+        `${API.uri}/jobs/by-user/${data.id}?page=${
+          data.pagination || 0
+        }&size=20`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      if (resp.status >= 200 && resp.status < 300) {
+        const dataJson = await resp.json()
+        const contents = dataJson?.data || dataJson?.response
+        dispatch(setAllJob(contents))
+        dispatch(setPaginationJob(dataJson))
       }
     } catch (e) {
       console.log(e)
@@ -33,7 +64,7 @@ export const addNewJob = createAsyncThunk(
     const token = localStorage.getItem('auth_token')
     if (!token) {
       dispatch(
-        setAllJob({
+        setAlert({
           type: TOAST_ERROR,
           content: 'Phiên đăng nhập đã hết hạn vui lòng thử lại',
         }),
@@ -107,7 +138,7 @@ export const getJobById = createAsyncThunk(
       })
       if (resp.status >= 200 && resp.status < 300) {
         const jsonData = await resp.json()
-        dispatch(setSingleJob(jsonData))
+        dispatch(setSingleJob(jsonData?.data))
       }
     } catch (e) {
       console.log(e)
@@ -115,7 +146,7 @@ export const getJobById = createAsyncThunk(
   },
 )
 
-export const updateJob = createAsyncThunk(
+export const comFirmJob = createAsyncThunk(
   '/jobs/id',
   async (data, { dispatch, rejectWithValue }) => {
     try {
@@ -126,22 +157,21 @@ export const updateJob = createAsyncThunk(
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data.data),
       })
       if (resp.status >= 200 && resp.status < 300) {
         dispatch(
-          setAlert({ type: TOAST_SUCCESS, content: 'Update role success' }),
+          setAlert({ type: TOAST_SUCCESS, content: 'Update job success' }),
         )
         dispatch(getAllJob())
       } else {
         dispatch(
           setAlert({
             type: TOAST_ERROR,
-            content: resp?.defaultMessage ?? 'Update role error ',
+            content: resp?.defaultMessage ?? 'Update job error ',
           }),
         )
-        dispatch(getAllJob())
-      }
+      }                      
     } catch (e) {
       console.log(e)
     }

@@ -1,10 +1,39 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import LayoutPlan from ".";
 
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  deletePlan,
+  getAllPlan,
+  getPlanById,
+  updateStatus,
+} from "../../../thunks/PlansThunk";
+import DetailPlanModal from "../../modal/plans/DetailPlanModal";
+import EditPlanModal from "../../modal/plans/EditPlanModal";
 function ManagerNote() {
+  const { allPlan, singlePlan } = useSelector((state) => state.plansReducer);
+  const [detailPlan, setDetailPlan] = useState(false);
+  const [editPlan, setEditPlan] = useState(false);
+  const dispatch = useDispatch();
+  useLayoutEffect(() => {
+    if (allPlan?.length <= 0) {
+      dispatch(getAllPlan());
+    }
+  }, []);
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const handleHiddenUpdate = (item) => {
     setIsHiddenUpdate(!isHiddenUpdate);
+  };
+  const handleGetPlanById = (item) => {
+    setDetailPlan(!detailPlan);
+    dispatch(getPlanById(item));
+  };
+  const handleHiddenEdit = (item) => {
+    setEditPlan(!editPlan);
+    dispatch(getPlanById(item));
   };
   return (
     <LayoutPlan>
@@ -14,15 +43,16 @@ function ManagerNote() {
             <div className="overflow-hidden">
               <div className=" bg-white p-5 ">
                 <div className="bg-neutral-100 flex  pb-4 w-full flex-wrap">
-                  {/* {searchPlan?.map((item) =>
-                      item.status === 0 ? (
+                  {allPlan?.map(
+                    (item) =>
+                      item.status === "ACTIVE" && (
                         <div className=" my-2 h-fit w-full sm:w-1/4 ">
                           <div>
                             <div
                               className={`${
-                                item.planDetail.planType === 1
+                                item.planDetail.planType === "ONCE"
                                   ? "bg-amber-200 hover:bg-amber-300"
-                                  : item.planDetail.planType === 2
+                                  : item.planDetail.planType === "LOOP"
                                   ? "bg-sky-200 hover:bg-sky-300"
                                   : "bg-white hover:bg-gray-50"
                               } px-3 py-4 mx-2 rounded-sm shadow  hover:cursor-pointer`}
@@ -31,43 +61,68 @@ function ManagerNote() {
                                 <p className="text-base font-semibold">
                                   {item.title}
                                 </p>
-                                <div
-                                  className="Plan"
-                                  // onClick={
-  
-                                  // }
-                                >
+                                <div className="Plan">
                                   <FontAwesomeIcon icon={faEllipsisVertical} />
                                   <div className="planNote">
                                     <button
                                       className="text-xs w-full hover:bg-slate-200 py-1.5"
                                       onClick={() => {
-                                        if (window.confirm("confirm_delete")) {
+                                        if (
+                                          window.confirm(
+                                            "Bạn có muốn xóa kế hoạch này không?"
+                                          )
+                                        ) {
                                           dispatch(deletePlan(item.id));
                                         }
                                       }}
                                     >
                                       Xóa
                                     </button>
-                                    <button
-                                      className="text-xs w-full hover:bg-slate-200 py-1.5"
-                                      onClick={() => handleSuccess(item)}
-                                    >
+                                    <button className="text-xs w-full hover:bg-slate-200 py-1.5">
                                       Hoàn thành
                                     </button>
-                                    <button
-                                      className="text-xs w-full hover:bg-slate-200 py-1.5"
-                                      onClick={() => handleHiddenUpdate(item)}
-                                    >
+                                    <button className="text-xs w-full hover:bg-slate-200 py-1.5" onClick={()=>handleHiddenEdit(item)}>
                                       Chỉnh sửa
                                     </button>
-                                    <button className="text-xs w-full hover:bg-slate-200 py-1.5">
+                                    <button
+                                      className="text-xs w-full hover:bg-slate-200 py-1.5"
+                                      onClick={() => handleGetPlanById(item)}
+                                    >
                                       Xem chi tiết
                                     </button>
+                                    {item.status === "ACTIVE" ? (
+                                      <button
+                                        className="text-xs w-full hover:bg-slate-200 py-1.5"
+                                        onClick={() => {
+                                          dispatch(
+                                            updateStatus({
+                                              id: item.id,
+                                              data: { planStatus: "DISABLE" },
+                                            })
+                                          );
+                                        }}
+                                      >
+                                        Dừng lại
+                                      </button>
+                                    ) : (
+                                      <button
+                                        className="text-xs w-full hover:bg-slate-200 py-1.5"
+                                        onClick={() => {
+                                          dispatch(
+                                            updateStatus({
+                                              id: item.id,
+                                              data: { planStatus: "ACTIVE" },
+                                            })
+                                          );
+                                        }}
+                                      >
+                                        Bắt đầu
+                                      </button>
+                                    )}
                                   </div>
                                 </div>
                               </div>
-  
+
                               <span className="text-xs">
                                 {item.planDetail.description}
                               </span>
@@ -89,17 +144,17 @@ function ManagerNote() {
                                   </span>
                                   <span className="text-xs">
                                     {" "}
-                                    {moment(item?.timeStart).format("DD-MM-YYYY")}
+                                    {moment(item?.timeStart).format(
+                                      "DD-MM-YYYY"
+                                    )}
                                   </span>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        <></>
                       )
-                    )} */}
+                  )}
                 </div>
               </div>
             </div>
@@ -154,15 +209,15 @@ function ManagerNote() {
                             <input
                               type="date"
                               name=""
-                            //   onChange={(e) =>
-                            //     setUpdatePlanDetail({
-                            //       ...updatePlanDetail,
-                            //       timeStart: e.target.value,
-                            //     })
-                            //   }
-                            //   value={moment(updatePlanDetail?.timeStart).format(
-                            //     "YYYY-MM-DD"
-                            //   )}
+                              //   onChange={(e) =>
+                              //     setUpdatePlanDetail({
+                              //       ...updatePlanDetail,
+                              //       timeStart: e.target.value,
+                              //     })
+                              //   }
+                              //   value={moment(updatePlanDetail?.timeStart).format(
+                              //     "YYYY-MM-DD"
+                              //   )}
                               id="timeStart"
                               className="shadow-sm bg-gray-50  border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                               required
@@ -170,15 +225,15 @@ function ManagerNote() {
                             <input
                               type="date"
                               name=""
-                            //   onChange={(e) =>
-                            //     setUpdatePlanDetail({
-                            //       ...updatePlanDetail,
-                            //       timeEnd: e.target.value,
-                            //     })
-                            //   }
-                            //   value={moment(updatePlanDetail?.timeEnd).format(
-                            //     "YYYY-MM-DD"
-                            //   )}
+                              //   onChange={(e) =>
+                              //     setUpdatePlanDetail({
+                              //       ...updatePlanDetail,
+                              //       timeEnd: e.target.value,
+                              //     })
+                              //   }
+                              //   value={moment(updatePlanDetail?.timeEnd).format(
+                              //     "YYYY-MM-DD"
+                              //   )}
                               id="timeEnd"
                               className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                               required
@@ -289,6 +344,8 @@ function ManagerNote() {
           </div>
         </div>
       </div>
+      {detailPlan && <DetailPlanModal handleGetPlanById={handleGetPlanById} />}
+      {editPlan && <EditPlanModal handleHiddenEdit={handleHiddenEdit} />}
     </LayoutPlan>
   );
 }

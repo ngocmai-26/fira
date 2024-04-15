@@ -150,6 +150,7 @@ function ManagerPermissions() {
           </TableComponent>
         </div>
       </div>
+      
       <div
         className={`fixed mx-auto ${
           showPermissionById ? "block" : "hidden"

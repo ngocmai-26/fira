@@ -6,6 +6,7 @@ import { ErrorField } from "../../../component/ErrorField";
 import ButtonComponent from "../../../component/ButtonComponent";
 import { logout } from "../../../../slices/AuthSlice";
 import { updateUser } from "../../../../thunks/UsersThunk";
+import { changePasswordAuth } from "../../../../thunks/AuthThunk";
 
 function Account() {
   const [changePassword, setChangePassword] = useState(false);
@@ -15,6 +16,11 @@ function Account() {
   );
 
   const [newUserData, setNewUserData] = useState(user);
+  const [newDataPassword, setNewDataPassword] = useState({
+    email: newUserData?.email,
+    oldPassword: "",
+    newPassword: ""
+  })
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -22,12 +28,16 @@ function Account() {
   };
 
   const handleSubmit = () => {
-    console.log("newUserData", newUserData);
+    dispatch(changePasswordAuth(newDataPassword))
   };
 
   const handleUpdate = () => {
     dispatch(updateUser(newUserData));
   };
+
+  const handleChangePassword = () => {
+    setChangePassword(changePassword)
+  }
 
   return (
     <>
@@ -244,10 +254,11 @@ function Account() {
                     <div className="col-span-2">
                       <FormField
                         name={"oldPassword"}
-                        values={newUserData}
+                        values={newDataPassword}
                         id={"oldPassword"}
-                        setValue={setNewUserData}
+                        setValue={setNewDataPassword}
                         required={"required"}
+                        type={'password'}
                       />
                       {<ErrorField errors={errors} field={"oldPassword"} />}
                     </div>
@@ -260,16 +271,16 @@ function Account() {
                     <div className="col-span-2">
                       <FormField
                         name={"newPassword"}
-                        values={newUserData}
+                        values={newDataPassword}
                         id={"newPassword"}
-                        setValue={setNewUserData}
-                        required={"required"}
+                        setValue={setNewDataPassword}
+                        type={'password'}
                       />
                       {<ErrorField errors={errors} field={"newPassword"} />}
                     </div>
                   </div>
 
-                  <div className="confirmNewPassword grid grid-cols-3 gap-5 py-2">
+                  {/* <div className="confirmNewPassword grid grid-cols-3 gap-5 py-2">
                     <label htmlFor="" className="text-sm my-auto">
                       Nhập lại mật khẩu mới:
                     </label>
@@ -283,7 +294,7 @@ function Account() {
                       />
                       {<ErrorField errors={errors} field={"confirmPassword"} />}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="button text-right pt-5">
                   <ButtonComponent

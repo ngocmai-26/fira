@@ -63,7 +63,7 @@ const RoomHeader = ({ room }) => {
       <div className="flex">
         <div className="image w-10 ml-3 md:ml-0">
           <img
-            src="https://imgt.taimienphi.vn/cf/Images/np/2022/9/7/hinh-anh-cute-dep-de-thuong-nhat-7.jpg"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnBVsv4lu6ob9X3QlOOC0xMgAxOvHkfA8yptzdqcNMtQ&s"
             alt=""
             className="rounded-lg my-1"
           />

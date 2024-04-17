@@ -67,7 +67,7 @@ function EditPlanModal({ handleHiddenEdit }) {
       <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
         <div className="relative bg-white rounded-lg shadow ">
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
-            <h3 className="text-xl font-semibold">Kế hoạch mới</h3>
+            <h3 className="text-xl font-semibold">Chỉnh sửa kế hoạch</h3>
             <button
               type="button"
               onClick={() => handleHiddenEdit()}

@@ -320,3 +320,37 @@ export const confirmForgotPassword = createAsyncThunk(
     }
   },
 )
+
+export const changePasswordAuth = createAsyncThunk(
+  '/forgot-password',
+  async (data, { rejectWithValue, dispatch }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/public/auth/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(
+          setAlert({
+            type: TOAST_ERROR,
+            content: dataJson?.message[0],
+          }),
+        )
+        return rejectWithValue('something error')
+      }
+      console.log("dataJson?.data", dataJson?.data)
+      dispatch(setAlert({ type: TOAST_SUCCESS, content: 'Đổi mật khẩu thành công' }))
+    } catch (e) {
+      dispatch(setAlert({ type: 'warning', content: '' }))
+    }
+  },
+)
+
+
+

@@ -1,4 +1,26 @@
+import { useState } from "react";
+import { FormField } from "../../component/FormField";
+import { useDispatch } from "react-redux";
+import { updateDetailJob, updateJob } from "../../../thunks/JobsThunk";
+
 function ReportJobModel({handleHiddenReport, report}) {
+  const [dataReportJob, setDataReportJob] = useState({
+    note: '',
+    progress: 0,
+    instructionLink: ''
+  })
+  console.log("report", report)
+  const dispatch = useDispatch();
+  const handleSubmit = () => {
+    dispatch(updateJob({id: report.id, data: {
+      progress: dataReportJob?.progress,
+      status: "DONE"
+    }}))
+    dispatch(updateDetailJob({id: report.id, data: {
+      note: dataReportJob?.note,
+      instructionLink: dataReportJob?.instructionLink,
+    }}))
+  }
     return ( 
         <div
         className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
@@ -38,38 +60,60 @@ function ReportJobModel({handleHiddenReport, report}) {
                       <div className="md:col-span-2 ">
                         <div className="information-plan mt-2">
                           <div className="flex justify-between">
-                            <textarea
+                            {/* <textarea
                               className="input_todo w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-2"
                               // value={todo}
                               rows="7"
                               placeholder="Công việc đã hoàn thành"
                               // onChange={(e) => setTodo(e.target.value)}
+                            /> */}
+                             <FormField
+                              name={"note"}
+                              values={dataReportJob}
+                              id={"note"}
+                              setValue={setDataReportJob}
+                              required={"required"}
                             />
                           </div>
                         </div>
                         <div className="information-plan mt-2">
                           <div className="">
-                            <label htmlFor="mucdo" className="text-xs">
+                            <label htmlFor="instructionLink" className="text-xs">
                               Đường dẫn tải liệu báo cáo
                             </label>
-                            <input
+                            {/* <input
                               id="mucdo"
                               type="text"
                               className="input_todo shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 w-full block p-2"
                               // value={isLink}
                               // onChange={(e) => setIsLink(e.target.value)}
+                            /> */}
+                            <FormField
+                              name={"instructionLink"}
+                              values={dataReportJob}
+                              id={"instructionLink"}
+                              setValue={setDataReportJob}
+                              required={"required"}
                             />
                           </div>
                           <div className="">
                             <label htmlFor="mucdo" className="text-xs">
                               Cập nhật mức độ hoàn thành
                             </label>
-                            <input
+                            {/* <input
                               id="mucdo"
                               type="number"
                               className="input_todo shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-2"
                               // value={target}
                               // onChange={(e) => setTarget(e.target.value)}
+                            /> */}
+                            <FormField
+                              name={"progress"}
+                              values={dataReportJob}
+                              id={"progress"}
+                              setValue={setDataReportJob}
+                              required={"required"}
+                              type={"number"}
                             />
                           </div>
                         </div>
@@ -82,7 +126,7 @@ function ReportJobModel({handleHiddenReport, report}) {
                   <button
                     className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
                     type="button"
-                    // onClick={() => handleSubmit()}
+                    onClick={() => handleSubmit()}
                   >
                     Save
                   </button>

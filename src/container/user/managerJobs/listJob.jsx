@@ -31,15 +31,6 @@ function ManagerJobs() {
   const nav = useNavigate();
 
   useLayoutEffect(() => {
-    // if (account?.role?.id === 1) {
-    //   if (allJob?.length <= 0) {
-    //     dispatch(getAllJob());
-    //   }
-    // } else {
-    //   if (allJob?.length <= 0) {
-    //     dispatch(getAllJobById({ id: account?.user?.id }));
-    //   }
-    // }
     if (allJob?.length <= 0) {
       dispatch(getAllJob());
     }
@@ -51,9 +42,6 @@ function ManagerJobs() {
 
   const handlePageChange = (event, pageNumber) => {
     dispatch(getAllJob(pageNumber - 1));
-    // dispatch(
-    //   getAllJobById({ id: account?.user?.id, pagination: pageNumber - 1 })
-    // );
   };
 
   const handJobDetail = (item) => {
@@ -66,11 +54,6 @@ function ManagerJobs() {
 
   useLayoutEffect(() => {
     dispatch(getAllJob(0));
-    // if (account?.role?.id === 1) {
-    //   dispatch(getAllJob(0));
-    // } else {
-    //   dispatch(getAllJobById({ id: account?.user?.id, pagination: 0 }));
-    // }
   }, []);
 
   const handleHiddenEValue = (item) => {
@@ -86,6 +69,21 @@ function ManagerJobs() {
     setReport(item);
     setIsHiddenReport(!isHiddenReport);
   };
+
+  const filteredJobs = allJob.filter((item) => {
+    if (account.role.roleName === "ROLE_ADMIN") {
+      return true;
+    } else if (account.role.roleName === "ROLE_MANAGER") {
+      return item.manager.id === account.user.id;
+    } else {
+      return item.staffs.some((staff) => staff.id === account.user.id);
+    }
+  });
+
+  //search 
+  
+
+  
 
   return (
     <LayoutJob>
@@ -157,79 +155,88 @@ function ManagerJobs() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {allJob?.map((item) =>
-                    item?.jobDetail?.note?.length !== 0 &&
-                    item?.jobDetail?.verifyLink?.length !== 0 &&
-                    item?.status !== 4 ? (
-                      <tr className="">
-                        <td className="w-4 p-4">
-                          <div className="flex items-center">
-                            <input
-                              id="checkbox-{{ .id }}"
-                              aria-describedby="checkbox-1"
-                              type="checkbox"
-                              className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                            />
-                            <label
-                              htmlFor="checkbox-{{ .id }}"
-                              className="sr-only"
-                            >
-                              checkbox
-                            </label>
-                          </div>
-                        </td>
-
-                        <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                          <button
-                            className="underline"
-                            onClick={() => handJobDetail(item?.id)}
+                  {filteredJobs?.map((item) => (
+                    <tr className="">
+                      <td className="w-4 p-4">
+                        <div className="flex items-center">
+                          <input
+                            id="checkbox-{{ .id }}"
+                            aria-describedby="checkbox-1"
+                            type="checkbox"
+                            className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
+                          />
+                          <label
+                            htmlFor="checkbox-{{ .id }}"
+                            className="sr-only"
                           >
-                            {item?.title}
-                          </button>
-                        </td>
-                        <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                          {item?.manager?.fullName}
-                        </td>
-                        <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                          {item?.staffs.map((item) => (
-                            <p>{item?.fullName}</p>
-                          ))}
-                        </td>
-                        <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                          {item?.progress} %
-                        </td>
-                        <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                          <Link
-                            to="/detail-task"
-                            target="_blank"
-                            className="underline"
-                          >
-                            {item?.jobDetail?.verifyLink}
-                          </Link>
-                        </td>
-                        <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                          {
-                            new Date(item?.jobDetail?.timeStart)
-                              .toISOString()
-                              .split("T")[0]
-                          }
-                        </td>
-                        <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                          {
-                            new Date(item?.jobDetail?.timeEnd)
-                              .toISOString()
-                              .split("T")[0]
-                          }
-                        </td>
+                            checkbox
+                          </label>
+                        </div>
+                      </td>
 
-                        {account?.role?.id === 1 ? (
-                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            <button
-                              className="bg-blue-500 text-white text-xs p-1"
-                              onClick={() => handleHiddenEValue(item)}
-                            >
-                              Đánh giá
+                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                        <button
+                          className="underline"
+                          onClick={() => handJobDetail(item?.id)}
+                        >
+                          {item?.title}
+                        </button>
+                      </td>
+                      <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                        {item?.manager?.fullName}
+                      </td>
+                      <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                        {item?.staffs.map((item) => (
+                          <p>{item?.fullName}</p>
+                        ))}
+                      </td>
+                      <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                        {item?.progress} %
+                      </td>
+                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                        <Link
+                          to="/detail-task"
+                          target="_blank"
+                          className="underline"
+                        >
+                          {item?.jobDetail?.verifyLink}
+                        </Link>
+                      </td>
+                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                        {
+                          new Date(item?.jobDetail?.timeStart)
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                      </td>
+                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                        {
+                          new Date(item?.jobDetail?.timeEnd)
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                      </td>
+
+                      {account?.role?.id === 1 ? (
+                        item.status === "DONE" && item?.jobDetail?.jobEvaluate !== null ? (
+                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
+                            <button className="bg-blue-500 text-white text-xs p-1">
+                              Chi tiết
                             </button>
+                          </td>
+                        ) : (
+                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
+                            {
+                              item?.progress !== 0 && item?.jobDetail?.note && item?.jobDetail?.instructionLink ? (
+                                <button
+                                className="bg-blue-500 text-white text-xs p-1"
+                                onClick={() => handleHiddenEValue(item)}
+                              >
+                                Đánh giá
+                              </button>
+                              ) : (<></>)
+                            }
+                           
                             <button className="bg-blue-500 text-white text-xs p-1">
                               Chỉnh sửa
                             </button>
@@ -249,7 +256,7 @@ function ManagerJobs() {
                             </button>
                             {item?.status === null ? (
                               <button
-                                className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                className="bg-blue-500 text-white text-xs p-1 mr-2 px"
                                 onClick={() =>
                                   dispatch(
                                     comFirmJob({
@@ -265,86 +272,84 @@ function ManagerJobs() {
                               <></>
                             )}
                           </td>
-                        ) : (
-                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            {item?.jobDetail?.denyReason?.length > 0 ? (
+                        )
+                      ) : (
+                        <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                          {item?.jobDetail?.denyReason?.length > 0 ? (
+                            <button
+                              className="bg-blue-500 text-white text-xs p-1 mr-2"
+                              type="button"
+                              // onClick={() => handleShowReason(item)}
+                            >
+                              Xem ly do
+                            </button>
+                          ) : item?.status === "PENDING" ? (
+                            <>
                               <button
                                 className="bg-blue-500 text-white text-xs p-1 mr-2"
-                                type="button"
-                                // onClick={() => handleShowReason(item)}
+                                onClick={() => handleConfirm(item.id)}
                               >
-                                Xem ly do
+                                Xác nhận
                               </button>
-                            ) : item?.status === "PENDING" ? (
-                              <>
-                                <button
-                                  className="bg-blue-500 text-white text-xs p-1 mr-2"
-                                  onClick={() => handleConfirm(item.id)}
-                                >
-                                  Xác nhận
-                                </button>
-                                {/* <button
+                              {/* <button
                               className="bg-blue-500 text-white text-xs p-1 mr-2"
                               onClick={() => handleConfirm(item.id)}
                             >
                               Từ chối
                             </button> */}
-                              </>
-                            ) : (
-                              // : item?.status !== 4 &&
-                              // item?.staffs.map((staff) => (
-                              //   <div key={staff.id}>
-                              //     {staff.id === account.id ? (
-                              //       <button className="bg-blue-500 text-white text-xs p-1 mr-2">
-                              //         Báo cáo
-                              //       </button>
-                              //     ) : null}
-                              //   </div>
-                              // ))
-                              // (
-                              //   <button
-                              //     className="bg-blue-500 text-white text-xs p-1 mr-2"
-                              //     // onClick={() => handleHiddenCreate(item)}
-                              //   >
-                              //     Báo cáo
-                              //   </button>
-                              // ) : (
-                              //   <></>
-                              // )}
-                              // {auth_role?.id === 3 &&
-                              // item.jobDetail.denyReason.length === 0 &&
-                              // item?.status !== 4 ? (
-                              //   <button
-                              //     className="bg-blue-500 text-white text-xs p-1 "
-                              //     // onClick={() => handleHiddenUpdate(item)}
-                              //   >
-                              //     Cập nhật
-                              //   </button>
-                              // )
-                              <></>
-                            )}
-                            {item?.status === "PROCESSING" &&
-                              item?.staffs.map((staff) => (
-                                <div key={staff.id}>
-                                  {staff.id === account?.user?.id ? (
-                                    <button
-                                      className="bg-blue-500 text-white text-xs p-1 mr-2"
-                                      onClick={() => handleHiddenReport(item)}
-                                    >
-                                      Báo cáo
-                                    </button>
-                                  ) : null}
-                                </div>
-                              ))}
-                          </td>
-                        )}
+                            </>
+                          ) : (
+                            // : item?.status !== 4 &&
+                            // item?.staffs.map((staff) => (
+                            //   <div key={staff.id}>
+                            //     {staff.id === account.id ? (
+                            //       <button className="bg-blue-500 text-white text-xs p-1 mr-2">
+                            //         Báo cáo
+                            //       </button>
+                            //     ) : null}
+                            //   </div>
+                            // ))
+                            // (
+                            //   <button
+                            //     className="bg-blue-500 text-white text-xs p-1 mr-2"
+                            //     // onClick={() => handleHiddenCreate(item)}
+                            //   >
+                            //     Báo cáo
+                            //   </button>
+                            // ) : (
+                            //   <></>
+                            // )}
+                            // {auth_role?.id === 3 &&
+                            // item.jobDetail.denyReason.length === 0 &&
+                            // item?.status !== 4 ? (
+                            //   <button
+                            //     className="bg-blue-500 text-white text-xs p-1 "
+                            //     // onClick={() => handleHiddenUpdate(item)}
+                            //   >
+                            //     Cập nhật
+                            //   </button>
+                            // )
+                            <></>
+                          )}
+                          {item?.status === "PROCESSING" &&
+                            item?.staffs.map((staff) => (
+                              <div key={staff.id}>
+                                {staff.id === account?.user?.id ? (
+                                  <button
+                                    className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                    onClick={() => handleHiddenReport(item)}
+                                  >
+                                    Báo cáo
+                                  </button>
+                                ) : null}
+                              </div>
+                            ))}
+                        </td>
+                      )}
 
-                        <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
-                      </tr>
-                    ) : (
-                      <></>
-                    )
-                  )}
+                      <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

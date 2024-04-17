@@ -35,9 +35,6 @@ function ManagerPermissions() {
     dispatch(getAllPermissions(0));
   }, []);
 
-  const [searchData, setSearchData] = useState(allPermission);
-  const [search, setSearch] = useState("");
-
   const handleGetPermissionById = (item) => {
     setShowPermissionById(!showPermissionById);
     dispatch(getPerById(item));
@@ -46,17 +43,6 @@ function ManagerPermissions() {
   const handleSearchContact = (e) => {
     dispatch(searchPermissionAsync(e.target.value));
   };
-
-  // useEffect(() => {
-  //   const newSearch = allPermission.filter((item) =>
-  //     item.name.toLowerCase().includes(search.toLowerCase())
-  //   );
-  //   if (newSearch.length !== 0) {
-  //     setSearchData(newSearch);
-  //   } else {
-  //     setSearchData(allPermission);
-  //   }
-  // }, [search, allPermission]);
 
   useEffect(() => {
     setCurrentPage(paginationPer?.number + 1);
@@ -233,7 +219,7 @@ function ManagerPermissions() {
         <div className="relative w-full h-full max-w-2xl px-4 md:h-auto">
           <div className="relative bg-white rounded-lg shadow ">
             <div className="flex items-start justify-between p-5 border-b rounded-t">
-              <h3 className="text-xl font-semibold ">Chỉnh sửa chức vụ</h3>
+              <h3 className="text-xl font-semibold ">Chỉnh sửa chức năng</h3>
               <button
                 type="button"
                 onClick={() => handleHiddenUpdate()}

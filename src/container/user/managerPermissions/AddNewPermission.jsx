@@ -72,7 +72,7 @@ function AddNewPermission() {
 
             <div className="text-center py-3 flex justify-end">
               <Link
-                to="/quan-ly-chuc-vu"
+                to="/quan-ly-chuc-nang"
                 className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2"
               >
                 Quay lại

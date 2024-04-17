@@ -101,7 +101,11 @@ function JobsBoard() {
                                 <span className="text-xs text-slate-400">
                                   Start date:{" "}
                                 </span>
-                                <span className="text-xs">10-17</span>
+                                <span className="text-xs">
+                                  {moment(item.jobDetail.timeStart).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </span>
                               </div>
                             </Link>
                           </div>
@@ -140,7 +144,11 @@ function JobsBoard() {
                                 <span className="text-xs text-slate-400">
                                   Start date:{" "}
                                 </span>
-                                <span className="text-xs">10-17</span>
+                                <span className="text-xs">
+                                  {moment(item.jobDetail.timeStart).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </span>
                               </div>
                             </Link>
                           </div>
@@ -162,7 +170,7 @@ function JobsBoard() {
                       {allJob.map((item, key) =>
                         item.status === "DONE" ? (
                           <div
-                            className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
+                            className={`plan-item ${item?.jobDetail?.jobEvaluate === "GOOD" ? "bg-emerald-200": item?.jobDetail?.jobEvaluate === "MEDIUM" ? "bg-yellow-200": "bg-red-500"} m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2`}
                             key={key}
                           >
                             <Link to={`/jobs/${item.id}`}>
@@ -179,7 +187,11 @@ function JobsBoard() {
                                 <span className="text-xs text-slate-400">
                                   Start date:{" "}
                                 </span>
-                                <span className="text-xs">10-17</span>
+                                <span className="text-xs">
+                                  {moment(item.jobDetail.timeStart).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </span>
                               </div>
                             </Link>
                           </div>

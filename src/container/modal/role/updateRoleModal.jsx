@@ -23,7 +23,7 @@ function UpdateRoleModal({handleHiddenUpdate, roleDetail, setRoleDetail}) {
           <div className="relative w-full h-full max-w-2xl px-4 md:h-auto">
             <div className="relative bg-white rounded-lg shadow ">
               <div className="flex items-start justify-between p-5 border-b rounded-t">
-                <h3 className="text-xl font-semibold ">Chỉnh sửa kpi</h3>
+                <h3 className="text-xl font-semibold ">Chỉnh sửa chức vụ</h3>
                 <button
                   type="button"
                   onClick={() => handleHiddenUpdate()}

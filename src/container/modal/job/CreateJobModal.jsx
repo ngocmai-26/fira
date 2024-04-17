@@ -52,7 +52,7 @@ function CreateJobModel({handleHiddenCreate}) {
     staffsGotJobId: [],
     userCreateJobId: "",
     description: "",
-    note: "dđ",
+    note: "",
     target: "",
     timeStart: "",
     timeEnd: "",

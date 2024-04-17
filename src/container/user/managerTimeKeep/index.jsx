@@ -102,36 +102,13 @@ function ManagerTimeKeep() {
   return (
     <Layout>
       <div className="p-4">
-        <div className="title pt-3">
+        <div className="title pt-3 pb-4">
           <span className="text-xl font-bold uppercase">
-            Danh sách chức năng
+            Danh sách điểm danh
           </span>
         </div>
-        <div className="flex justify-between">
-          <SearchComponent
-            placeholder="Nhập tên chức năng"
-            handleSearch={debounce(handleSearchContact, 1000)}
-            SearchingAnimate={
-              <Spinner width={'w-5'} height={'h-5'} color={'fill-gray-400'} />
-            }
-            style={'w-2/6'}
-          />
-        </div>
-        <button
-          onClick={handleCheckin}
-          className="bg-yellow-700 hover:bg-yellow-800  focus:ring-yellow-300"
-          disabled={disabled}
-        >
-          {' '}
-          Checkin
-        </button>
-        <button
-          onClick={handleCheckout}
-          className="bg-yellow-700 hover:bg-yellow-800  focus:ring-yellow-300"
-        >
-          {' '}
-          Checkout
-        </button>
+    
+      
         <div className="table-manager">
           <TableComponent
             headTable={[

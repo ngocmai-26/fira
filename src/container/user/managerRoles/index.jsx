@@ -52,9 +52,6 @@ function ManagerRoles() {
     dispatch(getAllRole(0));
   }, []);
 
-  const [searchData, setSearchData] = useState(allRole);
-  const [search, setSearch] = useState("");
-
   const handleGetRoleById = (item) => {
     setShowRoleById(!showRoleById);
     dispatch(getRoleById(item));
@@ -267,7 +264,7 @@ function ManagerRoles() {
           <div className="relative w-full h-full max-w-2xl m-auto px-4 md:h-auto">
             <div className="relative bg-white rounded-lg shadow ">
               <div className="flex items-start justify-between p-5 border-b rounded-t ">
-                <h3 className="text-xl font-semibold">Thêm chức vụ</h3>
+                <h3 className="text-xl font-semibold">Cấp quyền chức vụ</h3>
                 <button
                   type="button"
                   onClick={() => setIsHiddenPer(true)}

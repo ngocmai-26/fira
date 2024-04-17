@@ -14,6 +14,7 @@ import {
 } from "../../../thunks/AccountsThunk";
 import { debounce } from "../../../app/debounce";
 import { Pagination, Stack } from "@mui/material";
+import EditAccountModal from "../../modal/account/EditAccountModal";
 
 function ManagerAccount() {
   const { allAccount, singleAccount, paginationAccount } = useSelector(
@@ -33,11 +34,21 @@ function ManagerAccount() {
   }, []);
 
   const [showRoleById, setShowRoleById] = useState(false);
+  const [showEditAccount, setEditAccount] = useState(false);
   const [searchData, setSearchData] = useState(allAccount);
   const [search, setSearch] = useState("");
   const handleGetAccountById = (item) => {
     setShowRoleById(!showRoleById);
     dispatch(getAccountById(item));
+  };
+  const handleShowEditAccount = (item) => {
+    
+    dispatch(getAccountById(item)).then((reps) => {
+      if (!reps.error) {
+        setEditAccount(!showEditAccount);
+      }
+    });
+    
   };
 
   const handleSearchContact = (e) => {
@@ -135,6 +146,7 @@ function ManagerAccount() {
                       <ButtonComponent
                         type={"button"}
                         textButton={"Chỉnh sửa"}
+                        handleClick={()=>handleShowEditAccount(item?.id)}
                       />
                       <ButtonComponent
                         type={"button"}
@@ -282,6 +294,7 @@ function ManagerAccount() {
           </div>
         </div>
       </div>
+      {showEditAccount && <EditAccountModal setEditAccount={setEditAccount} />}
       <Stack
         spacing={2}
         justifyContent="center"

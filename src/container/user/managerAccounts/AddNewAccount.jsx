@@ -11,6 +11,8 @@ import { setErrors } from "../../../slices/AccountsSlice";
 import { addNewAccount } from "../../../thunks/AccountsThunk";
 import validator from "validator";
 import { getAllRole } from "../../../thunks/RolesThunk";
+import { TOAST_ERROR } from "../../../constants/toast";
+import { setAlert } from "../../../slices/AlertSlice";
 
 function AddNewAccount() {
   const [newUserData, setNewUserData] = useState({});
@@ -56,6 +58,20 @@ function AddNewAccount() {
     const isStrong = checkPasswordStrength(accountData?.password);
 
     const newFormErrors = { ...errors };
+    if (
+      !accountData?.username ||
+      !accountData.password ||
+      !accountData.roleId
+    ) {
+      dispatch(
+        setAlert({
+          type: TOAST_ERROR,
+          content:
+            "Vui lòng nhập đầy đủ thông tin",
+        })
+      );
+      return;
+    }
 
     if (accountData?.username) {
       if (!validator.isEmail(accountData?.username)) {
@@ -100,6 +116,7 @@ function AddNewAccount() {
                   <div className="">
                     <label htmlFor="Email" className="font-medium text-sm">
                       Email:
+                      <span className="text-red-500">*</span>
                     </label>
                     <FormField
                       name={"username"}
@@ -118,6 +135,7 @@ function AddNewAccount() {
                   <div className="relative">
                     <label htmlFor="Phone" className="font-medium text-sm">
                       Mật khẩu
+                      <span className="text-red-500">*</span>
                     </label>
                     <FormField
                       name={"password"}
@@ -146,6 +164,7 @@ function AddNewAccount() {
                   <div className="relative">
                     <label htmlFor="roles" className="font-medium text-sm">
                       Chức vụ
+                      <span className="text-red-500">*</span> 
                     </label>
                     <select
                       className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
@@ -153,7 +172,7 @@ function AddNewAccount() {
                       onChange={handleRoleChange}
                     >
                       <option value="">---------</option>
-                      {allRole.map((item) => (
+                      {allRole?.map((item) => (
                         <option value={item.id}>{item.roleName}</option>
                       ))}
                     </select>

@@ -31,7 +31,9 @@ export const getAllAccount = createAsyncThunk(
       dispatch(setAllAccount(dataJson.data.content))
       dispatch(setPaginationAccount(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -67,7 +69,9 @@ export const addNewAccount = createAsyncThunk(
       )
       dispatch(getAllAccount())
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -97,7 +101,9 @@ export const deleteAccount = createAsyncThunk(
       )
       dispatch(getAllAccount())
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -121,7 +127,9 @@ export const getAccountById = createAsyncThunk(
       }
       dispatch(setSingleAccount(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -144,11 +152,14 @@ export const updateAccount = createAsyncThunk(
         dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
         return rejectWithValue()
       }
-      dispatch(setAlert({ type: TOAST_SUCCESS, content: "Chỉnh sửa thành công" }))
+      dispatch(
+        setAlert({ type: TOAST_SUCCESS, content: 'Chỉnh sửa thành công' }),
+      )
       dispatch(getAllAccount())
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
-

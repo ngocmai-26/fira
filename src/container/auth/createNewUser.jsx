@@ -58,7 +58,8 @@ function CreateNewUser() {
             <div className="">
               <div className="">
                 <label htmlFor="firstName" className="font-medium text-sm">
-                  Firstname
+                  FirstName: 
+                      <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"firstName"}
@@ -75,7 +76,8 @@ function CreateNewUser() {
             <div className=" ">
               <div className="relative">
                 <label htmlFor="lastName" className="font-medium text-sm">
-                  Lastname
+                  LastName: 
+                      <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"lastName"}
@@ -92,7 +94,8 @@ function CreateNewUser() {
             <div className="">
               <div className="relative">
                 <label htmlFor="address" className="font-medium text-sm">
-                  Address
+                  Address:
+                      <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"address"}
@@ -110,7 +113,8 @@ function CreateNewUser() {
             <div className="">
               <div className="relative">
                 <label htmlFor="birthday" className="font-medium text-sm">
-                  Birthday
+                  Birthday:
+                      <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"birthday"}
@@ -129,7 +133,8 @@ function CreateNewUser() {
             <div className="">
               <div className="relative">
                 <label htmlFor="department" className="font-medium text-sm">
-                  Department
+                  Department:
+                      <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"department"}
@@ -147,7 +152,8 @@ function CreateNewUser() {
             <div className="">
               <div className="relative">
                 <label htmlFor="phone" className="font-medium text-sm">
-                  Phone
+                  Phone:
+                      <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"phone"}

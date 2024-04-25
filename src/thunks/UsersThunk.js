@@ -28,7 +28,7 @@ export const getAllUsers = createAsyncThunk(
       dispatch(setAllUser(dataJson.data.content))
       dispatch(setPaginationUser(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: TOAST_ERROR, content: 'Error' }))
+      dispatch(setAlert({ type: TOAST_ERROR, content: TOAST_ERROR }))
     }
   },
 )
@@ -52,7 +52,9 @@ export const getUserById = createAsyncThunk(
       }
       dispatch(setSingleUser(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -79,7 +81,9 @@ export const deleteUsers = createAsyncThunk(
       )
       dispatch(getAllUsers())
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )

@@ -295,21 +295,24 @@ function ManagerPermissions() {
           </div>
         </div>
       </div>
-      <Stack
-        spacing={2}
-        justifyContent="center"
-        color="#fff"
-        className="pagination"
-      >
-        <Pagination
-          count={paginationPer?.totalPages}
-          color="primary"
-          className="pagination-item"
-          style={{ margin: "auto" }}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
-      </Stack>
+      {paginationPer?.totalPages > 1 && (
+    <Stack
+    spacing={2}
+    justifyContent="center"
+    color="#fff"
+    className="pagination"
+  >
+    <Pagination
+      count={paginationPer?.totalPages}
+      color="primary"
+      className="pagination-item"
+      style={{ margin: "auto" }}
+      page={currentPage}
+      onChange={handlePageChange}
+    />
+  </Stack>
+     )}
+      
     </Layout>
   );
 }

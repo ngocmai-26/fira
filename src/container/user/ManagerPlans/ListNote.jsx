@@ -35,6 +35,8 @@ function ManagerNote() {
     setEditPlan(!editPlan);
     dispatch(getPlanById(item));
   };
+
+  console.log("allPlan", allPlan)
   return (
     <LayoutPlan>
       <div className="flex flex-col">
@@ -128,8 +130,7 @@ function ManagerNote() {
                               </span>
                               <div className="w-full py-3">
                                 <div className="items-center mb-4">
-                                  {item?.planDetail?.note
-                                    .split("'/n'")
+                                  {item?.planDetail?.note?.split("'/n'")
                                     .map((pre) => (
                                       <div className="w-full flex ">
                                         <span className="ml-2 text-sm font-medium text-gray-700">

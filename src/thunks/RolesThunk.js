@@ -29,7 +29,9 @@ export const getAllRole = createAsyncThunk(
       dispatch(setAllRole(dataJson.data.content))
       dispatch(setPaginationRole(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -52,7 +54,9 @@ export const getRoleById = createAsyncThunk(
       }
       dispatch(setSingleRole(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -78,7 +82,9 @@ export const deleteRoles = createAsyncThunk(
       )
       dispatch(getAllRole())
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -209,16 +215,13 @@ export const searchRolesAsync = createAsyncThunk(
   async (data, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const resp = await fetch(
-        `${API.uri}/roles/search/by-name?name=${data}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+      const resp = await fetch(`${API.uri}/roles/search/by-name?name=${data}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
       if (resp.status >= 200 && resp.status < 300) {
         const dataJson = await resp.json()
         dispatch(setAllRole(dataJson.data.content))

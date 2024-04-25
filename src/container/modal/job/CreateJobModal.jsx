@@ -12,6 +12,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { FormField } from "../../component/FormField";
 import { getAllRole } from "../../../thunks/RolesThunk";
 import { getAllUsers } from "../../../thunks/UsersThunk";
+import { priorities } from "../../../constants/fakeData";
 
 
 function CreateJobModel({handleHiddenCreate}) {
@@ -45,7 +46,7 @@ function CreateJobModel({handleHiddenCreate}) {
   const [newJobData, setNewJobData] = useState({
     title: "",
     kpiCount: 0,
-    priority: 0,
+    priority: 3,
     progress: 0,
     jobStatus: "PENDING",
     userCreateJobId: account?.user?.id,
@@ -114,7 +115,8 @@ function CreateJobModel({handleHiddenCreate}) {
                             htmlFor="category-create"
                             className="block mb-2 text-xs font-medium text-gray-900 "
                           >
-                            Khung thời gian
+                            Khung thời gian:
+                      <span className="text-red-500">*</span>
                           </label>
                           <div className="grid grid-cols-2">
                             <FormField
@@ -162,13 +164,14 @@ function CreateJobModel({handleHiddenCreate}) {
                         }
                         className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                       >
-                        <option value="0" selected="">
-                          Mức độ
-                        </option>
-                        <option value="1">Cần gấp</option>
-                        <option value="2">Quan trọng</option>
-                        <option value="3">Bình thường</option>
-                        <option value="4">Ưu tiên sau</option>
+                         <option selected="" value="0">
+                    Mức độ
+                  </option>
+                  {priorities?.map((item, key) => (
+                    <option value={item?.id} key={key}>
+                      {item.name}
+                    </option>
+                  ))}
                       </select>
                     </div>
                     <div className="information-plan mt-2">
@@ -273,7 +276,7 @@ function CreateJobModel({handleHiddenCreate}) {
                     </form>
                     <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                       <div className="h-auto ">
-                        {allUser.map((item) => (
+                        {allUser?.map((item) => (
                           <button
                             type="button"
                             onClick={() =>
@@ -343,7 +346,7 @@ function CreateJobModel({handleHiddenCreate}) {
                     </form>
                     <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                       <div className="h-auto ">
-                        {allUser.map((item) => (
+                        {allUser?.map((item) => (
                           <button
                             type="button"
                             onClick={() =>

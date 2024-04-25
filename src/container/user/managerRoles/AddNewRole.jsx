@@ -50,7 +50,8 @@ function AddNewRole() {
                 <div className="">
                   <div className="">
                     <label htmlFor="roleName" className="font-medium text-sm">
-                      Tên chức vụ
+                      Tên chức vụ:
+                      <span className="text-red-500">*</span>
                     </label>
                     <FormField
                       name={"roleName"}
@@ -70,7 +71,8 @@ function AddNewRole() {
                       htmlFor="description"
                       className="font-medium text-sm"
                     >
-                      description
+                      Mô tả:
+                      <span className="text-red-500">*</span>
                     </label>
                     <FormField
                       name={"description"}

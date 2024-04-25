@@ -6,7 +6,11 @@ const initState = {
 const NotificationSlice = createSlice({
   name: "notificationSlice",
   initialState: initState,
-  reducers: {},
+  reducers: {
+    setAllNotifications: (state, { payload }) => {
+      state.notifications = payload
+    },
+  },
 });
-export const { setSearchContact } = SearchSlice.actions;
-export default SearchSlice.reducer;
+export const { setAllNotifications } = NotificationSlice.actions;
+export default NotificationSlice.reducer;

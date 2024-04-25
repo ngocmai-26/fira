@@ -33,7 +33,11 @@ function EditAccountModal({ setEditAccount }) {
   };
 
   const handleEditAccount = () => {
-    dispatch(updateAccount({ id: singleAccount?.id, data: accountData }));
+    dispatch(updateAccount({ id: singleAccount?.id, data: accountData })).then((resp) => {
+      if(!resp?.error) {
+        setEditAccount(false)
+      }
+    })
   }
   return (
     <div
@@ -72,6 +76,7 @@ function EditAccountModal({ setEditAccount }) {
                     <div className="">
                       <label htmlFor="Email" className="font-medium text-sm">
                         Email:
+                      <span className="text-red-500">*</span>
                       </label>
                       <FormField
                         name={"username"}
@@ -89,7 +94,8 @@ function EditAccountModal({ setEditAccount }) {
                   <div className=" ">
                     <div className="relative">
                       <label htmlFor="Phone" className="font-medium text-sm">
-                        Mật khẩu
+                        Mật khẩu:
+                      <span className="text-red-500">*</span>
                       </label>
                       <FormField
                         name={"password"}
@@ -117,7 +123,8 @@ function EditAccountModal({ setEditAccount }) {
                   <div className=" ">
                     <div className="relative">
                       <label htmlFor="roles" className="font-medium text-sm">
-                        Chức vụ
+                        Chức vụ:
+                      <span className="text-red-500">*</span>
                       </label>
                       <select
                         className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
@@ -125,7 +132,7 @@ function EditAccountModal({ setEditAccount }) {
                         onChange={handleRoleChange}
                       >
                         <option value="">---------</option>
-                        {allRole.map((item) => (
+                        {allRole?.map((item) => (
                           <option value={item.id}>{item.roleName}</option>
                         ))}
                       </select>
@@ -136,13 +143,7 @@ function EditAccountModal({ setEditAccount }) {
                 </div>
               </div>
               <div className="text-center py-3 flex justify-end">
-                <Link
-                  to="/quan-ly-tai-khoan"
-                  className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2"
-                >
-                  Quay lại
-                </Link>
-
+             
                 <ButtonComponent
                   type={"button"}
                   textButton={"Hoàn thành"}

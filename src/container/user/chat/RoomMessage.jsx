@@ -133,7 +133,7 @@ const RoomInput = ({ room, contentRef }) => {
       return;
     }
     
-    const selectedMedia = selectedImages.map((image) => {
+    const selectedMedia = selectedImages?.map((image) => {
       return {
         mediaLink: image,
         mediaType: image.type,
@@ -161,7 +161,7 @@ const RoomInput = ({ room, contentRef }) => {
       <div className="flex w-full gap-2 justify-center">
         <div className="w-4/5">
           <div className="flex gap-2 justify-start items-center flex-wrap">
-            {selectedImages.map((image, index) => (
+            {selectedImages?.map((image, index) => (
               <div key={index} className="py-2">
                 <img
                   title="Remove image"

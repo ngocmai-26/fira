@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 
 function ManagerTimeKeep() {
-  const { allTimeKeep } = useSelector((state) => state.timeKeepsSlice)
+  const { allTimeKeep } = useSelector((state) => state.timeKeepsReducer)
   const dispatch = useDispatch()
 
   useLayoutEffect(() => {

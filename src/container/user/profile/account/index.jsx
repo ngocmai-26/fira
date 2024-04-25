@@ -11,7 +11,7 @@ import { changePasswordAuth } from "../../../../thunks/AuthThunk";
 function Account() {
   const [changePassword, setChangePassword] = useState(false);
   const dispatch = useDispatch();
-  const { isFetching, errors, user } = useSelector(
+  const { errors, user } = useSelector(
     (state) => state.authReducer
   );
 
@@ -22,11 +22,6 @@ function Account() {
     newPassword: ""
   })
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    dispatch(logout());
-  };
-
   const handleSubmit = () => {
     dispatch(changePasswordAuth(newDataPassword))
   };
@@ -35,9 +30,6 @@ function Account() {
     dispatch(updateUser(newUserData));
   };
 
-  const handleChangePassword = () => {
-    setChangePassword(changePassword)
-  }
 
   return (
     <>
@@ -56,7 +48,8 @@ function Account() {
                 <div className="flex gap-2">
                   <div className="grid grid-cols-5 gap-5">
                     <div className="my-auto">
-                      <span className="font-medium text-sm">Họ và tên:</span>
+                      <span className="font-medium text-sm">FirstName:
+                      <span className="text-red-500">*</span></span>
                     </div>
                     <div className="col-span-4">
                       <FormField
@@ -71,7 +64,8 @@ function Account() {
                   </div>
                   <div className="grid grid-cols-5 gap-5">
                     <div className="my-auto">
-                      <span className="font-medium text-sm">Họ và tên:</span>
+                      <span className="font-medium text-sm">LastName:
+                      <span className="text-red-500">*</span></span>
                     </div>
                     <div className="lastName col-span-4">
                       <FormField
@@ -90,7 +84,8 @@ function Account() {
               <div className="password border-b-2 border-b-stone-100 py-5">
                 <div className="grid grid-cols-5 gap-5">
                   <div className="my-auto">
-                    <span className="font-medium text-sm">Mật khẩu:</span>
+                    <span className="font-medium text-sm">Mật khẩu:
+                      <span className="text-red-500">*</span></span>
                   </div>
                   <div className="col-span-2">
                     <div
@@ -112,7 +107,8 @@ function Account() {
               <div className="email border-b-2 border-b-stone-100 py-5">
                 <div className="grid grid-cols-5 gap-5">
                   <div className="my-auto">
-                    <span className="font-medium text-sm">Email:</span>
+                    <span className="font-medium text-sm">Email:
+                      <span className="text-red-500">*</span></span>
                   </div>
                   <div className="col-span-2">
                     <FormField
@@ -129,7 +125,8 @@ function Account() {
               <div className="phone border-b-2 border-b-stone-100 py-5">
                 <div className="grid grid-cols-5 gap-5">
                   <div className="my-auto">
-                    <span className="font-medium text-sm">Số điện thoại:</span>
+                    <span className="font-medium text-sm">Số điện thoại:
+                      <span className="text-red-500">*</span></span>
                   </div>
                   <div className="col-span-2">
                     <FormField
@@ -146,7 +143,8 @@ function Account() {
               <div className="address border-b-2 border-b-stone-100 py-5">
                 <div className="grid grid-cols-5 gap-5">
                   <div className="my-auto">
-                    <span className="font-medium text-sm">Ngày sinh:</span>
+                    <span className="font-medium text-sm">Ngày sinh:
+                      <span className="text-red-500">*</span></span>
                   </div>
                   <div className="col-span-2">
                     <FormField
@@ -164,7 +162,8 @@ function Account() {
               <div className="phongban border-b-2 border-b-stone-100 py-5">
                 <div className="grid grid-cols-5 gap-5">
                   <div className="my-auto">
-                    <span className="font-medium text-sm">Phòng ban:</span>
+                    <span className="font-medium text-sm">Phòng ban:
+                      <span className="text-red-500">*</span></span>
                   </div>
                   <div className="col-span-2">
                     <FormField

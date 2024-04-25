@@ -34,7 +34,7 @@ function JobsBoard() {
                       </p>
                     </div>
                     <div className="plan-content px-2">
-                      {allJob.map((item, key) =>
+                      {allJob?.map((item, key) =>
                         item.status === "PENDING" ? (
                           <div
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
@@ -81,7 +81,7 @@ function JobsBoard() {
                       </p>
                     </div>
                     <div className="plan-content px-2">
-                      {allJob.map((item, key) =>
+                      {allJob?.map((item, key) =>
                         item.status === 3 ? (
                           <div
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
@@ -124,7 +124,7 @@ function JobsBoard() {
                       </p>
                     </div>
                     <div className="plan-content px-2">
-                      {allJob.map((item, key) =>
+                      {allJob?.map((item, key) =>
                         item.status === "PROCESSING" ? (
                           <div
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
@@ -162,12 +162,12 @@ function JobsBoard() {
                     <div className="completed-header bg-emerald-200 px-4 py-3 border-b-emerald-500 border-b-2">
                       <p className="text-black text-sm py-1">Hoàn thành</p>
                       <p className="text-black text-xs">
-                        {allJob.filter((item) => item.status === "DONE").length}
+                        {allJob?.filter((item) => item.status === "DONE").length}
                         công việc
                       </p>
                     </div>
                     <div className="plan-content px-2">
-                      {allJob.map((item, key) =>
+                      {allJob?.map((item, key) =>
                         item.status === "DONE" ? (
                           <div
                             className={`plan-item ${item?.jobDetail?.jobEvaluate === "GOOD" ? "bg-emerald-200": item?.jobDetail?.jobEvaluate === "MEDIUM" ? "bg-yellow-200": "bg-red-500"} m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2`}

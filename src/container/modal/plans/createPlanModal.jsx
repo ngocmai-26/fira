@@ -47,7 +47,6 @@ function CreatePlanModal({ handleHiddenCreate }) {
 
   const handleClick = () => {
     dispatch(addNewPlan(dataJob))
-    console.log("dataJob",dataJob)
   }
 
   return (
@@ -91,7 +90,8 @@ function CreatePlanModal({ handleHiddenCreate }) {
                           htmlFor="category-create"
                           className="block mb-2 text-xs font-medium text-gray-900"
                         >
-                          Loại
+                          Loại: 
+                      <span className="text-red-500">*</span>
                         </label>
                         <select
                           id="category-create"
@@ -121,7 +121,8 @@ function CreatePlanModal({ handleHiddenCreate }) {
                           htmlFor="category-create"
                           className="block mb-2 text-xs font-medium text-gray-900 "
                         >
-                          Tiêu đề kế hoạch
+                          Tiêu đề kế hoạch: 
+                      <span className="text-red-500">*</span>
                         </label>
                         <div className="grid grid-cols-2">
                           <input
@@ -215,11 +216,12 @@ function CreatePlanModal({ handleHiddenCreate }) {
                       htmlFor="category-create"
                       className="block mb-2 text-xs font-medium text-gray-900"
                     >
-                      Công việc
+                      Công việc: 
+                      <span className="text-red-500">*</span>
                     </label>
                     <div className="users-selection-list-wrapper py-2 h-32 overscroll-y-none overflow-y-auto overflow-hidden">
                       <div className="h-auto ">
-                        {allJob.map((item) => (
+                        {allJob?.map((item) => (
                           <button
                             type="button"
                             onClick={() => handleJobIdClick(item)}

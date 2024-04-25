@@ -15,6 +15,7 @@ import {
 import { debounce } from "../../../app/debounce";
 import { Pagination, Stack } from "@mui/material";
 import EditAccountModal from "../../modal/account/EditAccountModal";
+import moment from "moment";
 
 function ManagerAccount() {
   const { allAccount, singleAccount, paginationAccount } = useSelector(
@@ -284,7 +285,10 @@ function ManagerAccount() {
                       disabled
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                     >
-                      {singleAccount?.user?.birthday ||
+                      
+                      {moment(singleAccount?.user?.birthday).format(
+                                    "DD-MM-YYYY"
+                                  ) ||
                         "Người dùng chưa cập nhập dữ liệu"}
                     </span>
                   </div>
@@ -295,21 +299,24 @@ function ManagerAccount() {
         </div>
       </div>
       {showEditAccount && <EditAccountModal setEditAccount={setEditAccount} />}
-      <Stack
-        spacing={2}
-        justifyContent="center"
-        color="#fff"
-        className="pagination"
-      >
-        <Pagination
-          count={paginationAccount?.totalPages}
-          color="primary"
-          className="pagination-item"
-          style={{ margin: "auto" }}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
-      </Stack>
+      {paginationAccount?.totalPages > 1 && (
+    <Stack
+    spacing={2}
+    justifyContent="center"
+    color="#fff"
+    className="pagination"
+  >
+    <Pagination
+      count={paginationAccount?.totalPages}
+      color="primary"
+      className="pagination-item"
+      style={{ margin: "auto" }}
+      page={currentPage}
+      onChange={handlePageChange}
+    />
+  </Stack>
+     )}
+      
     </Layout>
   );
 }

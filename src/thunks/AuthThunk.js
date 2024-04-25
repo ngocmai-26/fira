@@ -164,7 +164,7 @@ export const createNewUser = createAsyncThunk(
       if (!token) {
         dispatch(
           setAlert({
-            type: 'error',
+            type: TOAST_ERROR,
             content: 'Phiên bản hết hạn vui lòng đăng nhập lại',
           }),
         )
@@ -344,13 +344,13 @@ export const changePasswordAuth = createAsyncThunk(
         )
         return rejectWithValue('something error')
       }
-      console.log("dataJson?.data", dataJson?.data)
-      dispatch(setAlert({ type: TOAST_SUCCESS, content: 'Đổi mật khẩu thành công' }))
+      console.log('dataJson?.data', dataJson?.data)
+      dispatch(
+        setAlert({ type: TOAST_SUCCESS, content: 'Đổi mật khẩu thành công' }),
+      )
+      dispatch(logout())
     } catch (e) {
       dispatch(setAlert({ type: 'warning', content: '' }))
     }
   },
 )
-
-
-

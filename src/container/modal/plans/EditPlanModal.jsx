@@ -5,7 +5,7 @@ import { getAllJob } from "../../../thunks/JobsThunk";
 import { updatePlan } from "../../../thunks/PlansThunk";
 
 function EditPlanModal({ handleHiddenEdit }) {
-  const { allPlan, singlePlan } = useSelector((state) => state.plansReducer);
+  const { singlePlan } = useSelector((state) => state.plansReducer);
   const { allJob } = useSelector((state) => state.jobsReducer);
   const dispatch = useDispatch();
   useLayoutEffect(() => {
@@ -15,10 +15,10 @@ function EditPlanModal({ handleHiddenEdit }) {
   }, []);
 
 
-  const [dataJob, setDataJob] = useState({
+  const [dataPlan, setDataPlan] = useState({
     title: singlePlan?.title,
     planStatus: singlePlan?.status,
-    planJob: singlePlan?.planJob?.map((job) => job.id),
+    planJob: singlePlan?.planJobs?.map((job) => job.id),
     planDetailRequest: {
       description: singlePlan?.planDetail?.description,
       planType: singlePlan?.planDetail?.planType,
@@ -30,30 +30,27 @@ function EditPlanModal({ handleHiddenEdit }) {
   });
   const handleButtonClick = (jobId) => {
     let newPlanJob;
-    if (Array.isArray(dataJob.planJob)) {
-      if (dataJob.planJob.includes(jobId)) {
+    if (Array.isArray(dataPlan.planJob)) {
+      if (dataPlan.planJob.includes(jobId)) {
         // If the job exists in planJob, remove it
-        newPlanJob = dataJob.planJob.filter((id) => id !== jobId);
+        newPlanJob = dataPlan.planJob.filter((id) => id !== jobId);
       } else {
         // If the job doesn't exist in planJob, add it
-        newPlanJob = [...dataJob.planJob, jobId];
+        newPlanJob = [...dataPlan.planJob, jobId];
       }
     } else {
       // If planJob is not an array, initialize it as an array containing jobId
       newPlanJob = [jobId];
     }
-    setDataJob({
-      ...dataJob,
+    setDataPlan({
+      ...dataPlan,
       planJob: newPlanJob,
     });
   };
 
-  console.log("dataJob", singlePlan)
-
 
   const handleSubmit =() => {
-    console.log("dataJob", dataJob)
-    dispatch(updatePlan({id: singlePlan.id, data: dataJob})).then((reps) => {
+    dispatch(updatePlan({id: singlePlan.id, data: dataPlan})).then((reps) => {
         if (!reps.error) {
           handleHiddenEdit()
         }
@@ -100,15 +97,16 @@ function EditPlanModal({ handleHiddenEdit }) {
                           htmlFor="category-create"
                           className="block mb-2 text-xs font-medium text-gray-900"
                         >
-                          Loại
+                          Loại:
+                      <span className="text-red-500">*</span>
                         </label>
                         <select
                           id="category-create"
                           onChange={(e) =>
-                            setDataJob({
-                              ...dataJob,
+                            setDataPlan({
+                              ...dataPlan,
                               planDetailRequest: {
-                                ...dataJob.planDetailRequest,
+                                ...dataPlan.planDetailRequest,
                                 planType: e.target.value,
                               },
                             })
@@ -130,17 +128,18 @@ function EditPlanModal({ handleHiddenEdit }) {
                           htmlFor="category-create"
                           className="block mb-2 text-xs font-medium text-gray-900 "
                         >
-                          Tiêu đề kế hoạch
+                          Tiêu đề kế hoạch:
+                      <span className="text-red-500">*</span>
                         </label>
                         <div className="grid grid-cols-2">
                           <input
                             type="date"
                             name=""
                             onChange={(e) =>
-                              setDataJob({
-                                ...dataJob,
+                              setDataPlan({
+                                ...dataPlan,
                                 planDetailRequest: {
-                                  ...dataJob.planDetailRequest,
+                                  ...dataPlan.planDetailRequest,
                                   timeStart: e.target.value,
                                 },
                               })
@@ -162,10 +161,10 @@ function EditPlanModal({ handleHiddenEdit }) {
                             type="date"
                             name=""
                             onChange={(e) =>
-                              setDataJob({
-                                ...dataJob,
+                              setDataPlan({
+                                ...dataPlan,
                                 planDetailRequest: {
-                                  ...dataJob.planDetailRequest,
+                                  ...dataPlan.planDetailRequest,
                                   timeEnd: e.target.value,
                                 },
                               })
@@ -192,7 +191,7 @@ function EditPlanModal({ handleHiddenEdit }) {
                       type="text"
                       name="title"
                       onChange={(e) =>
-                        setDataJob({ ...dataJob, title: e.target.value })
+                        setDataPlan({ ...dataPlan, title: e.target.value })
                       }
                       defaultValue={singlePlan?.title ? singlePlan?.title : ""}
                       id="title"
@@ -206,10 +205,10 @@ function EditPlanModal({ handleHiddenEdit }) {
                       type="text"
                       name="description"
                       onChange={(e) =>
-                        setDataJob({
-                          ...dataJob,
+                        setDataPlan({
+                          ...dataPlan,
                           planDetailRequest: {
-                            ...dataJob.planDetailRequest,
+                            ...dataPlan.planDetailRequest,
                             description: e.target.value,
                           },
                         })
@@ -231,7 +230,8 @@ function EditPlanModal({ handleHiddenEdit }) {
                       htmlFor="category-create"
                       className="block mb-2 text-xs font-medium text-gray-900"
                     >
-                      Công việc
+                      Công việc:
+                      <span className="text-red-500">*</span>
                     </label>
                     <div className="users-selection-list-wrapper py-2 h-32 overscroll-y-none overflow-y-auto overflow-hidden">
                       <div className="h-auto ">
@@ -240,7 +240,7 @@ function EditPlanModal({ handleHiddenEdit }) {
                             key={job.id}
                             type="button"
                             className={`users-item flex py-1 px-2 w-full text-left ${
-                              dataJob.planJob?.includes(job.id)
+                              dataPlan.planJob?.includes(job.id)
                                 ? "bg-gray-300"
                                 : ""
                             }`}

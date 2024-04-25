@@ -24,6 +24,10 @@ import JobsBoard from "../container/user/managerJobs/jobsBoard";
 import JobDetail from "../container/user/managerJobs/jobDetail";
 import ManagerNote from "../container/user/managerPlans/ListNote";
 import ManagerTimeKeep from "../container/user/managerTimeKeep";
+import ManagerKPICategories from "../container/user/managerKPICategory";
+import KPI from "../container/user/managerKPI";
+import ListKPI from "../container/user/managerKPI/ListKPI";
+import EvaluateKPI from "../container/user/managerKPI/evaluate";
 
 export const GeneralRoute = () => {
   return (
@@ -58,6 +62,9 @@ export const LoggedRoute = () => {
         <Route path="/quan-ly-cong-viec-dang-bang" element={<JobsBoard />} />
         <Route path="/quan-ly-diem-danh" element={<ManagerTimeKeep />} />
         <Route path="/quan-ly-ke-hoach" element={<ManagerNote />} />
+        <Route path="/quan-ly-danh-muc-kpi" element={<ManagerKPICategories />} />
+        <Route path="/quan-ly-phieu-danh-gia" element={<ListKPI />} />
+        <Route path="/danh-gia-KPI" element={<EvaluateKPI />} />
         <Route path="/them-chuc-vu" element={<AddNewRole />} />
         <Route path="/them-tai-khoan" element={<AddNewAccount />} />
         <Route path="/them-chuc-nang" element={<AddNewPermission />} />

@@ -8,13 +8,21 @@ import {
   faListCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewJob, getAllJob, getAllJobById } from "../../../thunks/JobsThunk";
+import {
+  addNewJob,
+  getAllJob,
+  getAllJobById,
+  searchJobAsync,
+} from "../../../thunks/JobsThunk";
 import { getAllUsers } from "../../../thunks/UsersThunk";
 import { getAllRole } from "../../../thunks/RolesThunk";
 import { priorities, statusList } from "../../../constants/fakeData";
 import { FormField } from "../../component/FormField";
 import { ErrorField } from "../../component/ErrorField";
 import CreateJobModel from "../../modal/job/CreateJobModal";
+import { debounce } from "../../../app/debounce";
+import SearchComponent from "../../component/SearchComponent";
+import { Spinner } from "../../component/Spinner";
 
 function LayoutJob({ children }) {
   const { allRole } = useSelector((state) => state.rolesReducer);
@@ -51,7 +59,7 @@ function LayoutJob({ children }) {
   const [changeReason, setChangeReason] = useState(0);
   const [state, setState] = useState([]);
 
-  const [job, setJob] = useState({});
+  const [jobs, setJobs] = useState(allJob);
 
   const [isHiddenCreate, setIsHiddenCreate] = useState(false);
   const handleHiddenCreate = () => {
@@ -93,6 +101,20 @@ function LayoutJob({ children }) {
     task: true,
   });
 
+  const handleSearchJob = (e) => {
+    dispatch(searchJobAsync(e.target.value));
+  };
+
+  const handleFilterPriority = (item) => {
+    const filteredItems = allJob.filter((element) => {
+      return element.priority === +item;
+    });
+    if (item ==='' || item === '0') {
+      setJobs(allJob);
+    } else {
+      setJobs(filteredItems)
+    }
+  };
 
 
   return (
@@ -141,18 +163,18 @@ function LayoutJob({ children }) {
                 )}
               </ul>
               <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
-                <label htmlFor="accounts-search" className="sr-only">
-                  Tìm kiếm
-                </label>
                 <div className="relative w-full  mt-1 sm:w-64 py-2">
-                  <input
-                    type="text"
-                    name="search"
-                    id="accounts-search"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
-                    placeholder="Tìm kiếm"
-                    // value={search}
-                    //   onChange={(e) => setSearch(e.target.value)}
+                  <SearchComponent
+                    placeholder="Nhập tên chức vụ"
+                    handleSearch={debounce(handleSearchJob, 1000)}
+                    style={"w-full"}
+                    SearchingAnimate={
+                      <Spinner
+                        width={"w-20"}
+                        height={"h-5"}
+                        color={"fill-gray-400"}
+                      />
+                    }
                   />
                 </div>
               </form>
@@ -182,7 +204,7 @@ function LayoutJob({ children }) {
                   <option selected="" value="0">
                     Trạng thái
                   </option>
-                  {statusList.map((item, key) => (
+                  {statusList?.map((item, key) => (
                     <option value={item?.id} key={key}>
                       {item.name}
                     </option>
@@ -190,13 +212,14 @@ function LayoutJob({ children }) {
                 </select>
                 <select
                   id="category-create"
-                  // onChange={(e) => setFilterPriority(e.target.value)}
+                  onChange={(e) => handleFilterPriority(e.target.value)}
                   className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                 >
-                  <option selected="" value="0">
+                  <option selected="" value="">
                     Mức độ
                   </option>
-                  {priorities.map((item, key) => (
+                  <option value="0">Tất cả</option>
+                  {priorities?.map((item, key) => (
                     <option value={item?.id} key={key}>
                       {item.name}
                     </option>
@@ -220,7 +243,9 @@ function LayoutJob({ children }) {
             {children}
           </div>
           {/* Tạo công việc mới */}
-                  {isHiddenCreate && <CreateJobModel handleHiddenCreate={handleHiddenCreate} />}
+          {isHiddenCreate && (
+            <CreateJobModel handleHiddenCreate={handleHiddenCreate} />
+          )}
         </div>
       </Layout>
     </>

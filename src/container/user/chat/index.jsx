@@ -51,7 +51,7 @@ function Chat() {
           handleOpenModalRoom={setRoomModalVisible}
         />
         <RoomMessageGenerator rooms={userRoom} activeRoom={activeRoom} />
-        {userRoom.map((room, index) => {
+        {userRoom?.map((room, index) => {
           return (
             <RoomInfo
               room={room}

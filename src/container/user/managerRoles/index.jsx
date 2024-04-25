@@ -72,7 +72,7 @@ function ManagerRoles() {
     }
   };
 
-  const handleSearchContact = (e) => {
+  const handleSearchRole = (e) => {
     dispatch(searchRolesAsync(e.target.value));
   };
 
@@ -103,7 +103,7 @@ function ManagerRoles() {
           <div className="flex justify-between">
             <SearchComponent
               placeholder="Nhập tên chức vụ"
-              handleSearch={debounce(handleSearchContact, 1000)}
+              handleSearch={debounce(handleSearchRole, 1000)}
               SearchingAnimate={
                 <Spinner width={"w-5"} height={"h-5"} color={"fill-gray-400"} />
               }
@@ -168,7 +168,7 @@ function ManagerRoles() {
                           (pre) => pre?.id === item?.id
                         );
                         if (foundItem) {
-                          const newIdsArray = foundItem.permissions.map(
+                          const newIdsArray = foundItem?.permissions?.map(
                             (perItem) => perItem?.id
                           );
                           setTaskList(newIdsArray);
@@ -375,22 +375,24 @@ function ManagerRoles() {
 
         {/* update */}
         {isHiddenUpdate && <UpdateRoleModal handleHiddenUpdate={handleHiddenUpdate} roleDetail={roleDetail} setRoleDetail={setRoleDetail} />}
-
-        <Stack
-          spacing={2}
-          justifyContent="center"
-          color="#fff"
-          className="pagination"
-        >
-          <Pagination
-            count={paginationRole?.totalPages}
-            color="primary"
-            className="pagination-item"
-            style={{ margin: "auto" }}
-            page={currentPage}
-            onChange={handlePageChange}
-          />
-        </Stack>
+        {paginationRole?.totalPages > 1 && (
+   <Stack
+   spacing={2}
+   justifyContent="center"
+   color="#fff"
+   className="pagination"
+ >
+   <Pagination
+     count={paginationRole?.totalPages}
+     color="primary"
+     className="pagination-item"
+     style={{ margin: "auto" }}
+     page={currentPage}
+     onChange={handlePageChange}
+   />
+ </Stack>
+     )}
+        
       </Layout>
     </>
   );

@@ -20,12 +20,12 @@ function ManagerJobs() {
   const [currentPage, setCurrentPage] = useState(paginationJob?.number + 1);
   const { user } = useSelector((state) => state.authReducer);
   const [evaluateData, setEvaluateData] = useState({});
+  const [hiddenEValue, isHiddenEValue] = useState(false);
 
   const [isHiddenReport, setIsHiddenReport] = useState(false);
 
   const [report, setReport] = useState({});
 
-  const [hiddenEValue, isHiddenEValue] = useState(false);
 
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -186,7 +186,7 @@ function ManagerJobs() {
                         {item?.manager?.fullName}
                       </td>
                       <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                        {item?.staffs.map((item) => (
+                        {item?.staffs?.map((item) => (
                           <p>{item?.fullName}</p>
                         ))}
                       </td>
@@ -332,7 +332,7 @@ function ManagerJobs() {
                             <></>
                           )}
                           {item?.status === "PROCESSING" &&
-                            item?.staffs.map((staff) => (
+                            item?.staffs?.map((staff) => (
                               <div key={staff.id}>
                                 {staff.id === account?.user?.id ? (
                                   <button
@@ -357,21 +357,24 @@ function ManagerJobs() {
         </div>
       </div>
 
-      <Stack
-        spacing={2}
-        justifyContent="center"
-        color="#fff"
-        className="pagination"
-      >
-        <Pagination
-          count={paginationJob?.totalPages}
-          color="primary"
-          className="pagination-item"
-          style={{ margin: "auto" }}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
-      </Stack>
+      {paginationJob?.totalPages > 1 && (
+     <Stack
+     spacing={2}
+     justifyContent="center"
+     color="#fff"
+     className="pagination"
+   >
+     <Pagination
+       count={paginationJob?.totalPages}
+       color="primary"
+       className="pagination-item"
+       style={{ margin: "auto" }}
+       page={currentPage}
+       onChange={handlePageChange}
+     />
+   </Stack>
+     )}
+      
       {/* Chi tiết công việc đã hoàn thành */}
       {/* <DetailJobModel /> */}
       {/* Đánh giá công việc */}

@@ -89,6 +89,7 @@ function Register() {
                 <div className="">
                   <label htmlFor="Email" className="font-medium text-sm">
                   Email:
+                      <span className="text-red-500">*</span>
                   </label>
                   <FormField
                     name={"username"}
@@ -106,7 +107,8 @@ function Register() {
               <div className=" ">
                 <div className="relative">
                   <label htmlFor="Phone" className="font-medium text-sm">
-                    Mật khẩu
+                    Mật khẩu:
+                      <span className="text-red-500">*</span>
                   </label>
                   <FormField
                     name={"password"}
@@ -135,7 +137,8 @@ function Register() {
               <div className="">
                 <div className="relative">
                   <label htmlFor="confirmPassword" className="font-medium text-sm">
-                    Nhập lại mật khẩu
+                    Nhập lại mật khẩu:
+                      <span className="text-red-500">*</span>
                   </label>
                   <FormField
                     name={"confirmPassword"}

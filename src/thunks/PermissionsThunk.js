@@ -32,7 +32,9 @@ export const getAllPermissions = createAsyncThunk(
       dispatch(setAllPermissions(dataJson.data.content))
       dispatch(setPaginationPer(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -56,7 +58,9 @@ export const getPerById = createAsyncThunk(
       }
       dispatch(setSinglePermission(dataJson.data))
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )
@@ -84,7 +88,10 @@ export const deletePermissions = createAsyncThunk(
       dispatch(getAllPermissions())
     } catch (e) {
       dispatch(
-        setAlert({ type: 'error', content: 'Error when delete permission' }),
+        setAlert({
+          type: TOAST_ERROR,
+          content: 'Error when delete permission',
+        }),
       )
     }
   },
@@ -121,7 +128,9 @@ export const addNewPermission = createAsyncThunk(
       )
       dispatch(getAllPermissions())
     } catch (e) {
-      dispatch(setAlert({ type: 'error', content: 'Error when delete role' }))
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Error when delete role' }),
+      )
     }
   },
 )

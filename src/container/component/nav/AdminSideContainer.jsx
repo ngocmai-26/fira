@@ -1,12 +1,17 @@
 export const AdminSideContainer = (props) => {
   return (
     <aside className="flex-shrink-0 w-12 hover:w-56 bg-white navHome border-r">
-      <div className="flex flex-col h-full">
-        <nav aria-label="Main" className="flex-1 px-2 py-4 space-y-2  mt-10">
-          <div className="py-3 flex flex-col h-85 overflow-hidden">
-            {props.children}
-          </div>
-        </nav>
+      <div className="flex flex-col h-full scroll mt-20">
+        <div className="scroll-item">
+            <nav
+              aria-label="Main"
+              className="flex-1 px-2 space-y-2  "
+            >
+              <div className=" flex flex-col h-85 overflow-hidden ">
+                {props.children}
+              </div>
+            </nav>
+        </div>
 
         <div className="flex-shrink-0 px-2 py-4 space-y-2">
           <button

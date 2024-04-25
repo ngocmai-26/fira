@@ -62,7 +62,8 @@ function Login() {
             <div className="username border-b-2 border-b-stone-100 py-5">
               <div className="grid grid-cols-3 ">
                 <div className="my-auto ">
-                  <span className="font-medium text-sm">username:</span>
+                  <span className="font-medium text-sm">username: 
+                      <span className="text-red-500">*</span></span>
                 </div>
                 <div className="col-span-2">
                   <FormField
@@ -79,7 +80,8 @@ function Login() {
             <div className="password border-b-2 border-b-stone-100 py-5">
               <div className="grid grid-cols-3 ">
                 <div className="my-auto ">
-                  <span className="font-medium text-sm">Password:</span>
+                  <span className="font-medium text-sm">Password:
+                      <span className="text-red-500">*</span></span>
                 </div>
                 <div className="col-span-2 relative">
                   <FormField

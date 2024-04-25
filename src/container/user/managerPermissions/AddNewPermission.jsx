@@ -35,7 +35,8 @@ function AddNewPermission() {
                 <div className="">
                   <div className="">
                     <label htmlFor="name" className="font-medium text-sm">
-                      Tên chức năng
+                      Tên chức năng:
+                      <span className="text-red-500">*</span>
                     </label>
                     <FormField
                       name={"name"}
@@ -55,7 +56,8 @@ function AddNewPermission() {
                       htmlFor="description"
                       className="font-medium text-sm"
                     >
-                      Mô tả
+                      Mô tả:
+                      <span className="text-red-500">*</span>
                     </label>
                     <FormField
                       name={"description"}

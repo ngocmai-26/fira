@@ -47,7 +47,7 @@ function MsgItem({ data, type }) {
         ) : (
           <div className="m-1">
             <img
-              src={data?.avatar}
+              src={data?.avatar? data?.avatar: "https://upload.tanca.io/api/image/news/611bed5f035cef73103a6107?name=2021-08-18-000951-quan-ly-cong-viec.jpg"}
               alt=""
               className="rounded-lg object-cover w-12 h-12 "
             />
@@ -60,16 +60,16 @@ function MsgItem({ data, type }) {
         >
           <div
             className={`information-name ${
-              data?.fullName ? "block" : "hidden"
+              data?.content ? "block" : "hidden"
             }`}
           >
-            <span className="font-medium">{data?.fullName}</span>
+            <span className="font-medium">{data?.content}</span>
           </div>
           <div
-            className={`information-chat overflow-hidden text-ellipsis max-w-64`}
+            className={`information-chat overflow-hidden text-ellipsis max-w-64 text-start`}
           >
             <span className="text-xs font-medium single-line ">
-              {data?.email}
+              Bạn đã được giao việc từ {data?.from?.fullName}
             </span>
           </div>
         </div>

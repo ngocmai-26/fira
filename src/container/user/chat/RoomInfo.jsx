@@ -33,7 +33,7 @@ export const RoomInfo = ({ activeRoom, room, handleHiddenAddMember }) => {
               className="scroll h-1/3 overflow-x-hidden overflow-y-scroll"
               style={{ height: "40vh" }}
             >
-              {room.members.map((item) => (
+              {room?.members?.map((item) => (
                 <MsgItem data={item} type={2} />
               ))}
             </div>
@@ -47,7 +47,7 @@ export const RoomInfo = ({ activeRoom, room, handleHiddenAddMember }) => {
               style={{ height: "45vh" }}
             >
               <div className="scroll-item">
-                {room.media.map((item) => (
+                {room?.media?.map((item) => (
                   <MsgItem data={item} type={1} />
                 ))}
               </div>

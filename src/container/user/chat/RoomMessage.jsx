@@ -1,6 +1,7 @@
 import {
   faCompress,
   faImage,
+  faLeftLong,
   faPlus,
   faTimes,
   faUpRightAndDownLeftFromCenter,
@@ -14,11 +15,11 @@ import BoxMsg from "../../component/Boxmsg";
 import { sendMessage } from "../../../thunks/RoomThunk";
 import { setAlert } from "../../../slices/AlertSlice";
 import { TOAST_ERROR } from "../../../constants/toast";
-export const RoomMessage = ({ room, activeRoom }) => {
+export const RoomMessage = ({ room, activeRoom, hiddenRoomMess, handleCloseRoomMess }) => {
   const contentRef = useRef(null);
   return (
-    <RoomMessageContainer active={activeRoom == room?.id}>
-      <RoomHeader room={room} />
+    <RoomMessageContainer active={hiddenRoomMess && activeRoom == room?.id}>
+      <RoomHeader room={room} handleCloseRoomMess={handleCloseRoomMess} />
       <RoomMessageContent
         messages={room.allMessages.content}
         contentRef={contentRef}
@@ -45,7 +46,7 @@ const RoomMessageContent = ({ messages, contentRef }) => {
       <div
         className="scroll-item pb-10"
         ref={contentRef}
-        style={{ maxHeight: "90vh" }}
+        style={{ maxHeight: "85vh" }}
       >
         {[...messages].reverse().map((item) => (
           <BoxMsg data={item} />
@@ -54,13 +55,16 @@ const RoomMessageContent = ({ messages, contentRef }) => {
     </div>
   );
 };
-const RoomHeader = ({ room }) => {
+const RoomHeader = ({ room, handleCloseRoomMess }) => {
   const { expandFileMedia } = useSelector((state) => state.toggleReducer).room;
   const dispatch = useDispatch();
 
   return (
     <div className="flex justify-between border-b-gray-100 border-b-2">
       <div className="flex">
+        <button onClick={handleCloseRoomMess}>
+          <FontAwesomeIcon icon={faLeftLong} className="text-gray-400" />
+        </button>
         <div className="image w-10 ml-3 md:ml-0">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnBVsv4lu6ob9X3QlOOC0xMgAxOvHkfA8yptzdqcNMtQ&s"

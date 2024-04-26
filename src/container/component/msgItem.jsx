@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { bytesToReadable } from "../../app/static";
 
 function MsgItem({ data, type }) {
+  console.log("data", data)
   return (
     <div
       className={`flex p-1 justify-between hover:bg-gray-100 rounded-md cursor-pointer`}
@@ -60,18 +61,25 @@ function MsgItem({ data, type }) {
         >
           <div
             className={`information-name ${
-              data?.content ? "block" : "hidden"
+              data?.fullName ? "block" : "hidden"
             }`}
           >
-            <span className="font-medium">{data?.content}</span>
+            <span className="font-bold text-sm">{data?.fullName}</span>
           </div>
           <div
+            className={`information-name ${
+              data?.email ? "block" : "hidden"
+            }`}
+          >
+            <span className="text-xs text-gray-400">{data?.email}</span>
+          </div>
+          {/* <div
             className={`information-chat overflow-hidden text-ellipsis max-w-64 text-start`}
           >
             <span className="text-xs font-medium single-line ">
               Bạn đã được giao việc từ {data?.from?.fullName}
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
 

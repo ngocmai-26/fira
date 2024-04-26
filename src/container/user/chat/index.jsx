@@ -35,13 +35,18 @@ function Chat() {
   const handleExpandBox = (id, roomMember) => {
     setActiveRoom(id);
   };
+
+  const [hiddenRoomMess , setHiddenRoomMess]  =useState(false)
+  const handleCloseRoomMess = () => {
+    setHiddenRoomMess(!hiddenRoomMess)
+  }
+  
   const { expandFileMedia } = useSelector((state) => state.toggleReducer).room;
   return (
     <article className="overflow-hidden relative flex">
       <NavBarAdmin />
       <div
-        className={`grid grid-cols-4
-         h-screen relative w-full`}
+        className={`grid xl:grid-cols-4 md:grid-cols-3 h-screen relative w-full`}
       >
         <RoomItem
           activeRoom={activeRoom}
@@ -49,8 +54,9 @@ function Chat() {
           rooms={userRoom}
           handleOpenContactModal={setContactNodalVisible}
           handleOpenModalRoom={setRoomModalVisible}
+          setHiddenRoomMess={setHiddenRoomMess}
         />
-        <RoomMessageGenerator rooms={userRoom} activeRoom={activeRoom} />
+        <RoomMessageGenerator rooms={userRoom} activeRoom={activeRoom}  handleCloseRoomMess={handleCloseRoomMess} hiddenRoomMess={hiddenRoomMess} />
         {userRoom?.map((room, index) => {
           return (
             <RoomInfo

@@ -1,7 +1,7 @@
 import MsgItem from "../MsgItem";
 import { RoomItem } from "./RoomItem";
 
-export const RoomItemContainer = ({ rooms, handleExpandBox, activeRoom }) => {
+export const RoomItemContainer = ({ rooms, handleExpandBox, activeRoom, setHiddenRoomMess }) => {
   return (
     <div className="scroll">
       {rooms.map((item, index) => {
@@ -14,7 +14,8 @@ export const RoomItemContainer = ({ rooms, handleExpandBox, activeRoom }) => {
             <button
               className="text-left w-full"
               onClick={() => {
-                handleExpandBox(item.id, item.members);
+                handleExpandBox(item.id, item.members)
+                setHiddenRoomMess(true)
               }}
             >
               <RoomItem room={item} activeRoom={activeRoom} />

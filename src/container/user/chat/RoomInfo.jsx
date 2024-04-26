@@ -1,11 +1,15 @@
 import { useLayoutEffect, useState } from "react";
 import MsgItem from "../../component/MsgItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ButtonComponent from "../../component/ButtonComponent";
+import { EXPAND_FILE_MEDIA, setRoomToggle } from "../../../slices/ToglleSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCompress, faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
 
 export const RoomInfo = ({ activeRoom, room, handleHiddenAddMember }) => {
   const { expandFileMedia } = useSelector((state) => state.toggleReducer).room;
   useLayoutEffect(() => {}, [expandFileMedia]);
+  const dispatch = useDispatch();
   return (
     <div
       className={`p-2 px-5 lg:px-2 lg:col-span-1 absolute lg:relative w-full bg-white h-screen lg:right-0 ${
@@ -16,6 +20,24 @@ export const RoomInfo = ({ activeRoom, room, handleHiddenAddMember }) => {
         <div className="title">
           <span className="text-2xl font-bold">Thông tin</span>
         </div>
+        <div className="time flex justify-center lg:hidden">
+        <button
+          onClick={() => {
+            dispatch(
+              setRoomToggle({
+                type: EXPAND_FILE_MEDIA,
+                value: !expandFileMedia,
+              })
+            );
+          }}
+          className="text-sm text-black my-auto px-3 font-medium py-1 rounded-md rotate-90"
+        >
+          <FontAwesomeIcon
+            icon={expandFileMedia ? faUpRightAndDownLeftFromCenter : faCompress}
+            size="md"
+          />
+        </button>
+      </div>
       </div>
       <div className="h-screen">
         <div className="flex flex-col">

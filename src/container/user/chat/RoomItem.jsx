@@ -10,6 +10,7 @@ export const RoomItem = ({
   handleOpenModalRoom,
   handleExpandBox,
   activeRoom,
+  setHiddenRoomMess
 }) => {
   const { addContactRequest, contactRequest } = useSelector(
     (state) => state.contactReducer
@@ -52,6 +53,7 @@ export const RoomItem = ({
         rooms={rooms}
         handleExpandBox={handleExpandBox}
         activeRoom={activeRoom}
+        setHiddenRoomMess={setHiddenRoomMess}
       />
     </div>
   );

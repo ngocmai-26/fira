@@ -1,9 +1,15 @@
 import { faBell, faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MsgItem from "./MsgItem";
-import { styled } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { readNotification } from "../../thunks/NotificationThunk";
 
 function NotificationComponent({ styles, data }) {
+  const unreadCount = data?.filter(item => item?.read===false).length;
+  const dispatch = useDispatch();
+
+  const handleReadNotification = (item) => {
+    dispatch(readNotification(item))
+  }
 
   return (
     <div className="relative notification m-auto px-3 cursor-pointer">
@@ -12,6 +18,9 @@ function NotificationComponent({ styles, data }) {
           icon={faBell}
           className={styles || "text-gray-800 text-lg"}
         />
+        <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+           {unreadCount? unreadCount: 0}
+          </div>
       </div>
       <div className="notification-content absolute w-96 h-96 z-30 bg-white shadow-md p-2 right-0">
         <div className="title-notification">
@@ -23,7 +32,9 @@ function NotificationComponent({ styles, data }) {
             {data?.map((item) => (
               // <MsgItem data={item} />
               <div
-                className={`flex p-1 justify-between hover:bg-gray-100 rounded-md cursor-pointer`}
+                 key={item.id}
+            className={`flex p-1 justify-between hover:bg-gray-100 rounded-md cursor-pointer ${item.read ? '' : 'bg-gray-200'}`}
+            onClick={() => handleReadNotification(item.id)}
               >
                 <div className="flex">
                   <div className="m-1">
@@ -43,16 +54,16 @@ function NotificationComponent({ styles, data }) {
                     }`}
                   >
                     <div
-                      className={`information-name ${
+                      className={`information-name text-left ${
                         item?.content ? "block" : "hidden"
                       }`}
                     >
                       <span className="font-medium">{item?.content}</span>
                     </div>
                     <div
-                      className={`information-chat overflow-hidden text-ellipsis max-w-64 text-start`}
+                      className={`information-chat overflow-hidden text-ellipsis max-w-64 text-start `}
                     >
-                      <span className="text-xs font-medium single-line ">
+                      <span className="text-xs font-medium single-line  ">
                         Bạn đã được giao việc từ {item?.from?.fullName}
                       </span>
                     </div>

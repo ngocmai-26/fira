@@ -7,187 +7,206 @@ import ButtonComponent from "../../../component/ButtonComponent";
 import { logout } from "../../../../slices/AuthSlice";
 import { updateUser } from "../../../../thunks/UsersThunk";
 import { changePasswordAuth } from "../../../../thunks/AuthThunk";
+import { ImagePicker } from "../../../component/ImageBox";
 
 function Account() {
   const [changePassword, setChangePassword] = useState(false);
   const dispatch = useDispatch();
-  const { errors, user } = useSelector(
-    (state) => state.authReducer
-  );
+  const { errors, user } = useSelector((state) => state.authReducer);
+  const [images, setImages] = useState([]);
 
   const [newUserData, setNewUserData] = useState(user);
   const [newDataPassword, setNewDataPassword] = useState({
     email: newUserData?.email,
     oldPassword: "",
-    newPassword: ""
-  })
+    newPassword: "",
+  });
 
   const handleSubmit = () => {
-    dispatch(changePasswordAuth(newDataPassword))
+    dispatch(changePasswordAuth(newDataPassword));
   };
 
   const handleUpdate = () => {
     dispatch(updateUser(newUserData));
   };
 
-
   return (
     <>
       <Layout>
-        <form
-          action=""
-          className=" xl:max-w-[900px] justify-center m-auto my-5"
-        >
-          <div className="profile-content p-5]">
-            <p className="text-base font-medium">Thông tin cá nhân</p>
-            <div className="general py-4">
-              <p className="text-sky-500 border-b-2 border-b-stone-100">
-                Thông tin chung
-              </p>
-              <div className="name border-b-2 border-b-stone-100 py-5">
-                <div className="flex gap-2">
-                  <div className="grid grid-cols-5 gap-5">
-                    <div className="my-auto">
-                      <span className="font-medium text-sm">FirstName:
-                      <span className="text-red-500">*</span></span>
-                    </div>
-                    <div className="col-span-4">
-                      <FormField
-                        name={"firstName"}
-                        values={newUserData}
-                        id={"firstName"}
-                        setValue={setNewUserData}
-                        required={"required"}
-                      />
-                      {<ErrorField errors={errors} field={"firstName"} />}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-5 gap-5">
-                    <div className="my-auto">
-                      <span className="font-medium text-sm">LastName:
-                      <span className="text-red-500">*</span></span>
-                    </div>
-                    <div className="lastName col-span-4">
-                      <FormField
-                        name={"lastName"}
-                        values={newUserData}
-                        id={"lastName"}
-                        setValue={setNewUserData}
-                        required={"required"}
-                      />
-                      {<ErrorField errors={errors} field={"lastName"} />}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="password border-b-2 border-b-stone-100 py-5">
-                <div className="grid grid-cols-5 gap-5">
-                  <div className="my-auto">
-                    <span className="font-medium text-sm">Mật khẩu:
-                      <span className="text-red-500">*</span></span>
-                  </div>
-                  <div className="col-span-2">
-                    <div
-                      type="button"
-                      onClick={() => setChangePassword(true)}
-                      className="text-red-500 text-xs hover:text-red-700 cursor-pointer"
-                    >
-                      Thay đổi mật khẩu
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="contacts py-4">
-              <p className="text-sky-500 border-b-2 border-b-stone-100">
-                Liên hệ
-              </p>
-
-              <div className="email border-b-2 border-b-stone-100 py-5">
-                <div className="grid grid-cols-5 gap-5">
-                  <div className="my-auto">
-                    <span className="font-medium text-sm">Email:
-                      <span className="text-red-500">*</span></span>
-                  </div>
-                  <div className="col-span-2">
-                    <FormField
-                      name={"email"}
-                      values={newUserData}
-                      id={"email"}
-                      setValue={setNewUserData}
-                      required={"required"}
-                    />
-                    {<ErrorField errors={errors} field={"email"} />}
-                  </div>
-                </div>
-              </div>
-              <div className="phone border-b-2 border-b-stone-100 py-5">
-                <div className="grid grid-cols-5 gap-5">
-                  <div className="my-auto">
-                    <span className="font-medium text-sm">Số điện thoại:
-                      <span className="text-red-500">*</span></span>
-                  </div>
-                  <div className="col-span-2">
-                    <FormField
-                      name={"phone"}
-                      values={newUserData}
-                      id={"phone"}
-                      setValue={setNewUserData}
-                      required={"required"}
-                    />
-                    {<ErrorField errors={errors} field={"phone"} />}
-                  </div>
-                </div>
-              </div>
-              <div className="address border-b-2 border-b-stone-100 py-5">
-                <div className="grid grid-cols-5 gap-5">
-                  <div className="my-auto">
-                    <span className="font-medium text-sm">Ngày sinh:
-                      <span className="text-red-500">*</span></span>
-                  </div>
-                  <div className="col-span-2">
-                    <FormField
-                      name={"birthday"}
-                      values={newUserData}
-                      id={"birthday"}
-                      setValue={setNewUserData}
-                      type={"date"}
-                      required={"required"}
-                    />
-                    {<ErrorField errors={errors} field={"birthday"} />}
-                  </div>
-                </div>
-              </div>
-              <div className="phongban border-b-2 border-b-stone-100 py-5">
-                <div className="grid grid-cols-5 gap-5">
-                  <div className="my-auto">
-                    <span className="font-medium text-sm">Phòng ban:
-                      <span className="text-red-500">*</span></span>
-                  </div>
-                  <div className="col-span-2">
-                    <FormField
-                      name={"department"}
-                      values={newUserData}
-                      id={"department"}
-                      setValue={setNewUserData}
-                      required={"required"}
-                    />
-                    {<ErrorField errors={errors} field={"department"} />}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="button text-right">
-              <ButtonComponent
-                type={"button"}
-                textButton={"Lưu"}
-                handleClick={handleUpdate}
-              />
-            </div>
+        <div className="flex">
+          <div className="xl:max-w-[200px] mx-9 mt-3">
+            <img
+              src={newUserData.avatar}
+              alt={newUserData.fullName}
+              className="w-40 h-40 rounded-full "
+            />
           </div>
-        </form>
+          <form action="" className=" xl:max-w-[900px]  m-auto my-5">
+            <div className="profile-content p-5">
+              <p className="text-base font-medium">Thông tin cá nhân</p>
+              <div className="general py-4">
+                <p className="text-sky-500 border-b-2 border-b-stone-100">
+                  Thông tin chung
+                </p>
+                <div className="name border-b-2 border-b-stone-100 py-5">
+                  <div className="flex gap-2">
+                    <div className="grid grid-cols-5 gap-5">
+                      <div className="my-auto">
+                        <span className="font-medium text-sm">
+                          FirstName:
+                          <span className="text-red-500">*</span>
+                        </span>
+                      </div>
+                      <div className="col-span-4">
+                        <FormField
+                          name={"firstName"}
+                          values={newUserData}
+                          id={"firstName"}
+                          setValue={setNewUserData}
+                          required={"required"}
+                        />
+                        {<ErrorField errors={errors} field={"firstName"} />}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-5 gap-5">
+                      <div className="my-auto">
+                        <span className="font-medium text-sm">
+                          LastName:
+                          <span className="text-red-500">*</span>
+                        </span>
+                      </div>
+                      <div className="lastName col-span-4">
+                        <FormField
+                          name={"lastName"}
+                          values={newUserData}
+                          id={"lastName"}
+                          setValue={setNewUserData}
+                          required={"required"}
+                        />
+                        {<ErrorField errors={errors} field={"lastName"} />}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="password border-b-2 border-b-stone-100 py-5">
+                  <div className="grid grid-cols-5 gap-5">
+                    <div className="my-auto">
+                      <span className="font-medium text-sm">
+                        Mật khẩu:
+                        <span className="text-red-500">*</span>
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <div
+                        type="button"
+                        onClick={() => setChangePassword(true)}
+                        className="text-red-500 text-xs hover:text-red-700 cursor-pointer"
+                      >
+                        Thay đổi mật khẩu
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="contacts py-4">
+                <p className="text-sky-500 border-b-2 border-b-stone-100">
+                  Liên hệ
+                </p>
+
+                <div className="email border-b-2 border-b-stone-100 py-5">
+                  <div className="grid grid-cols-5 gap-5">
+                    <div className="my-auto">
+                      <span className="font-medium text-sm">
+                        Email:
+                        <span className="text-red-500">*</span>
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <FormField
+                        name={"email"}
+                        values={newUserData}
+                        id={"email"}
+                        setValue={setNewUserData}
+                        required={"required"}
+                      />
+                      {<ErrorField errors={errors} field={"email"} />}
+                    </div>
+                  </div>
+                </div>
+                <div className="phone border-b-2 border-b-stone-100 py-5">
+                  <div className="grid grid-cols-5 gap-5">
+                    <div className="my-auto">
+                      <span className="font-medium text-sm">
+                        Số điện thoại:
+                        <span className="text-red-500">*</span>
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <FormField
+                        name={"phone"}
+                        values={newUserData}
+                        id={"phone"}
+                        setValue={setNewUserData}
+                        required={"required"}
+                      />
+                      {<ErrorField errors={errors} field={"phone"} />}
+                    </div>
+                  </div>
+                </div>
+                <div className="address border-b-2 border-b-stone-100 py-5">
+                  <div className="grid grid-cols-5 gap-5">
+                    <div className="my-auto">
+                      <span className="font-medium text-sm">
+                        Ngày sinh:
+                        <span className="text-red-500">*</span>
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <FormField
+                        name={"birthday"}
+                        values={newUserData}
+                        id={"birthday"}
+                        setValue={setNewUserData}
+                        type={"date"}
+                        required={"required"}
+                      />
+                      {<ErrorField errors={errors} field={"birthday"} />}
+                    </div>
+                  </div>
+                </div>
+                <div className="phongban border-b-2 border-b-stone-100 py-5">
+                  <div className="grid grid-cols-5 gap-5">
+                    <div className="my-auto">
+                      <span className="font-medium text-sm">
+                        Phòng ban:
+                        <span className="text-red-500">*</span>
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <FormField
+                        name={"department"}
+                        values={newUserData}
+                        id={"department"}
+                        setValue={setNewUserData}
+                        required={"required"}
+                      />
+                      {<ErrorField errors={errors} field={"department"} />}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="button text-right">
+                <ButtonComponent
+                  type={"button"}
+                  textButton={"Lưu"}
+                  handleClick={handleUpdate}
+                />
+              </div>
+            </div>
+          </form>
+        </div>
       </Layout>
       <div
         className={`fixed left-0 right-0 ${
@@ -257,7 +276,7 @@ function Account() {
                         id={"oldPassword"}
                         setValue={setNewDataPassword}
                         required={"required"}
-                        type={'password'}
+                        type={"password"}
                       />
                       {<ErrorField errors={errors} field={"oldPassword"} />}
                     </div>
@@ -273,7 +292,7 @@ function Account() {
                         values={newDataPassword}
                         id={"newPassword"}
                         setValue={setNewDataPassword}
-                        type={'password'}
+                        type={"password"}
                       />
                       {<ErrorField errors={errors} field={"newPassword"} />}
                     </div>

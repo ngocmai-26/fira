@@ -36,7 +36,7 @@ function Chat() {
     setActiveRoom(id);
   };
 
-  const [hiddenRoomMess , setHiddenRoomMess]  =useState(false)
+  const [hiddenRoomMess , setHiddenRoomMess]  =useState(true)
   const handleCloseRoomMess = () => {
     setHiddenRoomMess(!hiddenRoomMess)
   }

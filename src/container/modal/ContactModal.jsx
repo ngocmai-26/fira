@@ -380,7 +380,7 @@ function ContactModal({ setOpen }) {
             handleClick={handleClose}
             textButton={"Đóng"}
             style={
-              "btn bg-slate-700 px-3 py-2 font-medium rounded-sm text-sm text-black"
+              "btn bg-slate-400 px-3 py-2 font-medium rounded-sm text-sm text-white"
             }
             type={"button"}
           />

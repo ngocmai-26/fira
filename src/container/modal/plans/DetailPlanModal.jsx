@@ -2,7 +2,6 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 function DetailPlanModal({ handleGetPlanById }) {
   const { allPlan, singlePlan } = useSelector((state) => state.plansReducer);
-  
 
   return (
     <div
@@ -42,7 +41,7 @@ function DetailPlanModal({ handleGetPlanById }) {
                     <div className="justify-between">
                       <div className="flex mb-2 gap-2">
                         <span className="block text-sm font-medium text-gray-900">
-                          Loại kế hoạch: 
+                          Loại kế hoạch:
                         </span>
                         <span className="block text-sm font-bold text-gray-900">
                           {singlePlan?.planDetail?.planType === "ONCE"
@@ -87,8 +86,28 @@ function DetailPlanModal({ handleGetPlanById }) {
                   </div>
                   <div className="information-plan mt-2  ">
                     <span>Mô tả: </span>
-                    <span className="font-bold">{singlePlan?.planDetail?.description}</span>
+                    <span className="font-bold">
+                      {singlePlan?.planDetail?.description}
+                    </span>
                   </div>
+                  {singlePlan?.planDetail?.planType === "LOOP" && (
+                    <div className="information-plan mt-2  ">
+                      <span>Lịch trình lặp lại: </span>
+                      <div className="">
+                        <div className="scheduleType">
+                          <div className="calendar-grid">
+                            {singlePlan?.planDetail?.planSchedules.map(
+                              (item) => (
+                                <div className="calendar-day text-sm">
+                                  {item.scheduleType === "DAY"? "Ngày": "Tháng"} {item.timeStart}
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="information-plan mt-2 border-l px-2">
                   <span className="block font-bold text-gray-900">
@@ -96,7 +115,7 @@ function DetailPlanModal({ handleGetPlanById }) {
                   </span>
                   <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                     <div className="h-auto ">
-                      {singlePlan?.planJobs?.map((item) => (
+                      {singlePlan?.planJobs?.length > 0 ? (singlePlan?.planJobs?.map((item) => (
                         <div className="border my-2 p-2">
                           <div className=" text-sm">
                             <span>Tên công việc: </span>
@@ -119,7 +138,8 @@ function DetailPlanModal({ handleGetPlanById }) {
                             </span>
                           </div>
                         </div>
-                      ))}
+                      ))): <span className="text-sm text-gray-400">Chưa có công việc để hiện thị</span>}
+                     
                     </div>
                   </div>
                 </div>

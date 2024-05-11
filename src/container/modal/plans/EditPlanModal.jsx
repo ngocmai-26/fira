@@ -61,7 +61,7 @@ function EditPlanModal({ handleHiddenEdit }) {
       className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
       id="new-task-modal"
     >
-      <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
+      <div className="relative w-full h-full max-w-4xl m-auto px-4 md:h-auto">
         <div className="relative bg-white rounded-lg shadow ">
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">Chỉnh sửa kế hoạch</h3>
@@ -88,8 +88,8 @@ function EditPlanModal({ handleHiddenEdit }) {
 
           <div className="p-6 space-y-6">
             <form action="#">
-              <div className="grid grid-cols-1 ">
-                <div className="md:col-span-2 ">
+              <div className="grid lg:grid-cols-3 gap-5  grid-cols-1">
+                <div className="lg:col-span-2 lg:border-e-slate-300 lg:border-e-2 lg:pe-2">
                   <div className="due">
                     <div className="grid grid-cols-1 md:grid-cols-5 sm:grid-cols-4 justify-between">
                       <div className="md:col-span-3 sm:col-span-2">
@@ -225,7 +225,9 @@ function EditPlanModal({ handleHiddenEdit }) {
                     />
                   </div>
 
-                  <div className="information-plan mt-2">
+                </div>
+
+                <div className="information-plan mt-2">
                     <label
                       htmlFor="category-create"
                       className="block mb-2 text-xs font-medium text-gray-900"
@@ -233,7 +235,7 @@ function EditPlanModal({ handleHiddenEdit }) {
                       Công việc:
                       <span className="text-red-500">*</span>
                     </label>
-                    <div className="users-selection-list-wrapper py-2 h-32 overscroll-y-none overflow-y-auto overflow-hidden">
+                    <div className="users-selection-list-wrapper border-gray-200 rounded-sm border  py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                       <div className="h-auto ">
                       {allJob?.map((job) => (
                           <button
@@ -253,8 +255,7 @@ function EditPlanModal({ handleHiddenEdit }) {
                         ))}
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </div> 
               </div>
               <div className="items-center py-4 border-gray-200 rounded-b text-right">
                 <button

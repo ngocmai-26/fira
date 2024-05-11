@@ -62,7 +62,7 @@ const RoomHeader = ({ room, handleCloseRoomMess }) => {
   return (
     <div className="flex justify-between border-b-gray-100 border-b-2">
       <div className="flex">
-        <button onClick={handleCloseRoomMess}>
+        <button onClick={handleCloseRoomMess} className="block lg:hidden">
           <FontAwesomeIcon icon={faLeftLong} className="text-gray-400" />
         </button>
         <div className="image w-10 ml-3 md:ml-0">

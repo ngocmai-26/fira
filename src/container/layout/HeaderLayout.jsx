@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../../slices/AuthSlice";
 import NotificationComponent from "../component/Notification";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAllNotification } from "../../thunks/NotificationThunk";
 
 function HeaderAdmin() {
@@ -22,6 +22,15 @@ function HeaderAdmin() {
       dispatch(getAllNotification());
     }
   }, []);
+
+  const [readNotifications, setReadNotifications] = useState([]);
+
+  const handleNotificationClick = (notificationId) => {
+    // Kiểm tra xem notificationId đã được thêm vào danh sách đã đọc chưa
+    if (!readNotifications.includes(notificationId)) {
+      setReadNotifications([...readNotifications, notificationId]);
+    }
+  };
 
   return (
     <header className="relative bg-white">
@@ -41,8 +50,11 @@ function HeaderAdmin() {
         >
           <button className="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 -dar focus:outline-none focus:bg-primary-100 focus:ring-primary-darker">
             <span className="sr-only">Open Notification panel</span>
-        
-            <NotificationComponent styles={"text-2xl"} data={notifications} />
+
+            <NotificationComponent
+              styles={"text-2xl"}
+              data={notifications}
+            />
           </button>
 
           <div className="relative account ">
@@ -90,8 +102,10 @@ function HeaderAdmin() {
           aria-label="Secondary"
         >
           <div className="space-x-2">
-       
-            <NotificationComponent styles={"text-2xl"} data={notifications} />
+            <NotificationComponent
+              styles={"text-2xl"}
+              data={notifications}
+            />
           </div>
 
           <div className="relative account ">

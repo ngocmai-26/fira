@@ -82,3 +82,52 @@ export const Checkout = createAsyncThunk(
     },
   )
 
+  export const getUserTimeKeep = createAsyncThunk(
+    '/time-keeper',
+    async (data, { dispatch, rejectWithValue }) => {
+      try {
+        const token = localStorage.getItem('auth_token')
+        const resp = await fetch(`${API.uri}/time-keeper/by-user/${data.id}?page=${data.data || 0}&size=20`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (resp.status >= 200 && resp.status < 300) {
+          const dataJson = await resp.json()
+          const contents = dataJson?.data || dataJson?.response
+
+          dispatch(setAllTimeKeep(contents))
+          dispatch(setPaginationTimeKeep(dataJson?.data))
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+  )
+  export const getUserManagerTimeKeep = createAsyncThunk(
+    '/time-keeper/by-user-manager',
+    async (data, { dispatch, rejectWithValue }) => {
+      try {
+        const token = localStorage.getItem('auth_token')
+        const resp = await fetch(`${API.uri}/time-keeper/by-user-manager/${data.id}?page=${data.data || 0}&size=20`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (resp.status >= 200 && resp.status < 300) {
+          const dataJson = await resp.json()
+          const contents = dataJson?.data || dataJson?.response
+
+          dispatch(setAllTimeKeep(contents))
+          dispatch(setPaginationTimeKeep(dataJson?.data))
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+  )
+

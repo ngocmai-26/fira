@@ -19,8 +19,10 @@ export const getAllPlan = createAsyncThunk(
         if (resp.status >= 200 && resp.status < 300) {
           const dataJson = await resp.json()
           const contents = dataJson?.data?.content || dataJson?.response
+          
           dispatch(setAllPlan(contents))
           dispatch(setPaginationPlan(dataJson?.data))
+          console.log("contents", contents)
         }
       } catch (e) {
         console.log(e)

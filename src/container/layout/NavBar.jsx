@@ -15,7 +15,6 @@ import { pushMessageToRoom } from "../../slices/RoomSlice";
 
 function NavBarAdmin() {
   const { user, account } = useSelector((state) => state.authReducer);
-  console.log("user", account)
   const dispatch = useDispatch();
   const RenderAdminItem = () =>
   {

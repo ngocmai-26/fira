@@ -5,3 +5,48 @@
     z-index: 100;
     display: block;
 }
+
+.scheduleType {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  .option-selector {
+    margin-bottom: 10px;
+  }
+  
+  .option-select {
+    padding: 5px;
+    border: 1px solid #ced2d8;
+    font-size: 14px;
+  }
+  
+  .calendar-container {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+  }
+  
+  .calendar-day,
+  .calendar-month {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .calendar-day:hover,
+  .calendar-month:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .calendar-day.selected,
+  .calendar-month.selected {
+    background-color: #FFD700;
+  }

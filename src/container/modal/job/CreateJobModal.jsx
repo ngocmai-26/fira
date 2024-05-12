@@ -49,6 +49,7 @@ function CreateJobModel({handleHiddenCreate}) {
     priority: 3,
     progress: 0,
     jobStatus: "PENDING",
+    pointPerJob: 0,
     userCreateJobId: account?.user?.id,
     staffsGotJobId: [],
     userCreateJobId: "",
@@ -109,7 +110,7 @@ function CreateJobModel({handleHiddenCreate}) {
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-full">
                   <div className="md:col-span-2 ">
                     <div className="due">
-                      <div className="grid grid-cols-1 md:grid-cols-5 sm:grid-cols-4 justify-between">
+                      <div className="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-4 justify-between">
                         <div className="col-span-2">
                           <label
                             htmlFor="category-create"
@@ -212,6 +213,23 @@ function CreateJobModel({handleHiddenCreate}) {
                           }}
                           required={"required"}
                           placeholder={"KPI"}
+                          type={"number"}
+                          className={
+                            "shadow-sm ms-2 w-2/12 h-8 bg-gray-50 border border-slate-200 outline-slate-200 p-2  text-slate-500 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block "
+                          }
+                        />
+                        <input
+                          name={"pointPerJob"}
+                          values={newJobData.pointPerJob}
+                          id={"pointPerJob"}
+                          onChange={(e) => {
+                            setNewJobData({
+                              ...newJobData,
+                              pointPerJob: +e.target.value,
+                            });
+                          }}
+                          required={"required"}
+                          placeholder={"Điểm"}
                           type={"number"}
                           className={
                             "shadow-sm ms-2 w-2/12 h-8 bg-gray-50 border border-slate-200 outline-slate-200 p-2  text-slate-500 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block "

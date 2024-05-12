@@ -33,7 +33,6 @@ function LayoutJob({ children }) {
 
   const { allUser } = useSelector((state) => state.usersReducer);
   const dispatch = useDispatch();
-
   useLayoutEffect(() => {
     if (account?.role?.id === 1) {
       if (allJob?.length <= 0) {
@@ -139,6 +138,16 @@ function LayoutJob({ children }) {
                     Danh sách công việc
                   </Link>
                 </li>
+                {account?.role?.roleName !== "ROLE_ADMIN" && (<li className="hover:bg-gray-50 mt-0 px-2">
+                  <Link
+                    to="/cong-viec-dang-thuc-hien"
+                    className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
+                  >
+                    <FontAwesomeIcon icon={faListCheck} className="me-1" />
+                    Danh sách công việc đang thực hiện
+                  </Link>
+                </li>)}
+                
                 <li className="hover:bg-gray-50 mt-0 px-2">
                   <Link
                     to="/quan-ly-cong-viec-dang-bang"
@@ -151,7 +160,7 @@ function LayoutJob({ children }) {
                 {account?.role?.id !== 1 || account?.role?.id !== 3 ? (
                   <li className="hover:bg-gray-50 mt-0 px-2">
                     <Link
-                      to="/"
+                      to="/bao-cao-cong-viec"
                       className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
                     >
                       <FontAwesomeIcon icon={faAlignLeft} className="me-1" />

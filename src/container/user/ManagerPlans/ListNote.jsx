@@ -35,6 +35,23 @@ function ManagerNote() {
     setEditPlan(!editPlan);
     dispatch(getPlanById(item));
   };
+  console.log("singlePlan", singlePlan)
+  // const [dataPlan, setDataPlan] = useState({
+  //   title: "",
+  //   planJob: [],
+  //   planDetailRequest: {
+  //     description: "",
+  //     planType: "ONCE",
+  //     note: "",
+  //     timeStart: "",
+  //     timeEnd: "",
+  //     planSchedules: [],
+  //     scheduleType: "DAY",
+  //   },
+  // });
+  const handleActive = (item) => {
+    console.log('item', item)
+  }
 
   return (
     <LayoutPlan>
@@ -99,7 +116,7 @@ function ManagerNote() {
                                       dispatch(
                                         updateStatus({
                                           id: item.id,
-                                          data: { planStatus: "DISABLE" },
+                                          data: { planStatus: "DISABLE", planJob: item.planJobs.map(job => job.id) },
                                         })
                                       );
                                     }}
@@ -113,7 +130,7 @@ function ManagerNote() {
                                       dispatch(
                                         updateStatus({
                                           id: item.id,
-                                          data: { planStatus: "ACTIVE" },
+                                          data: { planStatus: "ACTIVE", planJob: item.planJobs.map(job => job.id) },
                                         })
                                       );
                                     }}

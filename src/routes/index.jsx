@@ -28,6 +28,9 @@ import ManagerKPICategories from "../container/user/managerKPICategory";
 import KPI from "../container/user/managerKPI";
 import ListKPI from "../container/user/managerKPI/ListKPI";
 import EvaluateKPI from "../container/user/managerKPI/evaluate";
+import ListActivePlan from "../container/user/managerPlans/listActivePlan";
+import JobPerformed from "../container/user/managerJobs/jobPerformed";
+import JobsReport from "../container/user/managerJobs/jobsReport";
 
 export const GeneralRoute = () => {
   return (
@@ -59,6 +62,8 @@ export const LoggedRoute = () => {
         <Route path="/quan-ly-chuc-vu" element={<ManagerRoles />} />
         <Route path="/quan-ly-chuc-nang" element={<ManagerPermissions />} />
         <Route path="/quan-ly-cong-viec" element={<ManagerJobs />} />
+        <Route path="/cong-viec-dang-thuc-hien" element={<JobPerformed />} />
+        <Route path="/bao-cao-cong-viec" element={<JobsReport />} />
         <Route path="/quan-ly-cong-viec-dang-bang" element={<JobsBoard />} />
         <Route path="/quan-ly-diem-danh" element={<ManagerTimeKeep />} />
         <Route path="/quan-ly-ke-hoach" element={<ManagerNote />} />
@@ -70,6 +75,7 @@ export const LoggedRoute = () => {
         <Route path="/them-chuc-nang" element={<AddNewPermission />} />
         <Route path="/tai-khoan" element={<Account />} />
         <Route path="/chi-tiet-cong-viec" element={<JobDetail />} />
+        <Route path="/ke-hoach-dang-thuc-hien" element={<ListActivePlan />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AppMiddleware>

@@ -14,7 +14,7 @@ import ReportJobModel from "../../modal/job/ReportJobModal";
 import EValueJobModal from "../../modal/job/EValueModal";
 import DetailJobModel from "../../modal/job/DetailJobModal";
 
-function ManagerJobs() {
+function JobPerformed() {
   const { allJob, paginationJob } = useSelector((state) => state.jobsReducer);
   const { account } = useSelector((state) => state.authReducer);
   const [currentPage, setCurrentPage] = useState(paginationJob?.number + 1);
@@ -25,7 +25,6 @@ function ManagerJobs() {
   const [isHiddenReport, setIsHiddenReport] = useState(false);
 
   const [report, setReport] = useState({});
-
 
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -70,19 +69,10 @@ function ManagerJobs() {
     setIsHiddenReport(!isHiddenReport);
   };
 
+  const filteredJobs = allJob.filter((item) => item.staffs.some((staff) => staff.id === account.user.id) )
+  ;
 
-  const filteredJobs = allJob.filter((item) => {
-    if (account.role.roleName === "ROLE_ADMIN") {
-      return true;
-    } else {
-      return item.manager.id === account.user.id;
-    } 
-  });
-
-  //search 
-  
-
-  
+  //search
 
   return (
     <LayoutJob>
@@ -217,7 +207,8 @@ function ManagerJobs() {
                       </td>
 
                       {account?.role?.id === 1 ? (
-                        item.status === "DONE" && item?.jobDetail?.jobEvaluate !== null ? (
+                        item.status === "DONE" &&
+                        item?.jobDetail?.jobEvaluate !== null ? (
                           <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
                             <button className="bg-blue-500 text-white text-xs p-1">
                               Chi tiết
@@ -225,17 +216,19 @@ function ManagerJobs() {
                           </td>
                         ) : (
                           <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
-                            {
-                              item?.progress !== 0 && item?.jobDetail?.note && item?.jobDetail?.instructionLink ? (
-                                <button
+                            {item?.progress !== 0 &&
+                            item?.jobDetail?.note &&
+                            item?.jobDetail?.instructionLink ? (
+                              <button
                                 className="bg-blue-500 text-white text-xs p-1"
                                 onClick={() => handleHiddenEValue(item)}
                               >
                                 Đánh giá
                               </button>
-                              ) : (<></>)
-                            }
-                           
+                            ) : (
+                              <></>
+                            )}
+
                             <button className="bg-blue-500 text-white text-xs p-1">
                               Chỉnh sửa
                             </button>
@@ -358,23 +351,23 @@ function ManagerJobs() {
       </div>
 
       {paginationJob?.totalPages > 1 && (
-     <Stack
-     spacing={2}
-     justifyContent="center"
-     color="#fff"
-     className="pagination"
-   >
-     <Pagination
-       count={paginationJob?.totalPages}
-       color="primary"
-       className="pagination-item"
-       style={{ margin: "auto" }}
-       page={currentPage}
-       onChange={handlePageChange}
-     />
-   </Stack>
-     )}
-      
+        <Stack
+          spacing={2}
+          justifyContent="center"
+          color="#fff"
+          className="pagination"
+        >
+          <Pagination
+            count={paginationJob?.totalPages}
+            color="primary"
+            className="pagination-item"
+            style={{ margin: "auto" }}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </Stack>
+      )}
+
       {/* Chi tiết công việc đã hoàn thành */}
       {/* <DetailJobModel /> */}
       {/* Đánh giá công việc */}
@@ -395,4 +388,4 @@ function ManagerJobs() {
   );
 }
 
-export default ManagerJobs;
+export default JobPerformed;

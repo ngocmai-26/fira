@@ -57,78 +57,7 @@ function ManagerTimeKeep() {
     
   }, [check])
 
-  const handleSearchContact = (e) => {
-    // dispatch(searchPermissionAsync(e.target.value));
-  };
-  const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    const now = new Date();
-    const hours = now.getHours();
-
-    if (hours < 6) {
-      console.log("Checkin sẽ mở lúc 6h");
-    } else if (hours < 12) {
-      console.log("Checkin sẽ mở lúc 12h");
-    } else if (hours < 15) {
-      console.log("Checkin sẽ mở lúc 16h");
-    } else {
-      console.log("Checkin đã đóng");
-    }
-
-    if (hours >= 6 && hours < 7) {
-      setDisabled(false);
-    } else if (hours >= 12 && hours < 13) {
-      setDisabled(false);
-    } else if (hours >= 15 && hours < 16) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, []);
-
-  const handleCheckin = () => {
-    const now = new Date();
-    const hours = now.getHours();
-
-    if (hours < 7) {
-      dispatch(newCheckIn({ userId: account?.user?.id, shift: "MORNING" }));
-      console.log("MORNING");
-    } else if (hours < 13) {
-      dispatch(newCheckIn({ userId: account?.user?.id, shift: "AFTERNOON" }));
-      console.log("AFTERNOON");
-    } else if (hours < 16) {
-      dispatch(newCheckIn({ userId: account?.user?.id, shift: "NIGHT" }));
-      console.log("NIGHT");
-    } else {
-      console.log("Checkin đã đóng");
-    }
-
-    setDisabled(true);
-
-    setTimeout(() => {
-      setDisabled(false);
-    }, 3600000); // 1 giờ
-  };
-  const [isCheckedOut, setIsCheckedOut] = useState(false);
-
-  const handleCheckout = () => {
-    const now = new Date();
-    const hour = now.getHours();
-
-    if (hour < 13) {
-      dispatch(Checkout({ userId: account?.user?.id, shift: "MORNING" }));
-    } else if (hour < 17) {
-      dispatch(Checkout({ userId: account?.user?.id, shift: "AFTERNOON" }));
-    } else if (hour < 24) {
-      dispatch(Checkout({ userId: account?.user?.id, shift: "EVENING" }));
-    } else {
-      console.log("Quá giờ checkout");
-    }
-
-    setIsCheckedOut(true);
-  };
-
+  
   return (
     <Layout>
       <div className="p-4">

@@ -23,7 +23,7 @@ function LayoutPlan({ children }) {
             <ul className="flex  font-medium flex-row my-auto">
               <li className="hover:bg-gray-50 mt-0 px-2">
                 <Link
-                  to="/note-list"
+                  to="/quan-ly-ke-hoach"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full"
                 >
                   Kế hoạch công việc
@@ -31,10 +31,10 @@ function LayoutPlan({ children }) {
               </li>
               <li className="hover:bg-gray-50 mt-0 px-2">
                 <Link
-                  to="/note-done"
+                  to="/ke-hoach-dang-thuc-hien"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full"
                 >
-                  Đã hoàn thành
+                  Đang chạy
                 </Link>
               </li>
             </ul>

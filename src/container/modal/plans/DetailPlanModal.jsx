@@ -10,7 +10,8 @@ function DetailPlanModal({ handleGetPlanById }) {
     >
       <div className="relative w-full h-full max-w-5xl m-auto px-4 md:h-auto">
         <div className="relative bg-white rounded-lg shadow ">
-          <div className="flex items-start justify-between p-5 border-b rounded-t ">
+          <div className=" items-start justify-between p-5 border-b rounded-t ">
+            <div className="flex">
             <h3 className="text-xl font-semibold">{singlePlan?.title}</h3>
             <button
               type="button"
@@ -31,7 +32,27 @@ function DetailPlanModal({ handleGetPlanById }) {
                 ></path>
               </svg>
             </button>
+            </div>
+            <div className="flex gap-2">
+                          <div className="text-xs">
+                            <span>Từ: </span>
+                            <span>
+                              {moment(singlePlan?.planDetail?.timeStart).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </span>
+                          </div>
+                          <div className="text-xs">
+                            <span>Đến: </span>
+                            <span>
+                              {moment(singlePlan?.planDetail?.timeEnd).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </span>
+                          </div>
+                        </div>
           </div>
+          
 
           <div className="p-6 space-y-6">
             <form action="#">

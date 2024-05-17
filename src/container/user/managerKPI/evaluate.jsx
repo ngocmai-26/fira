@@ -1,9 +1,53 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../layout";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { GetKPIHistory, addNewKpi } from "../../../thunks/KPIsThunk";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import KPIMore from "../../modal/kpi/kpis/kpiMore";
+import { useNavigate } from "react-router-dom";
 
 function EvaluateKPI() {
   const { account } = useSelector((state) => state.authReducer);
-  console.log(account);
+  const [sumPoint, setSumPoint] = useState(
+    account.user.checkInPoint + account?.user?.jobPoint
+  );
+  const { listKPIHistory } = useSelector((state) => state.kpisReducer);
+  // const { listKPIHistory } = useSelector((state) => state.kpiCategoriesReducer);
+  const [kpiMore, setKPIMore] = useState(false);
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+  const [kpiData, setKPIData] = useState({
+    name: "KPI - " + account?.user?.fullName,
+    description: "EVALUATE",
+    target: +sumPoint.toFixed(0),
+    kpiTypeId: "81b7281f-0c09-4ae6-a008-9876517acf8f",
+    note: "",
+    comment: 'none',
+    timeStart: "",
+    timeEnd: "",
+  });
+
+  const handleMore = (item) => {
+    setKPIMore(!kpiMore);
+    dispatch(GetKPIHistory(item));
+  };
+
+  useEffect(() => {
+    dispatch(GetKPIHistory(account?.user?.id));
+
+  }, [kpiData.timeStart])
+
+  const handleSubmit = () => {
+    // console.log(kpiData)
+    dispatch(addNewKpi(kpiData))
+    .then((reps) => {
+      if(!reps.error) {
+        nav("/quan-ly-phieu-danh-gia");
+      }
+    })
+  };
+
   return (
     <Layout>
       <div className="header-task  p-4">
@@ -22,16 +66,19 @@ function EvaluateKPI() {
             <div className="grid grid-cols-2 py-5">
               <div className="grid grid-cols-3">
                 <div className="border-e-2">
-                  <p className="text-xs leading-6 font-medium">Phòng ban:</p>
-                  <p className="text-xs leading-6 font-medium">Chức vụ:</p>
-                  <p className="text-xs leading-6 font-medium">Nhân viên:</p>
-                  <p className="text-xs leading-6 font-medium">Kết quả KPI:</p>
+                  <p className="text-xs leading-6 font-medium my-1">
+                    Phòng ban:
+                  </p>
+                  <p className="text-xs leading-6 font-medium my-1">Chức vụ:</p>
+                  <p className="text-xs leading-6 font-medium my-1">
+                    Nhân viên:
+                  </p>
                 </div>
                 <div className="col-span-2 px-3">
-                  <p className="text-xs leading-6 font-medium">
+                  <p className="text-xs leading-6 font-medium my-1">
                     {account?.user?.department}
                   </p>
-                  <p className="text-xs leading-6 font-medium">
+                  <p className="text-xs leading-6 font-medium my-1">
                     {account?.role?.roleName === "ROLE_ADMIN"
                       ? "Quản trị viên"
                       : account?.role?.roleName === "ROLE_MANAGE"
@@ -40,28 +87,41 @@ function EvaluateKPI() {
                       ? "Nhân viên"
                       : "Vô danh"}
                   </p>
-                  <p className="text-xs leading-6 font-medium">
+                  <p className="text-xs leading-6 font-medium  my-1">
                     {account?.user?.fullName} &#60;{account?.user?.email}&#62;
                   </p>
-                  <p className="text-xs leading-6 font-medium">0%</p>
                 </div>
               </div>
               <div className="grid grid-cols-3">
                 <div className="border-e-2">
-                  <p className="text-xs leading-6 font-medium">Start Date</p>
-                  <p className="text-xs leading-6 font-medium">End Date</p>
-                  <p className="text-xs leading-6 font-medium">
-                    Người đánh giá
+                  <p className="text-xs leading-6 font-medium my-1">
+                    Start Date
                   </p>
-                  <p className="text-xs leading-6 font-medium">Quản lý</p>
+                  <p className="text-xs leading-6 font-medium my-2">End Date</p>
+                  <p className="text-xs leading-6 font-medium my-1">Quản lý</p>
                 </div>
                 <div className="col-span-2 px-3">
-                  <p className="text-xs leading-6 font-medium">01/11/2023</p>
-                  <p className="text-xs leading-6 font-medium">30/11/2023</p>
-                  <p className="text-xs leading-6 font-medium">
-                    Nguyễn Thị Ngọc Mai &#60;ngocmai@gmail.com&#62;
-                  </p>
-                  <p className="text-xs leading-6 font-medium">
+                  <div className="my-1">
+                    <input
+                      type="date"
+                      className="text-xs leading-6 font-medium border border-gray-400 px-2 rounded-md"
+                      defaultValue={kpiData.timeStart}
+                      onChange={(e) =>
+                        setKPIData({ ...kpiData, timeStart: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="my-1">
+                    <input
+                      type="date"
+                      className="text-xs leading-6 font-medium border border-gray-400 px-2 rounded-md"
+                      defaultValue={kpiData.timeEnd}
+                      onChange={(e) =>
+                        setKPIData({ ...kpiData, timeEnd: e.target.value })
+                      }
+                    />
+                  </div>
+                  <p className="text-xs leading-6 font-medium my-1">
                     Nguyễn Thanh Sơn
                   </p>
                 </div>
@@ -70,7 +130,17 @@ function EvaluateKPI() {
           </div>
           <form action="">
             <div className="group-item py-3">
-              <p>Danh sách tiêu chí đánh giá KPI nhân viên</p>
+              <div className="flex justify-between">
+                <p>Danh sách tiêu chí đánh giá KPI nhân viên</p>
+                <div className="my-auto p-2 text-xs font-medium text-center text-white">
+                  <button
+                    type="button"
+                    onClick={() => handleMore(account?.user?.id)}
+                  >
+                    Chi tiết
+                  </button>
+                </div>
+              </div>
               <div className="table">
                 <div className="thead">
                   <div className="grid grid-cols-12 gap-2 bg-red-500">
@@ -101,113 +171,33 @@ function EvaluateKPI() {
                         1
                       </div>
                       <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-white">
-                        Hoạt động chung
+                        Tuân thủ giờ giấc làm việc
                       </div>
                       <div className="my-auto p-2 text-xs font-medium text-center text-white">
-                        21
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
-                        0
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
-                        0
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
-                        0
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
-                      <div className="stt my-auto p-2 text-xs font-medium text-left text-black">
-                        1
-                      </div>
-                      <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-black">
-                        Hoạt động chung
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
                         5
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        <input
-                          type="text"
-                          name="score"
-                          defaultValue="4"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
-                        />
+                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
+                        {account?.user?.checkInPoint}
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
+                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
                         0
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
+                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
                         0
                       </div>
                     </div>
                     <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
                       <div className="stt my-auto p-2 text-xs font-medium text-left text-black">
-                        1
+                        2
                       </div>
                       <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-black">
-                        Hoạt động chung
+                        Công việc hoàn thành
                       </div>
                       <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        4
+                        95
                       </div>
                       <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        <input
-                          type="text"
-                          name="score"
-                          defaultValue="4"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
-                        />
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        0
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        0
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
-                      <div className="stt my-auto p-2 text-xs font-medium text-left text-black">
-                        1
-                      </div>
-                      <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-black">
-                        Hoạt động chung
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        5
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        <input
-                          type="text"
-                          name="score"
-                          defaultValue="4"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
-                        />
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        0
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        0
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
-                      <div className="stt my-auto p-2 text-xs font-medium text-left text-black">
-                        1
-                      </div>
-                      <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-black">
-                        Hoạt động chung
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        6
-                      </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        <input
-                          type="text"
-                          name="score"
-                          defaultValue="4"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
-                        />
+                        {account?.user?.jobPoint}
                       </div>
                       <div className="my-auto p-2 text-xs font-medium text-center text-black">
                         0
@@ -221,7 +211,7 @@ function EvaluateKPI() {
                         <p className="text-right">Tổng điểm:</p>
                       </div>
                       <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
-                        8
+                        {sumPoint.toFixed(0)}
                       </div>
                       <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
                         0
@@ -237,63 +227,25 @@ function EvaluateKPI() {
 
             <div className="group-item py-3">
               <div className="note">
-                <label htmlFor="">Ghi chú</label>
+                <label htmlFor="">Ghi chú <span className="text-red-500">*</span></label>
                 <textarea
                   id="biography"
                   rows="3"
+                  defaultValue={kpiData.note}
                   className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Full-stack web developer. Open-source contributor."
+                  placeholder="Ghi chú cho người đánh giá lưu ý"
+                  onChange={(e) =>
+                    setKPIData({ ...kpiData, note: e.target.value })
+                  }
                 ></textarea>
-              </div>
-            </div>
-            <div className="group-item py-3">
-              <div className="flex justify-between py-2">
-                <p>Danh sách file minh chứng</p>
-                <div className="flex items-center justify-center border border-black px-3 py-1.5">
-                  <button
-                    className="flex flex-col items-center justify-center text-xs "
-                    type="button"
-                  >
-                    Thêm mới
-                  </button>
-                </div>
-              </div>
-
-              <div className="table w-full">
-                <div className="thead">
-                  <div className="grid grid-cols-12 gap-2 bg-red-500">
-                    <div className="stt my-auto p-2 text-xs font-medium text-left text-white uppercase">
-                      STT
-                    </div>
-                    <div className="text-center col-span-10 my-auto p-2 text-xs font-medium text-white uppercase">
-                      Đường link minh chứng
-                    </div>
-                  </div>
-                </div>
-                <div className="tbody">
-                  <div className="">
-                    <div className="grid grid-cols-12 gap-2 kpi-main bg-gray-100">
-                      <div className="stt my-auto p-2 text-xs font-medium text-left ">
-                        1
-                      </div>
-                      <div className="col-span-10 my-auto p-2 text-xs font-medium text-center">
-                        <input
-                          type="text"
-                          name="email"
-                          id="accounts-search"
-                          className="border-2 bg-transparent text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
             <div className="btn text-right py-3">
               <button
-                type="btn"
+                type="button"
                 className="text-sm bg-blue-500 text-white px-5 py-1.5"
+                onClick={handleSubmit}
               >
                 Gửi
               </button>
@@ -301,6 +253,7 @@ function EvaluateKPI() {
           </form>
         </div>
       </div>
+      {kpiMore && <KPIMore handleMore={handleMore} />}
     </Layout>
   );
 }

@@ -3,14 +3,21 @@ import Layout from "../../layout";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateKPI, updateKPIDetail } from "../../../thunks/KPIsThunk";
+import {
+  cancelKPI,
+  getKpiVerifyById,
+  updateKPI,
+  updateKPIDetail,
+} from "../../../thunks/KPIsThunk";
 
-function Expertise() {
+function KPICheck() {
   const { singleKPI } = useSelector((state) => state.kpisReducer);
   const { listKPIHistory } = useSelector((state) => state.kpisReducer);
   const [sumPoint, setSumPoint] = useState(
     (singleKPI?.user?.checkInPoint + singleKPI?.user?.jobPoint).toFixed(0)
   );
+
+  const [opinion, setOpinion] = useState(false);
   const dispatch = useDispatch();
   const nav = useNavigate();
 
@@ -20,6 +27,8 @@ function Expertise() {
     target: 0,
     kpiTypeId: singleKPI?.kpiType?.id,
   });
+  const [changeNote, setChangeNote] = useState("");
+
   const [dataUpdateDetail, setDataUpdateDetail] = useState({
     note: singleKPI?.detail?.note,
     comment: singleKPI?.detail?.comment,
@@ -27,34 +36,39 @@ function Expertise() {
     timeEnd: moment(singleKPI?.detail?.timeEnd).format("YYYY-MM-DD"),
   });
 
-  const [pointValues, setPointValues] = useState({
-    score1: 0,
-    score2: 0,
-  });
-
-  useEffect(() => {
-    // Tính tổng các giá trị trong pointValues
-    const newTotal = Object.values(pointValues).reduce(
-      (acc, curr) => acc + curr,
-      0
-    );
-    setDataUpdate({ ...dataUpdate, target: newTotal });
-  }, [pointValues]);
-
-  const handleInputChange = (name, value) => {
-    setPointValues({ ...pointValues, [name]: value });
+  const handleSubmit = () => {
+    dispatch(getKpiVerifyById(singleKPI.id)).then((reps) => {
+      if (!reps.error) {
+        nav("/quan-ly-phieu-danh-gia");
+      }
+    });
   };
 
-  const handleSubmit = () => {
-    dispatch(updateKPI({id: singleKPI.id, data: {...dataUpdate, description: "DONE"}})).then((reps) => {
+  const handleCancel = () => {
+    console.log({ ...dataUpdateDetail, note: changeNote });
+    dispatch(
+      cancelKPI({
+        id: singleKPI.id,
+        data: { ...dataUpdate, description: "EVALUATE" },
+      })
+    ).then((reps) => {
       if (!reps.error) {
-        dispatch(updateKPIDetail({id: singleKPI.id, data:dataUpdateDetail})).then((reps) => {
+        dispatch(
+          updateKPIDetail(
+            {id: singleKPI.id,
+              data: { ...dataUpdateDetail, note: changeNote }})
+        ).then((reps) => {
           if (!reps.error) {
-            nav("/danh-sach-kpi-danh-gia");
+            nav("/quan-ly-phieu-danh-gia");
           }
         });
       }
     });
+  };
+
+  const handleOpenOpinion = () => {
+    setChangeNote("");
+    setOpinion(!opinion);
   };
 
   return (
@@ -62,7 +76,7 @@ function Expertise() {
       <div className="header-task ">
         <div className="title py-3">
           <a href="#" className="text-xl font-medium text-slate-500">
-            Thẩm định KPI
+            Kết quả thẩm định
           </a>
         </div>
         <div className="content bg-white py-5 px-3">
@@ -147,17 +161,7 @@ function Expertise() {
                         {((singleKPI?.user?.checkInPoint / 5) * 100).toFixed(2)}{" "}
                         %
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        <input
-                          type="text"
-                          name="score"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
-                          defaultValue={pointValues.score1}
-                          onChange={(e) =>
-                            handleInputChange("score1", +e.target.value)
-                          }
-                        />
-                      </div>
+                      <div className="my-auto p-2 text-xs font-medium text-center text-black"></div>
                     </div>
                     <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
                       <div className="stt my-auto p-2 text-xs font-medium text-left text-black">
@@ -175,17 +179,7 @@ function Expertise() {
                       <div className="my-auto p-2 text-xs font-medium text-center text-black">
                         {((singleKPI?.user?.jobPoint / 95) * 100).toFixed(2)} %
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
-                        <input
-                          type="text"
-                          name="score"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
-                          defaultValue={pointValues.score2}
-                          onChange={(e) =>
-                            handleInputChange("score2", +e.target.value)
-                          }
-                        />
-                      </div>
+                      <div className="my-auto p-2 text-xs font-medium text-center text-black"></div>
                     </div>
 
                     <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
@@ -205,7 +199,7 @@ function Expertise() {
                         %
                       </div>
                       <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
-                        {dataUpdate?.target}
+                        {singleKPI?.target}
                       </div>
                     </div>
                   </div>
@@ -223,14 +217,9 @@ function Expertise() {
                 <textarea
                   id="biography"
                   rows="3"
+                  disabled={true}
                   className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Ghi ý kiến"
-                  onChange={(e) =>
-                    setDataUpdateDetail({
-                      ...dataUpdateDetail,
-                      comment: e.target.value,
-                    })
-                  }
+                  placeholder={singleKPI?.detail?.comment}
                 ></textarea>
               </div>
             </div>
@@ -276,6 +265,13 @@ function Expertise() {
             <div className="btn text-right py-3">
               <button
                 type="button"
+                onClick={handleOpenOpinion}
+                className="text-sm bg-gray-500 text-white px-5 py-1.5 mx-3"
+              >
+                Ý kiến
+              </button>
+              <button
+                type="button"
                 onClick={handleSubmit}
                 className="text-sm bg-blue-500 text-white px-5 py-1.5"
               >
@@ -285,8 +281,51 @@ function Expertise() {
           </form>
         </div>
       </div>
+      {opinion && (
+        <div
+          className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
+          id="new-task-modal"
+        >
+          <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
+            <div className="relative bg-white rounded-lg shadow ">
+              <div className=" items-start justify-between p-5 ">
+                <h3 className="text-xl font-semibold border-b rounded-t">
+                  Ý kiến của bạn
+                </h3>
+                <div className="py-5">
+                  <textarea
+                    id="biography"
+                    rows="3"
+                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                    placeholder="Hãy nếu ý kiến của bạn"
+                    defaultValue={changeNote}
+                    onChange={(e) => setChangeNote(e.target.value)}
+                  ></textarea>
+                </div>
+              </div>
+
+              <div className="btn text-right py-3">
+                <button
+                  type="button"
+                  onClick={handleOpenOpinion}
+                  className="text-sm bg-gray-500 text-white px-5 py-1.5 mx-3"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="text-sm bg-blue-500 text-white px-5 py-1.5"
+                >
+                  Phản hồi
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }
 
-export default Expertise;
+export default KPICheck;

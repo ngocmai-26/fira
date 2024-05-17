@@ -9,12 +9,11 @@ function ReportJobModel({handleHiddenReport, report}) {
     progress: 0,
     instructionLink: ''
   })
-  console.log("report", report)
   const dispatch = useDispatch();
   const handleSubmit = () => {
     dispatch(updateJob({id: report.id, data: {
       progress: dataReportJob?.progress,
-      status: "DONE"
+      status: "PROCESSING"
     }}))
     dispatch(updateDetailJob({id: report.id, data: {
       note: dataReportJob?.note,

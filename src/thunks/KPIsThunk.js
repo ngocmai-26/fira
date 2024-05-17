@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { API } from '../constants/api'
 import { setAlert } from '../slices/AlertSlice'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../constants/toast'
-import { setAllKPI, setPaginationKPI, setSingleKPI } from '../slices/KPIsSlice'
+import { setAllKPI, setListKPIHistory, setPaginationKPI, setSingleKPI } from '../slices/KPIsSlice'
 
 export const getAllKPI = createAsyncThunk(
   '/kpis',
@@ -120,7 +120,7 @@ export const getKpiVerifyById = createAsyncThunk(
   async (id, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem('auth_token')
-      let uri = `${API.uri}/kpi/verify/${id}`
+      let uri = `${API.uri}/kpis/verify/${id}`
 
       const resp = await fetch(uri, {
         method: 'PUT',
@@ -130,7 +130,6 @@ export const getKpiVerifyById = createAsyncThunk(
         },
       })
       if (resp.status >= 200 && resp.status < 300) {
-        const jsonData = await resp.json()
         dispatch(getAllKPI())
       }
     } catch (e) {
@@ -144,7 +143,7 @@ export const updateKPI = createAsyncThunk(
     async (data, { dispatch, rejectWithValue }) => {
       try {
         const token = localStorage.getItem('auth_token')
-        const resp = await fetch(`${API.uri}/kpis/update-detail/${data.id}`, {
+        const resp = await fetch(`${API.uri}/kpis/${data.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -163,4 +162,84 @@ export const updateKPI = createAsyncThunk(
         console.log(e)
       }
     },
-  )
+)
+
+export const cancelKPI = createAsyncThunk(
+  '/kpis/id',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/kpis/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data.data),
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      // dispatch(setAlert({ type: TOAST_SUCCESS, content: "Thành công" }))
+
+      dispatch(getAllKPI())
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
+
+
+export const updateKPIDetail = createAsyncThunk(
+    '/kpis/id',
+    async (data, { dispatch, rejectWithValue }) => {
+      try {
+        const token = localStorage.getItem('auth_token')
+        const resp = await fetch(`${API.uri}/kpis/update-detail/${data.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(data.data),
+        })
+        const dataJson = await resp.json()
+        if (resp.status >= 300) {
+          dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+          return rejectWithValue()
+        }
+        dispatch(setAlert({ type: TOAST_SUCCESS, content: "Thành công" }))
+        dispatch(getAllKPI())
+      } catch (e) {
+        console.log(e)
+      }
+    },
+)
+export const GetKPIHistory = createAsyncThunk(
+    '/kpi-histories/by-user-in-month/id',
+    async (id, { dispatch, rejectWithValue }) => {
+      try {
+        const token = localStorage.getItem('auth_token')
+        const resp = await fetch(`${API.uri}/kpi-histories/by-user-in-month/${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        
+        const dataJson = await resp.json()
+        if (resp.status >= 300) {
+          dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+          return rejectWithValue()
+        }
+        dispatch(setListKPIHistory(dataJson.data.body.data.content))
+      } catch (e) {
+        console.log(e)
+      }
+    },
+)
+
+

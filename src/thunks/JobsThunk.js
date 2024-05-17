@@ -240,6 +240,36 @@ export const updateJob = createAsyncThunk(
   },
 )
 
+export const ReassessJob = createAsyncThunk(
+  '/jobsEvaluate/id',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/jobs/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data.data),
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(
+        setAlert({
+          type: TOAST_SUCCESS,
+          content: 'Đã yêu cầu đánh giá lại công việc',
+        }),
+      )
+      dispatch(getAllJob())
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
 
 export const updateDetailJob = createAsyncThunk(
   '/jobDetail/id',
@@ -294,3 +324,57 @@ export const searchJobAsync = createAsyncThunk(
   },
 )
 
+export const verifyProgress = createAsyncThunk(
+  '/jobsEvaluate/id',
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/jobs/verify-progress/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(
+        setAlert({
+          type: TOAST_SUCCESS,
+          content: 'Đánh giá thành công',
+        }),
+      )
+      dispatch(getAllJob())
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
+
+export const updateEvaluateJob = createAsyncThunk(
+  '/evaluate/id',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/jobs/job-detail/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data.data),
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(getAllJob())
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)

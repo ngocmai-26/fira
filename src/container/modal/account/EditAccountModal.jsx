@@ -23,7 +23,6 @@ function EditAccountModal({ setEditAccount }) {
   const [showPassword, setShowPassword] = useState(false);
   const [accountData, setAccountData] = useState({
     username: singleAccount?.username,
-    password: "",
     roleId: singleAccount?.role?.id,
     active: singleAccount?.active
   });

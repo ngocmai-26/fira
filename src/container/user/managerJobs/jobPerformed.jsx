@@ -69,9 +69,9 @@ function JobPerformed() {
     setIsHiddenReport(!isHiddenReport);
   };
 
-  const filteredJobs = allJob.filter((item) => item.staffs.some((staff) => staff.id === account.user.id) )
-  ;
-
+  const filteredJobs = allJob.filter((item) =>
+    item.staffs.some((staff) => staff.id === account.user.id)
+  );
   //search
 
   return (
@@ -216,7 +216,7 @@ function JobPerformed() {
                           </td>
                         ) : (
                           <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
-                            {item?.progress !== 0 &&
+                            {item?.cachedProgress !== 0 &&
                             item?.jobDetail?.note &&
                             item?.jobDetail?.instructionLink ? (
                               <button
@@ -266,78 +266,21 @@ function JobPerformed() {
                           </td>
                         )
                       ) : (
-                        // <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                        //   {item?.jobDetail?.denyReason?.length > 0 ? (
-                        //     <button
-                        //       className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //       type="button"
-                        //       // onClick={() => handleShowReason(item)}
-                        //     >
-                        //       Xem ly do
-                        //     </button>
-                        //   ) : item?.status === "PENDING" ? (
-                        //     <>
-                        //       <button
-                        //         className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //         onClick={() => handleConfirm(item.id)}
-                        //       >
-                        //         Xác nhận
-                        //       </button>
-                        //       {/* <button
-                        //       className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //       onClick={() => handleConfirm(item.id)}
-                        //     >
-                        //       Từ chối
-                        //     </button> */}
-                        //     </>
-                        //   ) : (
-                        //     // : item?.status !== 4 &&
-                        //     // item?.staffs.map((staff) => (
-                        //     //   <div key={staff.id}>
-                        //     //     {staff.id === account.id ? (
-                        //     //       <button className="bg-blue-500 text-white text-xs p-1 mr-2">
-                        //     //         Báo cáo
-                        //     //       </button>
-                        //     //     ) : null}
-                        //     //   </div>
-                        //     // ))
-                        //     // (
-                        //     //   <button
-                        //     //     className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //     //     // onClick={() => handleHiddenCreate(item)}
-                        //     //   >
-                        //     //     Báo cáo
-                        //     //   </button>
-                        //     // ) : (
-                        //     //   <></>
-                        //     // )}
-                        //     // {auth_role?.id === 3 &&
-                        //     // item.jobDetail.denyReason.length === 0 &&
-                        //     // item?.status !== 4 ? (
-                        //     //   <button
-                        //     //     className="bg-blue-500 text-white text-xs p-1 "
-                        //     //     // onClick={() => handleHiddenUpdate(item)}
-                        //     //   >
-                        //     //     Cập nhật
-                        //     //   </button>
-                        //     // )
-                        //     <></>
-                        //   )}
-                        //   {item?.status === "PROCESSING" &&
-                        //     item?.staffs?.map((staff) => (
-                        //       <div key={staff.id}>
-                        //         {staff.id === account?.user?.id ? (
-                        //           <button
-                        //             className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //             onClick={() => handleHiddenReport(item)}
-                        //           >
-                        //             Báo cáo
-                        //           </button>
-                        //         ) : null}
-                        //       </div>
-                        //     ))}
-                        // </td>
-                        <></>
+                        <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                          {item?.status === "PROCESSING"&& item.cachedProgress ===0 &&
+                            item?.staffs?.map((staff) => (
+                              <div key={staff.id}>
+                                {staff.id === account?.user?.id ? (
+                                  <button
+                                    className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                    onClick={() => handleHiddenReport(item)}
+                                  >
+                                    Báo cáo
+                                  </button>
+                                ) : null}
+                              </div>
+                            ))}
+                        </td>
                       )}
 
                       <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>

@@ -13,6 +13,7 @@ import { Pagination, Stack } from "@mui/material";
 import ReportJobModel from "../../modal/job/ReportJobModal";
 import EValueJobModal from "../../modal/job/EValueModal";
 import DetailJobModel from "../../modal/job/DetailJobModal";
+import moment from "moment";
 
 function ManagerJobs() {
   const { allJob, paginationJob } = useSelector((state) => state.jobsReducer);
@@ -25,7 +26,6 @@ function ManagerJobs() {
   const [isHiddenReport, setIsHiddenReport] = useState(false);
 
   const [report, setReport] = useState({});
-
 
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -70,19 +70,15 @@ function ManagerJobs() {
     setIsHiddenReport(!isHiddenReport);
   };
 
-
   const filteredJobs = allJob.filter((item) => {
     if (account.role.roleName === "ROLE_ADMIN") {
       return true;
     } else {
       return item.manager.id === account.user.id;
-    } 
+    }
   });
 
-  //search 
-  
-
-  
+  //search
 
   return (
     <LayoutJob>
@@ -202,40 +198,46 @@ function ManagerJobs() {
                         </Link>
                       </td>
                       <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                        {
-                          new Date(item?.jobDetail?.timeStart)
-                            .toISOString()
-                            .split("T")[0]
-                        }
+                        {moment(item?.jobDetail?.timeStart).format(
+                          "DD-MM-YYYY"
+                        )}
                       </td>
                       <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                        {
-                          new Date(item?.jobDetail?.timeEnd)
-                            .toISOString()
-                            .split("T")[0]
-                        }
+                        {moment(item?.jobDetail?.timeEnd).format("DD-MM-YYYY")}
                       </td>
 
-                      {account?.role?.id === 1 ? (
-                        item.status === "DONE" && item?.jobDetail?.jobEvaluate !== null ? (
+                      {account?.role?.id === 3 || account?.role?.id === 1 ? (
+                        item.status === "DONE" &&
+                        item?.jobDetail?.jobEvaluate !== null ? (
                           <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
                             <button className="bg-blue-500 text-white text-xs p-1">
                               Chi tiết
                             </button>
                           </td>
+                        ) : item.manager.id === account.user.id &&
+                          item.jobDetail.jobEvaluate === null &&
+                          item.status === "DONE" ? (
+                            <button
+                            className="bg-blue-500 text-white text-xs p-1"
+                            onClick={() => handleHiddenEValue(item)}
+                          >
+                            Đánh giá
+                          </button>
                         ) : (
                           <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
-                            {
-                              item?.progress !== 0 && item?.jobDetail?.note && item?.jobDetail?.instructionLink ? (
-                                <button
+                            {item?.cachedProgress !== 0 &&
+                            item?.jobDetail?.note &&
+                            item?.jobDetail?.instructionLink ? (
+                              <button
                                 className="bg-blue-500 text-white text-xs p-1"
                                 onClick={() => handleHiddenEValue(item)}
                               >
                                 Đánh giá
                               </button>
-                              ) : (<></>)
-                            }
-                           
+                            ) : (
+                              <></>
+                            )}
+
                             <button className="bg-blue-500 text-white text-xs p-1">
                               Chỉnh sửa
                             </button>
@@ -273,78 +275,42 @@ function ManagerJobs() {
                           </td>
                         )
                       ) : (
-                        // <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                        //   {item?.jobDetail?.denyReason?.length > 0 ? (
-                        //     <button
-                        //       className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //       type="button"
-                        //       // onClick={() => handleShowReason(item)}
-                        //     >
-                        //       Xem ly do
-                        //     </button>
-                        //   ) : item?.status === "PENDING" ? (
-                        //     <>
-                        //       <button
-                        //         className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //         onClick={() => handleConfirm(item.id)}
-                        //       >
-                        //         Xác nhận
-                        //       </button>
-                        //       {/* <button
-                        //       className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //       onClick={() => handleConfirm(item.id)}
-                        //     >
-                        //       Từ chối
-                        //     </button> */}
-                        //     </>
-                        //   ) : (
-                        //     // : item?.status !== 4 &&
-                        //     // item?.staffs.map((staff) => (
-                        //     //   <div key={staff.id}>
-                        //     //     {staff.id === account.id ? (
-                        //     //       <button className="bg-blue-500 text-white text-xs p-1 mr-2">
-                        //     //         Báo cáo
-                        //     //       </button>
-                        //     //     ) : null}
-                        //     //   </div>
-                        //     // ))
-                        //     // (
-                        //     //   <button
-                        //     //     className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //     //     // onClick={() => handleHiddenCreate(item)}
-                        //     //   >
-                        //     //     Báo cáo
-                        //     //   </button>
-                        //     // ) : (
-                        //     //   <></>
-                        //     // )}
-                        //     // {auth_role?.id === 3 &&
-                        //     // item.jobDetail.denyReason.length === 0 &&
-                        //     // item?.status !== 4 ? (
-                        //     //   <button
-                        //     //     className="bg-blue-500 text-white text-xs p-1 "
-                        //     //     // onClick={() => handleHiddenUpdate(item)}
-                        //     //   >
-                        //     //     Cập nhật
-                        //     //   </button>
-                        //     // )
-                        //     <></>
-                        //   )}
-                        //   {item?.status === "PROCESSING" &&
-                        //     item?.staffs?.map((staff) => (
-                        //       <div key={staff.id}>
-                        //         {staff.id === account?.user?.id ? (
-                        //           <button
-                        //             className="bg-blue-500 text-white text-xs p-1 mr-2"
-                        //             onClick={() => handleHiddenReport(item)}
-                        //           >
-                        //             Báo cáo
-                        //           </button>
-                        //         ) : null}
-                        //       </div>
-                        //     ))}
-                        // </td>
-                        <></>
+                        <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                          {item?.jobDetail?.denyReason?.length > 0 ? (
+                            <button
+                              className="bg-blue-500 text-white text-xs p-1 mr-2"
+                              type="button"
+                              // onClick={() => handleShowReason(item)}
+                            >
+                              Xem ly do
+                            </button>
+                          ) : item?.status === "PENDING" ? (
+                            <>
+                              <button
+                                className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                onClick={() => handleConfirm(item.id)}
+                              >
+                                Xác nhận
+                              </button>
+                            </>
+                          ) : (
+
+                            <></>
+                          )}
+                          {item?.status === "PROCESSING"&& item.cachedProgress ===0 &&
+                            item?.staffs?.map((staff) => (
+                              <div key={staff.id}>
+                                {staff.id === account?.user?.id ? (
+                                  <button
+                                    className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                    onClick={() => handleHiddenReport(item)}
+                                  >
+                                    Báo cáo
+                                  </button>
+                                ) : null}
+                              </div>
+                            ))}
+                        </td>
                       )}
 
                       <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
@@ -358,23 +324,23 @@ function ManagerJobs() {
       </div>
 
       {paginationJob?.totalPages > 1 && (
-     <Stack
-     spacing={2}
-     justifyContent="center"
-     color="#fff"
-     className="pagination"
-   >
-     <Pagination
-       count={paginationJob?.totalPages}
-       color="primary"
-       className="pagination-item"
-       style={{ margin: "auto" }}
-       page={currentPage}
-       onChange={handlePageChange}
-     />
-   </Stack>
-     )}
-      
+        <Stack
+          spacing={2}
+          justifyContent="center"
+          color="#fff"
+          className="pagination"
+        >
+          <Pagination
+            count={paginationJob?.totalPages}
+            color="primary"
+            className="pagination-item"
+            style={{ margin: "auto" }}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </Stack>
+      )}
+
       {/* Chi tiết công việc đã hoàn thành */}
       {/* <DetailJobModel /> */}
       {/* Đánh giá công việc */}

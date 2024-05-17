@@ -31,6 +31,9 @@ import EvaluateKPI from "../container/user/managerKPI/evaluate";
 import ListActivePlan from "../container/user/managerPlans/listActivePlan";
 import JobPerformed from "../container/user/managerJobs/jobPerformed";
 import JobsReport from "../container/user/managerJobs/jobsReport";
+import ListExpertise from "../container/user/managerKPI/ListExpertise";
+import Expertise from "../container/user/managerKPI/expertise";
+import KPICheck from "../container/user/managerKPI/KPICheck";
 
 export const GeneralRoute = () => {
   return (
@@ -69,7 +72,10 @@ export const LoggedRoute = () => {
         <Route path="/quan-ly-ke-hoach" element={<ManagerNote />} />
         <Route path="/quan-ly-danh-muc-kpi" element={<ManagerKPICategories />} />
         <Route path="/quan-ly-phieu-danh-gia" element={<ListKPI />} />
+        <Route path="/danh-sach-kpi-danh-gia" element={<ListExpertise />} />
         <Route path="/danh-gia-KPI" element={<EvaluateKPI />} />
+        <Route path="/tham-dinh-danh-gia-KPI" element={<Expertise />} />
+        <Route path="/kiem-tra-danh-gia-KPI" element={<KPICheck />} />
         <Route path="/them-chuc-vu" element={<AddNewRole />} />
         <Route path="/them-tai-khoan" element={<AddNewAccount />} />
         <Route path="/them-chuc-nang" element={<AddNewPermission />} />

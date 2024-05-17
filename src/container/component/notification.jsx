@@ -11,8 +11,6 @@ function NotificationComponent({ styles, data }) {
     dispatch(readNotification(item));
   };
 
-  console.log("data", data);
-
   return (
     <div className="relative notification m-auto px-3 cursor-pointer">
       <div className="notification-icon pt-1">
@@ -51,7 +49,9 @@ function NotificationComponent({ styles, data }) {
                             ? "https://cdn1.iconfinder.com/data/icons/ui-colored-2-of-3/100/UI_2__1-512.png"
                             : item?.type === 2
                             ? "https://upload.tanca.io/api/image/news/611bed5f035cef73103a6107?name=2021-08-18-000951-quan-ly-cong-viec.jpg"
-                            : item?.type === 3? "https://freepngimg.com/save/97427-logo-chat-png-file-hd/640x492": ""
+                            : item?.type === 3
+                            ? "https://freepngimg.com/save/97427-logo-chat-png-file-hd/640x492"
+                            : ""
                         }
                         alt=""
                         className="rounded-lg object-cover w-12 h-12 "
@@ -69,15 +69,6 @@ function NotificationComponent({ styles, data }) {
                       >
                         <span className="font-medium">{item?.content}</span>
                       </div>
-                      {item?.type === 2 && (
-                        <div
-                          className={`information-chat overflow-hidden text-ellipsis max-w-64 text-start `}
-                        >
-                          <span className="text-xs font-medium single-line  ">
-                            Bạn đã được giao việc từ {item?.from?.fullName}
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import Layout from "../../layout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { searchJobAsync } from "../../../thunks/JobsThunk";
 
 function KPI({ children }) {
+  const { account } = useSelector((state) => state.authReducer);
   return (
     <Layout>
       <div className="header-kpi p-4">
@@ -18,20 +19,25 @@ function KPI({ children }) {
             <ul className="flex  font-medium flex-row my-auto">
               <li className="hover:bg-gray-50 mt-0 pr-2">
                 <Link
-                  to="/danh-sach-kpi"
+                  to="/quan-ly-phieu-danh-gia"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full "
                 >
                   Phiếu đánh giá KPI
                 </Link>
               </li>
-              <li className="hover:bg-gray-50 mt-0 px-2">
-                <Link
-                  to="/manager-kpi"
-                  className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full "
-                >
-                  KPI Target
-                </Link>
-              </li>
+              {account?.role?.roleName === "ROLE_ADMIN" || account?.role?.roleName === "ROLE_MANAGER" ? (
+                <li className="hover:bg-gray-50 mt-0 px-2">
+                  <Link
+                    to="/danh-sach-kpi-danh-gia"
+                    className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full "
+                  >
+                    Đánh giá KPI
+                  </Link>
+                </li>
+              ) : (
+                <></>
+              )}
+
               <li className="hover:bg-gray-50 mt-0 px-2">
                 <Link
                   to="/request-kpi"
@@ -64,18 +70,6 @@ function KPI({ children }) {
                 className="bg-gray-800 mx-2 text-sm rounded-md text-white py-1.5 px-4"
               >
                 + Tạo phiếu KPI
-              </Link>
-              <Link
-                to="/target"
-                className="bg-gray-800  mx-2 text-sm rounded-md text-white py-1.5 px-4"
-              >
-                + Tạo target
-              </Link>
-              <Link
-                to="/danh-gia-KPI"
-                className=" text-sm rounded-md  mx-2 text-black border border-black py-1.5 px-4"
-              >
-                Xuất file
               </Link>
             </div>
             <div className="flex">

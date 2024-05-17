@@ -164,7 +164,7 @@ function LayoutJob({ children }) {
                       className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
                     >
                       <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
-                      Báo cáo công việc
+                      Đánh giá công việc
                     </Link>
                   </li>
                 ) : (

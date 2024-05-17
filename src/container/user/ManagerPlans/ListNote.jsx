@@ -35,7 +35,6 @@ function ManagerNote() {
     setEditPlan(!editPlan);
     dispatch(getPlanById(item));
   };
-  console.log("singlePlan", singlePlan)
   // const [dataPlan, setDataPlan] = useState({
   //   title: "",
   //   planJob: [],

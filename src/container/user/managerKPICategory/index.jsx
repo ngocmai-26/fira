@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+
 import { debounce } from "../../../app/debounce";
 import SearchComponent from "../../component/SearchComponent";
 import { Spinner } from "../../component/Spinner";
@@ -22,7 +22,6 @@ function ManagerKPICategories() {
   const [currentPage, setCurrentPage] = useState(paginationKPICategories?.number + 1);
   const [isHiddenCreate, setIsHiddenCreate] = useState(false);
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(false);
-  const [permDetail, setPermDetail] = useState({});
 
   useLayoutEffect(() => {
     if (allKPICategories?.length <= 0) {
@@ -54,10 +53,9 @@ function ManagerKPICategories() {
     dispatch(getKpiCategoriesById(item))
   };
 
-  console.log("currentPage", currentPage)
   return (
     <Layout>
-      <div className="p-4">
+      <div className="p-4 px-10">
         <div className="title pt-3">
           <span className="text-xl font-bold uppercase">
             Danh sách danh mục KPI
@@ -72,11 +70,13 @@ function ManagerKPICategories() {
             }
             style={"w-2/6"}
           />
+          <div>
           <ButtonComponent
           handleClick={handleHiddenCreate}
           textButton={"Thêm danh mục kpi"}
-          style="text-white bg-blue-700 hover:bg-blue-800 my-2 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2  "
+          style="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 "
           />
+          </div>
         </div>
         <div className="table-manager">
           <TableComponent

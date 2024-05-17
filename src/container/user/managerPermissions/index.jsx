@@ -11,10 +11,10 @@ import {
   updatePermission,
 } from "../../../thunks/PermissionsThunk";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { debounce } from "../../../app/debounce";
 import { Spinner } from "../../component/Spinner";
 import { Pagination, Stack } from "@mui/material";
+import CreatePermissionModal from "../../modal/permission/CreatePermissionModal";
 
 function ManagerPermissions() {
   const { allPermission, singlePermission, paginationPer } = useSelector(
@@ -25,6 +25,7 @@ function ManagerPermissions() {
   const [currentPage, setCurrentPage] = useState(paginationPer?.number + 1);
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const [permDetail, setPermDetail] = useState({});
+  const [showCreatePermission, setShowCreatePermission] = useState(false);
 
   useLayoutEffect(() => {
     if (allPermission?.length <= 0) {
@@ -67,7 +68,7 @@ function ManagerPermissions() {
 
   return (
     <Layout>
-      <div className="p-4">
+      <div className="p-4 px-10">
         <div className="title pt-3">
           <span className="text-xl font-bold uppercase">
             Danh sách chức năng
@@ -82,12 +83,16 @@ function ManagerPermissions() {
             }
             style={"w-2/6"}
           />
-          <Link
-            to="/them-chuc-nang"
-            className="text-white bg-blue-700 hover:bg-blue-800 my-2 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2  "
-          >
-            Thêm chức năng
-          </Link>
+          <div>
+            <ButtonComponent
+              type={"button"}
+              textButton={"Thêm chức năng"}
+              handleClick={() => setShowCreatePermission(true)}
+              style={
+                "text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 "
+              }
+            />
+          </div>
         </div>
         <div className="table-manager">
           <TableComponent
@@ -102,7 +107,7 @@ function ManagerPermissions() {
                 </td>
                 <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                   <button
-                    className="w-full"
+                    className="w-full text-start"
                     onClick={() => handleGetPermissionById(item?.id)}
                   >
                     {item?.name}
@@ -136,7 +141,7 @@ function ManagerPermissions() {
           </TableComponent>
         </div>
       </div>
-      
+
       <div
         className={`fixed mx-auto ${
           showPermissionById ? "block" : "hidden"
@@ -217,7 +222,13 @@ function ManagerPermissions() {
         id="edit-user-modal"
       >
         <div className="relative w-full h-full max-w-2xl px-4 md:h-auto">
-          <div className="relative bg-white rounded-lg shadow ">
+          <div
+            className="relative bg-white rounded-lg "
+            style={{
+              boxShadow:
+                "0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)",
+            }}
+          >
             <div className="flex items-start justify-between p-5 border-b rounded-t">
               <h3 className="text-xl font-semibold ">Chỉnh sửa chức năng</h3>
               <button
@@ -295,24 +306,28 @@ function ManagerPermissions() {
           </div>
         </div>
       </div>
+      {showCreatePermission && (
+        <CreatePermissionModal
+          setShowCreatePermission={setShowCreatePermission}
+        />
+      )}
       {paginationPer?.totalPages > 1 && (
-    <Stack
-    spacing={2}
-    justifyContent="center"
-    color="#fff"
-    className="pagination"
-  >
-    <Pagination
-      count={paginationPer?.totalPages}
-      color="primary"
-      className="pagination-item"
-      style={{ margin: "auto" }}
-      page={currentPage}
-      onChange={handlePageChange}
-    />
-  </Stack>
-     )}
-      
+        <Stack
+          spacing={2}
+          justifyContent="center"
+          color="#fff"
+          className="pagination"
+        >
+          <Pagination
+            count={paginationPer?.totalPages}
+            color="primary"
+            className="pagination-item"
+            style={{ margin: "auto" }}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </Stack>
+      )}
     </Layout>
   );
 }

@@ -42,7 +42,6 @@ function NavBarAdmin() {
     else {
       // If the user is not an admin, check permissions to render items accordingly
       const permissions = account?.role?.permissions;
-      console.log("permissions", permissions?.includes('MANAGE_JOB_READ'))
       return ADMIN_NAVBAR_ITEMS.map((item) => {
         if (item.id === 3 && permissions.some(permission => permission.name === 'MANAGE_JOB_READ')) {
           return <AdminSideNavItem key={item.id} item={item} />;
@@ -85,7 +84,6 @@ function NavBarAdmin() {
       });
       client.subscribe("/room", (resp) => {
         const newMessage = JSON.parse(resp.body);
-        console.log("newMessage", newMessage)
         dispatch(pushMessageToRoom(newMessage));
       });
     });

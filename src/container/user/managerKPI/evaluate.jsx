@@ -39,7 +39,6 @@ function EvaluateKPI() {
   }, [kpiData.timeStart])
 
   const handleSubmit = () => {
-    // console.log(kpiData)
     dispatch(addNewKpi(kpiData))
     .then((reps) => {
       if(!reps.error) {

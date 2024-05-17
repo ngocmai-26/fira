@@ -4,16 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormField } from "../../../component/FormField";
 import { ErrorField } from "../../../component/ErrorField";
 import ButtonComponent from "../../../component/ButtonComponent";
-import { logout } from "../../../../slices/AuthSlice";
 import { updateUser } from "../../../../thunks/UsersThunk";
 import { changePasswordAuth } from "../../../../thunks/AuthThunk";
-import { ImagePicker } from "../../../component/ImageBox";
 
 function Account() {
   const [changePassword, setChangePassword] = useState(false);
   const dispatch = useDispatch();
   const { errors, user } = useSelector((state) => state.authReducer);
-  const [images, setImages] = useState([]);
 
   const [newUserData, setNewUserData] = useState(user);
   const [newDataPassword, setNewDataPassword] = useState({

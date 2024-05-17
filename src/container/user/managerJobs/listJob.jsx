@@ -90,14 +90,7 @@ function ManagerJobs() {
                 <thead className="bg-white border-b">
                   <tr>
                     <th scope="col" className="p-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-all"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                        />
-                      </div>
+                     STT
                     </th>
                     <th
                       scope="col"
@@ -150,22 +143,11 @@ function ManagerJobs() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredJobs?.map((item) => (
-                    <tr className="">
+                  {filteredJobs?.map((item, key) => (
+                    <tr className="" key={key}>
                       <td className="w-4 p-4">
                         <div className="flex items-center">
-                          <input
-                            id="checkbox-{{ .id }}"
-                            aria-describedby="checkbox-1"
-                            type="checkbox"
-                            className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                          />
-                          <label
-                            htmlFor="checkbox-{{ .id }}"
-                            className="sr-only"
-                          >
-                            checkbox
-                          </label>
+                          {key+1}
                         </div>
                       </td>
 

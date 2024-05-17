@@ -155,12 +155,7 @@ function JobsReport() {
                   <tr>
                     <th scope="col" className="p-4">
                       <div className="flex items-center">
-                        <input
-                          id="checkbox-all"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                        />
+                        STT
                       </div>
                     </th>
                     <th
@@ -215,24 +210,13 @@ function JobsReport() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredJobs?.map(
-                    (item) =>
+                    (item, key) =>
                       item?.jobDetail?.note?.length !== 0 &&
                       item?.jobDetail?.verifyLink?.length !== 0 && (
-                        <tr className="">
+                        <tr className="" key={key}>
                           <td className="w-4 p-4">
                             <div className="flex items-center">
-                              <input
-                                id="checkbox-{{ .id }}"
-                                aria-describedby="checkbox-1"
-                                type="checkbox"
-                                className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                              />
-                              <label
-                                htmlFor="checkbox-{{ .id }}"
-                                className="sr-only"
-                              >
-                                checkbox
-                              </label>
+                              {key+1}
                             </div>
                           </td>
 

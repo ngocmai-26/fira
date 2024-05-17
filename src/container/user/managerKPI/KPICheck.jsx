@@ -45,7 +45,6 @@ function KPICheck() {
   };
 
   const handleCancel = () => {
-    console.log({ ...dataUpdateDetail, note: changeNote });
     dispatch(
       cancelKPI({
         id: singleKPI.id,

@@ -58,7 +58,7 @@ function ManagerNote() {
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
-              <div className=" bg-white p-5 ">
+              <div className=" bg-white pt-5 ">
                 <div className="bg-neutral-100 flex  pb-4 w-full flex-wrap">
                   {allPlan?.map((item) => (
                     <div className=" my-2 h-fit w-full sm:w-1/4 ">

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "../container/auth/login";
 import Register from "../container/auth/register";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import VerifyEmail from "../container/auth/verifyEmail";
 import ConfirmAccount from "../container/auth/confirmAccount";
 import ConfirmForgotPassword from "../container/auth/confirmForgotPassword";
@@ -9,23 +9,18 @@ import ForgotPassword from "../container/auth/forgotPassword";
 import Chat from "../container/user/chat";
 import CreateNewUser from "../container/auth/createNewUser";
 import { NotFoundPage } from "../container/error/404";
-import { useLayoutEffect } from "react";
 import { AppMiddleware } from "../middleware/AppMiddleware";
 import Home from "../container/user";
 import ManagerAccount from "../container/user/managerAccounts";
-import AddNewAccount from "../container/user/managerAccounts/AddNewAccount";
 import ManagerRoles from "../container/user/managerRoles";
-import AddNewRole from "../container/user/managerRoles/AddNewRole";
 import ManagerPermissions from "../container/user/managerPermissions";
 import Account from "../container/user/profile/account";
-import AddNewPermission from "../container/user/managerPermissions/AddNewPermission";
 import ManagerJobs from "../container/user/managerJobs/listJob";
 import JobsBoard from "../container/user/managerJobs/jobsBoard";
 import JobDetail from "../container/user/managerJobs/jobDetail";
 import ManagerNote from "../container/user/managerPlans/ListNote";
 import ManagerTimeKeep from "../container/user/managerTimeKeep";
 import ManagerKPICategories from "../container/user/managerKPICategory";
-import KPI from "../container/user/managerKPI";
 import ListKPI from "../container/user/managerKPI/ListKPI";
 import EvaluateKPI from "../container/user/managerKPI/evaluate";
 import ListActivePlan from "../container/user/managerPlans/listActivePlan";
@@ -76,9 +71,6 @@ export const LoggedRoute = () => {
         <Route path="/danh-gia-KPI" element={<EvaluateKPI />} />
         <Route path="/tham-dinh-danh-gia-KPI" element={<Expertise />} />
         <Route path="/kiem-tra-danh-gia-KPI" element={<KPICheck />} />
-        <Route path="/them-chuc-vu" element={<AddNewRole />} />
-        <Route path="/them-tai-khoan" element={<AddNewAccount />} />
-        <Route path="/them-chuc-nang" element={<AddNewPermission />} />
         <Route path="/tai-khoan" element={<Account />} />
         <Route path="/chi-tiet-cong-viec" element={<JobDetail />} />
         <Route path="/ke-hoach-dang-thuc-hien" element={<ListActivePlan />} />

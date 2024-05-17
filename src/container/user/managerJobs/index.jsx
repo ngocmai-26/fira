@@ -119,7 +119,7 @@ function LayoutJob({ children }) {
   return (
     <>
       <Layout>
-        <div className="header-task p-4 ">
+        <div className="header-task p-4 px-10 ">
           <div className="title">
             <a href="#" className="text-xl font-bold uppercase">
               Quản lý Công việc

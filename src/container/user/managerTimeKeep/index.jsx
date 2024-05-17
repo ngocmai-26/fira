@@ -16,9 +16,10 @@ import Layout from "../../layout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import { Pagination, Stack } from "@mui/material";
 
 function ManagerTimeKeep() {
-  const { allTimeKeep } = useSelector((state) => state.timeKeepsReducer);
+  const { allTimeKeep, paginationTimeKeep } = useSelector((state) => state.timeKeepsReducer);
   const { user, account } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
@@ -56,11 +57,20 @@ function ManagerTimeKeep() {
     }
     
   }, [check])
+  const [currentPage, setCurrentPage] = useState(paginationTimeKeep?.number + 1);
+
+  useEffect(() => {
+    setCurrentPage(paginationTimeKeep?.number + 1);
+  }, [allTimeKeep]);
+
+  const handlePageChange = (event, pageNumber) => {
+    dispatch(getAllTimeKeep(pageNumber - 1));
+  };
 
   
   return (
     <Layout>
-      <div className="p-4">
+      <div className="p-4 px-10">
         <div className="title pt-3 pb-4 flex justify-between">
           <span className="text-xl font-bold uppercase">
             Danh sách điểm danh
@@ -92,16 +102,11 @@ function ManagerTimeKeep() {
               <tr className="hover:bg-gray-100" key={key}>
                 <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                   <div className="text-base font-semibold text-gray-900">
-                    {item?.id}
+                    {key +1}
                   </div>
                 </td>
                 <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                  <button
-                    className="w-full"
-                    // onClick={() => handleGetPermissionById(item?.id)}
-                  >
-                    {item?.userChecked?.fullName}
-                  </button>
+                {item?.userChecked?.fullName}
                 </td>
                 <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                   {moment(item?.checkInTime).format("HH:mm")}
@@ -115,7 +120,8 @@ function ManagerTimeKeep() {
                 <td className="p-4 space-x-2 whitespace-nowrap">
                   <ButtonComponent
                     type={"button"}
-                    textButton={"Chỉnh sửa"}
+                    textButton={"Chi tiết"}
+                    style={"text-white bg-[#58AD69]"}
                     // handleClick={() => handleHiddenUpdate(item)}
                   />
                 </td>
@@ -124,6 +130,23 @@ function ManagerTimeKeep() {
           </TableComponent>
         </div>
       </div>
+      {paginationTimeKeep?.totalPages > 1 && (
+          <Stack
+            spacing={2}
+            justifyContent="center"
+            color="#fff"
+            className="pagination"
+          >
+            <Pagination
+              count={paginationTimeKeep?.totalPages}
+              color="primary"
+              className="pagination-item"
+              style={{ margin: "auto" }}
+              page={currentPage}
+              onChange={handlePageChange}
+            />
+          </Stack>
+        )}
     </Layout>
   );
 }

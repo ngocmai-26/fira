@@ -57,9 +57,9 @@ function LayoutPlan({ children }) {
           </div>
 
           <div className="bg-gray-100 py-4 flex justify-between">
-            <div className="">
-              <button
-                className="bg-gray-800 text-sm rounded-md text-white py-1 px-4"
+          <div className="mx-2 sm:mx-4">
+                    <button
+                      className="bg-gray-800 text-sm rounded-md text-white py-1 px-4"
                 onClick={() => handleHiddenCreate()}
               >
                 + Thêm mới

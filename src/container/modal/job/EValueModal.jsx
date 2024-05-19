@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { comFirmJob, evaluateJob } from "../../../thunks/JobsThunk";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function EValueJobModal({ handleHiddenEValue, evaluateData }) {
   const dispatch = useDispatch();
@@ -9,19 +10,22 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
       id: 1,
       value: "BAD",
       eValuate: "Xấu",
-      bg: "bg-red-500",
+      bg: "bg-white border-[#e68a8c] border text-[#e68a8c] rounded-md hover:bg-[#e68a8c] hover:text-white  text-xs p-1",
+      bgActive: "bg-[#e68a8c] border-[#e68a8c] border  rounded-md text-white text-xs p-1"
     },
     {
       id: 2,
       value: "MEDIUM",
       eValuate: "Trung Bình",
-      bg: "bg-amber-500",
+      bg: " bg-white border-amber-500 border text-amber-500 rounded-md hover:bg-amber-500 hover:text-white  text-xs p-1",
+      bgActive: "bg-amber-500 border-amber-500 border rounded-md text-white text-xs p-1"
     },
     {
       id: 3,
       value: "GOOD",
       eValuate: "Tốt",
-      bg: "bg-green-500",
+      bg: "bg-white border-green-500 border text-green-500 rounded-md hover:bg-green-500 hover:text-white  text-xs p-1",
+      bgActive: "bg-green-500 border-green-500 border rounded-md text-white  text-xs p-1"
     },
   ];
 
@@ -50,7 +54,7 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
       className={`fixed left-0 right-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full `}
       id="new-task-modal"
     >
-      <div className="relative w-full h-full max-w-3xl m-auto px-4 md:h-auto">
+      <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
         <div className="relative bg-white rounded-lg shadow ">
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">
@@ -108,8 +112,7 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
                 <button
                   key={key}
                   className={`${
-                    eValuate === item.value ? item.bg : "bg-stone-300"
-                  } text-white text-sm px-2 mx-1 py-1 rounded-xs`}
+                    eValuate === item.value? item.bgActive: item.bg}  text-sm px-2 mx-1 py-1 rounded-xs `}
                   onClick={() => handleEValuate(item.value)}
                 >
                   {item.eValuate}
@@ -117,29 +120,34 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
               ))}
             </div>
           </div>
-          <div className="text-right p-4">
-            <button
-              className="bg-red-500 text-white text-xs p-1 mx-1"
-              onClick={() =>
+          <div className="text-right p-4 flex gap-3 justify-end">
+           
+            <ButtonComponent
+              type={"button"}
+              textButton={"Đánh giá lại"}
+              handleClick={() =>
                 dispatch(
                   comFirmJob({
                     id: evaluateData?.id,
-                    data: { status: "PENDING" },
+                    data: { status: "PROCESSING" },
                   })
                 ).then((reps) => {
                   if (!reps.error) {
                     handleHiddenEValue();
                   }
                 })}
-            >
-              Đánh giá lại
-            </button>
-            <button
-              className="bg-blue-500 text-white text-xs p-1 mx-1"
-              onClick={handleSubmitEvaluate}
-            >
-              Xác nhận
-            </button>
+              style={
+                "bg-red-500  border border-red-500 hover:bg-red-500 text-white focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+              }
+            />
+            <ButtonComponent
+              type={"button"}
+              textButton={"Xác nhận"}
+              handleClick={handleSubmitEvaluate}
+              style={
+                "text-white bg-sky-500 border border-sky-500 hover:bg-sky-500 focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+              }
+            />
           </div>
         </div>
       </div>

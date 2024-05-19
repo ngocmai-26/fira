@@ -3,6 +3,8 @@ import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllJob } from "../../../thunks/JobsThunk";
 import { updatePlan } from "../../../thunks/PlansThunk";
+import ButtonComponent from "../../component/ButtonComponent";
+import { FormField } from "../../component/FormField";
 
 function EditPlanModal({ handleHiddenEdit }) {
   const { singlePlan } = useSelector((state) => state.plansReducer);
@@ -88,14 +90,14 @@ function EditPlanModal({ handleHiddenEdit }) {
 
           <div className="p-6 space-y-6">
             <form action="#">
-              <div className="grid lg:grid-cols-3 gap-5  grid-cols-1">
-                <div className="lg:col-span-2 lg:border-e-slate-300 lg:border-e-2 lg:pe-2">
+            <div className="grid lg:grid-cols-4 gap-5  grid-cols-1">
+                <div className="lg:col-span-3 lg:border-e-slate-300 lg:border-e-2 lg:pe-2">
                   <div className="due">
-                    <div className="grid grid-cols-1 md:grid-cols-5 sm:grid-cols-4 justify-between">
-                      <div className="md:col-span-3 sm:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-4 justify-between">
+                      <div className="md:col-span-2 sm:col-span-2">
                         <label
                           htmlFor="category-create"
-                          className="block mb-2 text-xs font-medium text-gray-900"
+                          className="block mb-2 text-sm font-medium text-gray-900"
                         >
                           Loại:
                       <span className="text-red-500">*</span>
@@ -116,7 +118,7 @@ function EditPlanModal({ handleHiddenEdit }) {
                               ? singlePlan?.planDetail?.planType
                               : ""
                           }
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
+                          className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                         >
                           <option value="0" selected=""></option>
                           <option value="LOOP">Định kì</option>
@@ -126,12 +128,12 @@ function EditPlanModal({ handleHiddenEdit }) {
                       <div className="col-span-2">
                         <label
                           htmlFor="category-create"
-                          className="block mb-2 text-xs font-medium text-gray-900 "
+                          className="block mb-2 text-sm font-medium text-gray-900 "
                         >
                           Tiêu đề kế hoạch:
                       <span className="text-red-500">*</span>
                         </label>
-                        <div className="grid grid-cols-2">
+                        <div className="grid grid-cols-2 gap-3">
                           <input
                             type="date"
                             name=""
@@ -154,7 +156,7 @@ function EditPlanModal({ handleHiddenEdit }) {
                                 : ""
                             }
                             id="timeStart"
-                            className="shadow-sm bg-gray-50  border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
+                            className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                             required
                           />
                           <input
@@ -179,7 +181,7 @@ function EditPlanModal({ handleHiddenEdit }) {
                                 : ""
                             }
                             id="timeEnd"
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
+                            className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                             required
                           />
                         </div>
@@ -187,23 +189,27 @@ function EditPlanModal({ handleHiddenEdit }) {
                     </div>
                   </div>
                   <div className="information-plan mt-2">
-                    <input
-                      type="text"
-                      name="title"
-                      onChange={(e) =>
-                        setDataPlan({ ...dataPlan, title: e.target.value })
-                      }
-                      defaultValue={singlePlan?.title ? singlePlan?.title : ""}
-                      id="title"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                      placeholder="Title"
-                      required
-                    />
+                  
+                     <FormField
+                        name={"title"}
+                        values={dataPlan}
+                        id={"title"}
+                        setValue={setDataPlan}
+                        required={"required"}
+                        placeholder={"Tên công việc"}
+                      />
                   </div>
                   <div className="information-plan mt-2">
-                    <input
-                      type="text"
-                      name="description"
+                            
+                    <textarea
+                      className="rounded-md border  text-sm border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-slate-500 focus:ring-primary-500 focus:border-primary-500 block p-2"
+                      defaultValue={
+                        dataPlan?.planDetailRequest?.description
+                          ? dataPlan?.planDetailRequest?.description
+                          : ""
+                      }
+                      rows="5"
+                      placeholder="Mô tả chi tiết kế hoạch"
                       onChange={(e) =>
                         setDataPlan({
                           ...dataPlan,
@@ -213,15 +219,6 @@ function EditPlanModal({ handleHiddenEdit }) {
                           },
                         })
                       }
-                      defaultValue={
-                        singlePlan?.planDetail?.description
-                          ? singlePlan?.planDetail?.description
-                          : ""
-                      }
-                      id="description"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                      placeholder="Mô tả chi tiết kế hoạch"
-                      required
                     />
                   </div>
 
@@ -258,13 +255,15 @@ function EditPlanModal({ handleHiddenEdit }) {
                   </div> 
               </div>
               <div className="items-center py-4 border-gray-200 rounded-b text-right">
-                <button
-                  className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
-                  type="button"
-                  onClick={handleSubmit}
-                >
-                  Lưu
-                </button>
+           
+                <ButtonComponent
+                  type={"button"}
+                  textButton={"Lưu"}
+                  handleClick={handleSubmit}
+                  style={
+                    "text-white bg-sky-500 border border-sky-500 hover:bg-sky-500 focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+                  }
+                />
               </div>
             </form>
           </div>

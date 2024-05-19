@@ -1,27 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Layout from "../../layout";
 import { useState } from "react";
 import CreatePlanModal from "../../modal/plans/createPlanModal";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function LayoutPlan({ children }) {
   const [isHiddenCreate, setIsHiddenCreate] = useState(false);
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
-  
+
+  const location = useLocation();
+  const { pathname } = location;
+
   return (
     <Layout>
-      <div className="header-kpi p-4">
-        <div className="title ">
+      <div className="header-kpi p-4 px-10">
+        <div className="title">
           <a href="#" className="text-xl font-bold uppercase">
             Kế hoạch công việc
           </a>
         </div>
 
         <div className="notes">
-          <div className="block sm:flex bg-white mt-4 justify-between">
-            <ul className="flex  font-medium flex-row my-auto">
-              <li className="hover:bg-gray-50 mt-0 px-2">
+          <div className="block sm:flex bg-white justify-between border-b py-7">
+            <ul className="flex font-medium flex-row my-auto">
+              <li className={`mt-0 px-2 ${pathname === "/quan-ly-ke-hoach" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
                 <Link
                   to="/quan-ly-ke-hoach"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full"
@@ -29,20 +33,20 @@ function LayoutPlan({ children }) {
                   Kế hoạch công việc
                 </Link>
               </li>
-              <li className="hover:bg-gray-50 mt-0 px-2">
+              <li className={`mt-0 px-2 ${pathname === "/ke-hoach-dang-thuc-hien" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
                 <Link
                   to="/ke-hoach-dang-thuc-hien"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full"
                 >
-                  Đang chạy
+                  Công việc đang thực hiện
                 </Link>
               </li>
             </ul>
-            <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
+            {/* <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
               <label htmlFor="accounts-search" className="sr-only">
                 Tìm kiếm
               </label>
-              <div className="relative w-full  mt-1 sm:w-64 py-2">
+              <div className="relative w-full mt-1 sm:w-64 py-2">
                 <input
                   type="text"
                   name="search"
@@ -53,33 +57,27 @@ function LayoutPlan({ children }) {
                   // onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-            </form>
+            </form> */}
+            <ButtonComponent
+              type={"button"}
+              textButton={"Thêm kế hoạch"}
+              handleClick={handleHiddenCreate}
+              style={
+                "text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "
+              }
+            />
           </div>
 
-          <div className="bg-gray-100 py-4 flex justify-between">
-          <div className="mx-2 sm:mx-4">
-                    <button
-                      className="bg-gray-800 text-sm rounded-md text-white py-1 px-4"
+          {/* <div className="bg-gray-100 py-4 flex justify-between">
+            <div className="mx-2 sm:mx-4">
+              <button
+                className="bg-gray-800 text-sm rounded-md text-white py-1 px-4"
                 onClick={() => handleHiddenCreate()}
               >
                 + Thêm mới
               </button>
             </div>
-            <div className="pe-2">
-              <select
-                id="category-create"
-                //  onChange={(e) => setFilterType(e.target.value)}
-                //  value={filterType? filterType: "0"}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
-              >
-                <option value="0" selected="">
-                  Thuộc
-                </option>
-                <option value="1">Công việc</option>
-                <option value="2">KPI</option>
-              </select>
-            </div>
-          </div>
+          </div> */}
           {children}
         </div>
         {isHiddenCreate && <CreatePlanModal handleHiddenCreate={handleHiddenCreate} />}

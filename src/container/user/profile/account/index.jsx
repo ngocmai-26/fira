@@ -13,13 +13,30 @@ function Account() {
   const { errors, user } = useSelector((state) => state.authReducer);
 
   const [newUserData, setNewUserData] = useState(user);
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [newDataPassword, setNewDataPassword] = useState({
     email: newUserData?.email,
     oldPassword: "",
     newPassword: "",
   });
 
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  };
+
   const handleSubmit = () => {
+    console.log(newDataPassword.newPassword, 'và ', confirmPassword)
+    if (newDataPassword.newPassword !== confirmPassword.confirmPassword) {
+      alert("Mật khẩu mới và mật khẩu xác nhận không khớp.");
+      return;
+    }
+
+    if (!validatePassword(newDataPassword.newPassword)) {
+      alert("Mật khẩu phải có ít nhất 8 ký tự, bao gồm 1 chữ in hoa và 1 số.");
+      return;
+    }
+
     dispatch(changePasswordAuth(newDataPassword));
   };
 
@@ -195,24 +212,28 @@ function Account() {
               </div>
 
               <div className="button text-right">
-                <ButtonComponent
-                  type={"button"}
-                  textButton={"Lưu"}
-                  handleClick={handleUpdate}
-                />
+             
+                 <ButtonComponent
+              type={"button"}
+              textButton={"Lưu thông tin"}
+              handleClick={handleUpdate}
+              style={
+                "text-sky-500 bg-white border border-sky-500 hover:bg-sky-500 hover:text-white focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+              }
+            />
               </div>
             </div>
           </form>
         </div>
       </Layout>
       <div
-        className={`fixed left-0 right-0 ${
+        className={`fixed left-0 right-0  ${
           changePassword ? "block" : "hidden"
         } z-50 items-center justify-center  bg-[#e3e3e387] overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
         id="delete-user-modal"
       >
         <div className="relative w-full h-full max-w-xl px-4 md:h-auto m-auto ">
-          <div className="relative bg-white rounded-lg shadow ">
+          <div className="relative bg-white rounded-lg shadow mt-20 ">
             <div className="flex justify-end p-2">
               <div
                 onClick={() => setChangePassword(false)}
@@ -295,28 +316,33 @@ function Account() {
                     </div>
                   </div>
 
-                  {/* <div className="confirmNewPassword grid grid-cols-3 gap-5 py-2">
+                  <div className="confirmNewPassword grid grid-cols-3 gap-5 py-2">
                     <label htmlFor="" className="text-sm my-auto">
                       Nhập lại mật khẩu mới:
                     </label>
                     <div className="col-span-2">
                       <FormField
                         name={"confirmPassword"}
-                        values={newUserData}
+                        values={confirmPassword}
                         id={"confirmPassword"}
-                        setValue={setNewUserData}
+                        setValue={setConfirmPassword}
                         required={"required"}
                       />
                       {<ErrorField errors={errors} field={"confirmPassword"} />}
                     </div>
-                  </div> */}
+                  </div>
                 </div>
                 <div className="button text-right pt-5">
+                  
                   <ButtonComponent
-                    type={"button"}
-                    textButton={"Lưu"}
-                    handleClick={handleSubmit}
-                  />
+                  type={"button"}
+                  textButton={"Lưu"}
+                  handleClick={handleSubmit}
+                  style={
+                    "text-white bg-sky-500 border border-sky-500 hover:bg-sky-500 focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+                  }
+                />
+
                 </div>
               </form>
             </div>

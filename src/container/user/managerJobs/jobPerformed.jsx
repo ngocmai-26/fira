@@ -210,7 +210,7 @@ function JobPerformed() {
                         item.status === "DONE" &&
                         item?.jobDetail?.jobEvaluate !== null ? (
                           <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
-                            <button className="bg-blue-500 text-white text-xs p-1">
+                            <button className="border-[#58AD69] border text-[#58AD69] rounded-md hover:bg-[#58AD69] hover:text-white  text-xs p-1">
                               Chi tiết
                             </button>
                           </td>
@@ -220,7 +220,7 @@ function JobPerformed() {
                             item?.jobDetail?.note &&
                             item?.jobDetail?.instructionLink ? (
                               <button
-                                className="bg-blue-500 text-white text-xs p-1"
+                                className="border-[#17103a] border text-[#17103a] rounded-md hover:bg-[#17103a] hover:text-white  text-xs p-1"
                                 onClick={() => handleHiddenEValue(item)}
                               >
                                 Đánh giá
@@ -233,7 +233,7 @@ function JobPerformed() {
                               Chỉnh sửa
                             </button>
                             <button
-                              className="bg-red-500 text-white text-xs p-1"
+                              className="border-red-500 border text-red-500 rounded-md hover:bg-red-500 hover:text-white  text-xs p-1"
                               onClick={() => {
                                 if (
                                   window.confirm(
@@ -248,7 +248,7 @@ function JobPerformed() {
                             </button>
                             {item?.status === null ? (
                               <button
-                                className="bg-blue-500 text-white text-xs p-1 mr-2 px"
+                                className="border-[#ffd273] border text-[#ffd273] rounded-md hover:bg-[#ffd273] hover:text-white  text-xs p-1"
                                 onClick={() =>
                                   dispatch(
                                     comFirmJob({
@@ -267,12 +267,12 @@ function JobPerformed() {
                         )
                       ) : (
                         <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          {item?.status === "PROCESSING"&& item.cachedProgress ===0 &&
+                          {item?.status === "PROCESSING" &&
                             item?.staffs?.map((staff) => (
                               <div key={staff.id}>
                                 {staff.id === account?.user?.id ? (
                                   <button
-                                    className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                    className="border-[#e97254] border text-[#e97254] rounded-md hover:bg-[#e97254] hover:text-white  text-xs p-1"
                                     onClick={() => handleHiddenReport(item)}
                                   >
                                     Báo cáo

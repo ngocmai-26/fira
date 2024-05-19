@@ -17,7 +17,6 @@ import ManagerPermissions from "../container/user/managerPermissions";
 import Account from "../container/user/profile/account";
 import ManagerJobs from "../container/user/managerJobs/listJob";
 import JobsBoard from "../container/user/managerJobs/jobsBoard";
-import JobDetail from "../container/user/managerJobs/jobDetail";
 import ManagerNote from "../container/user/managerPlans/ListNote";
 import ManagerTimeKeep from "../container/user/managerTimeKeep";
 import ManagerKPICategories from "../container/user/managerKPICategory";
@@ -72,7 +71,6 @@ export const LoggedRoute = () => {
         <Route path="/tham-dinh-danh-gia-KPI" element={<Expertise />} />
         <Route path="/kiem-tra-danh-gia-KPI" element={<KPICheck />} />
         <Route path="/tai-khoan" element={<Account />} />
-        <Route path="/chi-tiet-cong-viec" element={<JobDetail />} />
         <Route path="/ke-hoach-dang-thuc-hien" element={<ListActivePlan />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

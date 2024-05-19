@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllJob } from "../../../thunks/JobsThunk";
 import { addNewPlan } from "../../../thunks/PlansThunk";
+import { FormField } from "../../component/FormField";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function CreatePlanModal({ handleHiddenCreate }) {
   const dispatch = useDispatch();
@@ -46,7 +48,6 @@ function CreatePlanModal({ handleHiddenCreate }) {
 
   const [selectedDates, setSelectedDates] = useState([]);
   const [selectedMonths, setSelectedMonths] = useState([]);
-  
 
   const handleOptionChange = (e) => {
     setDataPlan({
@@ -92,7 +93,9 @@ function CreatePlanModal({ handleHiddenCreate }) {
         return Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
           <div
             key={day}
-            className={`calendar-day text-sm ${isSelectedDate(day) ? "selected" : ""}`}
+            className={`calendar-day text-sm rounded-md ${
+              isSelectedDate(day) ? "selected" : ""
+            }`}
             onClick={() => handleDateClick(day)}
           >
             {day}
@@ -102,7 +105,7 @@ function CreatePlanModal({ handleHiddenCreate }) {
         return Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
           <div
             key={month}
-            className={`calendar-month text-sm ${
+            className={`calendar-month text-sm rounded-md ${
               isSelectedMonth(month) ? "selected" : ""
             }`}
             onClick={() => handleDateClick(month)}
@@ -125,10 +128,10 @@ function CreatePlanModal({ handleHiddenCreate }) {
         planType: e.target.value,
         planSchedules: [],
       },
-    })
+    });
     setSelectedDates([]); // Reset selected dates when changing options
     setSelectedMonths([]); // Reset selected months when changing options
-  }
+  };
 
   useEffect(() => {
     if (dataPlan?.planDetailRequest?.scheduleType === "DAY") {
@@ -148,14 +151,13 @@ function CreatePlanModal({ handleHiddenCreate }) {
         },
       });
     }
-  }, [selectedDates, selectedMonths])
+  }, [selectedDates, selectedMonths]);
 
   const handleClick = () => {
-    console.log("dataPlan", dataPlan)
     dispatch(addNewPlan(dataPlan)).then((reps) => {
-      // if (!reps.error) {
-      //   handleHiddenCreate()
-      // }
+      if (!reps.error) {
+        handleHiddenCreate()
+      }
     });
   };
   return (
@@ -190,29 +192,27 @@ function CreatePlanModal({ handleHiddenCreate }) {
 
           <div className="lg:p-6 space-y-6">
             <form action="#">
-              <div className="grid lg:grid-cols-3 gap-5  grid-cols-1">
-                <div className="lg:col-span-2 lg:border-e-slate-300 lg:border-e-2 lg:pe-2">
+              <div className="grid lg:grid-cols-4 gap-5  grid-cols-1">
+                <div className="lg:col-span-3 lg:border-e-slate-300 lg:border-e-2 lg:pe-2">
                   <div className="due">
-                    <div className="grid grid-cols-1 md:grid-cols-5 sm:grid-cols-4 justify-between">
-                      <div className="md:col-span-3 sm:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-4 justify-between">
+                      <div className="md:col-span-2 sm:col-span-2">
                         <label
                           htmlFor="category-create"
-                          className="block mb-2 text-xs font-medium text-gray-900"
+                          className="block mb-2 text-sm font-medium text-gray-900"
                         >
                           Loại:
                           <span className="text-red-500">*</span>
                         </label>
                         <select
                           id="category-create"
-                          onChange={(e) => handleType(e)
-                           
-                          }
+                          onChange={(e) => handleType(e)}
                           value={
                             dataPlan.planDetailRequest.planType
                               ? dataPlan.planDetailRequest.planType
                               : ""
                           }
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
+                          className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                         >
                           <option value="LOOP">Định kì</option>
                           <option value="ONCE">1 lần</option>
@@ -221,12 +221,13 @@ function CreatePlanModal({ handleHiddenCreate }) {
                       <div className="col-span-2">
                         <label
                           htmlFor="category-create"
-                          className="block mb-2 text-xs font-medium text-gray-900 "
+                          className="block mb-2 text-sm font-medium text-gray-900 "
                         >
                           Tiêu đề kế hoạch:
                           <span className="text-red-500">*</span>
                         </label>
-                        <div className="grid grid-cols-2">
+                        <div className="grid grid-cols-2 gap-2">
+                         
                           <input
                             type="date"
                             name=""
@@ -245,10 +246,10 @@ function CreatePlanModal({ handleHiddenCreate }) {
                                 : ""
                             }
                             id="timeStart"
-                            className="shadow-sm bg-gray-50  border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
+                            className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                             required
-                          />
-                          <input
+                          /> 
+                           <input
                             type="date"
                             name=""
                             onChange={(e) =>
@@ -266,7 +267,7 @@ function CreatePlanModal({ handleHiddenCreate }) {
                                 : ""
                             }
                             id="timeEnd"
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
+                            className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                             required
                           />
                         </div>
@@ -274,23 +275,27 @@ function CreatePlanModal({ handleHiddenCreate }) {
                     </div>
                   </div>
                   <div className="information-plan mt-2">
-                    <input
-                      type="text"
-                      name="title"
-                      onChange={(e) =>
-                        setDataPlan({ ...dataPlan, title: e.target.value })
-                      }
-                      value={dataPlan?.title ? dataPlan?.title : ""}
-                      id="title"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                      placeholder="Title"
-                      required
-                    />
+                
+                    <FormField
+                        name={"title"}
+                        values={dataPlan}
+                        id={"title"}
+                        setValue={setDataPlan}
+                        required={"required"}
+                        placeholder={"Tên công việc"}
+                      />
                   </div>
                   <div className="information-plan mt-2">
-                    <input
-                      type="text"
-                      name="description"
+                    
+                    <textarea
+                      className="rounded-md border text-sm border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-gray-900 focus:ring-primary-500 focus:border-primary-500 block p-2"
+                      defaultValue={
+                        dataPlan?.planDetailRequest?.description
+                          ? dataPlan?.planDetailRequest?.description
+                          : ""
+                      }
+                      rows="5"
+                      placeholder="Mô tả chi tiết kế hoạch"
                       onChange={(e) =>
                         setDataPlan({
                           ...dataPlan,
@@ -300,61 +305,55 @@ function CreatePlanModal({ handleHiddenCreate }) {
                           },
                         })
                       }
-                      value={
-                        dataPlan?.planDetailRequest?.description
-                          ? dataPlan?.planDetailRequest?.description
-                          : ""
-                      }
-                      id="description"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                      placeholder="Mô tả chi tiết kế hoạch"
-                      required
                     />
                   </div>
-                  {dataPlan?.planDetailRequest?.planType === "LOOP" && <div className="information-plan mt-2">
-                    <div className="scheduleType">
-                      <div className="option-selector">
-                        <select
-                          value={
-                            dataPlan.planDetailRequest?.scheduleType ? dataPlan.planDetailRequest?.scheduleType : ""
-                          }
-                          onChange={handleOptionChange}
-                          className="option-select"
-                        >
-                          <option value="">Chọn loại lịch trình</option>
-                          <option value="DAY">Ngày</option>
-                          <option value="MONTH">Tháng</option>
-                          {/* <option value="YEAR">Năm</option> */}
-                        </select>
+                  {dataPlan?.planDetailRequest?.planType === "LOOP" && (
+                    <div className="information-plan mt-2">
+                      <div className="scheduleType">
+                        <div className="option-selector">
+                          <select
+                            value={
+                              dataPlan.planDetailRequest?.scheduleType
+                                ? dataPlan.planDetailRequest?.scheduleType
+                                : ""
+                            }
+                            onChange={handleOptionChange}
+                            className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
+                          >
+                            <option value="">Chọn loại lịch trình</option>
+                            <option value="DAY">Ngày</option>
+                            <option value="MONTH">Tháng</option>
+                            {/* <option value="YEAR">Năm</option> */}
+                          </select>
+                        </div>
+                        <div className="calendar-grid">{renderOptions()}</div>
                       </div>
-                      <div className="calendar-grid">{renderOptions()}</div>
                     </div>
-                  </div>  }
-                  
+                  )}
                 </div>
 
                 <div className="information-plan md:col-span-1">
                   <label
                     htmlFor="category-create"
-                    className="block mb-2 text-xs font-medium text-gray-900"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Công việc:
                     <span className="text-red-500">*</span>
                   </label>
-                  <div className="users-selection-list-wrapper py-2 border-gray-200 rounded-sm border h-72 overscroll-y-none overflow-y-auto overflow-hidden">
-                    <div className="h-auto ">
+                  <div className="users-selection-list-wrapper py-2 border-gray-200 rounded-md border h-72 overscroll-y-none overflow-y-auto overflow-hidden">
+                    <div className="h-auto w-full ">
                       {allJob?.map((item) => (
                         <button
                           type="button"
                           onClick={() => handleJobIdClick(item)}
-                          className={`users-item flex py-1 px-2 w-full text-left ${
+                          className={`users-item flex py-1 px-2 w-full text-left border-b ${
                             dataPlan.planJob.includes(item.id)
                               ? "bg-gray-300"
                               : ""
                           }`}
                         >
-                          <div className="name w-8/12 my-auto">
-                            <span className="text-xs ">{item.title}</span>
+                          <div className="name  my-auto">
+                            <span className="text-xs ">{item?.title}</span>
                           </div>
                         </button>
                       ))}
@@ -363,13 +362,14 @@ function CreatePlanModal({ handleHiddenCreate }) {
                 </div>
               </div>
               <div className="items-center py-4 border-gray-200 rounded-b text-right">
-                <button
-                  className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
-                  type="button"
-                  onClick={handleClick}
-                >
-                  Lưu
-                </button>
+                <ButtonComponent
+                  type={"button"}
+                  textButton={"Lưu"}
+                  handleClick={handleClick}
+                  style={
+                    "text-white bg-sky-500 border border-sky-500 hover:bg-sky-500 focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+                  }
+                />
               </div>
             </form>
           </div>

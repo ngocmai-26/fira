@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Layout from "../../layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -23,6 +23,7 @@ import CreateJobModel from "../../modal/job/CreateJobModal";
 import { debounce } from "../../../app/debounce";
 import SearchComponent from "../../component/SearchComponent";
 import { Spinner } from "../../component/Spinner";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function LayoutJob({ children }) {
   const { allRole } = useSelector((state) => state.rolesReducer);
@@ -115,6 +116,9 @@ function LayoutJob({ children }) {
     }
   };
 
+  const location = useLocation();
+  const { pathname } = location;
+
 
   return (
     <>
@@ -128,8 +132,8 @@ function LayoutJob({ children }) {
 
           <div className="tasks">
             <div className="block sm:flex bg-white mt-4 justify-between">
-              <ul className="flex my-auto font-medium flex-row bg-white ">
-                <li className="hover:bg-gray-50 mt-0 px-2">
+            <ul className="flex my-auto font-medium flex-row bg-white ">
+                <li className={`mt-0 px-2 ${pathname === "/quan-ly-cong-viec" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
                   <Link
                     to="/quan-ly-cong-viec"
                     className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
@@ -138,17 +142,18 @@ function LayoutJob({ children }) {
                     Danh sách công việc
                   </Link>
                 </li>
-                {account?.role?.roleName !== "ROLE_ADMIN" && (<li className="hover:bg-gray-50 mt-0 px-2">
-                  <Link
-                    to="/cong-viec-dang-thuc-hien"
-                    className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
-                  >
-                    <FontAwesomeIcon icon={faListCheck} className="me-1" />
-                    Danh sách công việc đang thực hiện
-                  </Link>
-                </li>)}
-                
-                <li className="hover:bg-gray-50 mt-0 px-2">
+                {account?.role?.roleName !== "ROLE_ADMIN" && (
+                  <li className={`mt-0 px-2 ${pathname === "/cong-viec-dang-thuc-hien" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
+                    <Link
+                      to="/cong-viec-dang-thuc-hien"
+                      className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
+                    >
+                      <FontAwesomeIcon icon={faListCheck} className="me-1" />
+                      Danh sách công việc đang thực hiện
+                    </Link>
+                  </li>
+                )}
+                <li className={`mt-0 px-2 ${pathname === "/quan-ly-cong-viec-dang-bang" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
                   <Link
                     to="/quan-ly-cong-viec-dang-bang"
                     className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
@@ -158,20 +163,37 @@ function LayoutJob({ children }) {
                   </Link>
                 </li>
                 {account?.role?.id !== 1 || account?.role?.id !== 3 ? (
-                  <li className="hover:bg-gray-50 mt-0 px-2">
+                  <li className={`mt-0 px-2 ${pathname === "/bao-cao-cong-viec" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
                     <Link
                       to="/bao-cao-cong-viec"
-                      className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
+                      className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2  "
                     >
                       <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
                       Đánh giá công việc
                     </Link>
                   </li>
+                  
                 ) : (
                   <></>
                 )}
+                
               </ul>
-              <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
+              <div>
+            
+            {account?.role?.id === 3 || account?.role?.id === 1 ? (
+              <ButtonComponent
+              type={"button"}
+              textButton={"Thêm công việc"}
+              handleClick={handleHiddenCreate}
+              style={
+                "text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "
+              }
+            />
+                ) : (
+                  <></>
+                )}
+          </div>
+              {/* <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
                 <div className="relative w-full  mt-1 sm:w-64 py-2">
                   <SearchComponent
                     placeholder="Nhập tên chức vụ"
@@ -186,9 +208,9 @@ function LayoutJob({ children }) {
                     }
                   />
                 </div>
-              </form>
+              </form> */}
             </div>
-
+{/* 
             <div className="bg-gray-100 my-2 p-2 block sm:flex justify-between">
               <div className="flex sm:pb-0 pb-2">
                 {account?.role?.id === 3 || account?.role?.id === 1 ? (
@@ -248,7 +270,7 @@ function LayoutJob({ children }) {
                   </option>
                 </select>
               </div>
-            </div>
+            </div> */}
             {children}
           </div>
           {/* Tạo công việc mới */}

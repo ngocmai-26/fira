@@ -74,7 +74,7 @@ function ManagerKPICategories() {
           <ButtonComponent
           handleClick={handleHiddenCreate}
           textButton={"Thêm danh mục kpi"}
-          style="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 "
+          style={"text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "}
           />
           </div>
         </div>
@@ -85,11 +85,11 @@ function ManagerKPICategories() {
             {allKPICategories?.map((item, key) => (
               <tr className="hover:bg-gray-100" key={key}>
                 <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                  <div className="text-base font-semibold text-gray-900">
+                  <div className=" text-sm font-medium text-gray-500 whitespace-nowrap">
                     {key +1}
                   </div>
                 </td>
-                <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap text-start">
+                <td className="text-sm font-medium text-gray-500 white space-nowrap text-start">
                   <button
                     className="w-full text-start"
                     // onClick={() => handleGetPermissionById(item?.id)}
@@ -101,13 +101,14 @@ function ManagerKPICategories() {
                   <ButtonComponent
                     type={"button"}
                     textButton={"Chỉnh sửa"}
+                    style={"text-blue-500 bg-white border border-blue-500 hover:bg-blue-500 hover:text-white"}
                     handleClick={() => handleHiddenUpdate(item.id)}
                   />
 
                   <ButtonComponent
                     type={"button"}
                     textButton={"Xóa"}
-                    typeButton={2}
+                    style={"text-red-600 bg-white border border-red-600 hover:bg-red-600 hover:text-white"}
                     handleClick={() => {
                       if (
                         window.confirm("Bạn có muốn xóa danh mục này không?")
@@ -125,6 +126,7 @@ function ManagerKPICategories() {
       {isHiddenCreate && <CreateKPICateModal handleHiddenCreate={handleHiddenCreate} />}
       {isHiddenUpdate && <UpdateKPICateModal handleHiddenUpdate={handleHiddenUpdate} />}
       
+      <div className="mt-10">
      {paginationKPICategories?.totalPages > 1 && (
       <Stack
         spacing={2}
@@ -142,6 +144,8 @@ function ManagerKPICategories() {
         />
       </Stack>
      )}
+
+      </div>
       
     </Layout>
   );

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FormField } from "../../component/FormField";
 import { useDispatch } from "react-redux";
 import { updateDetailJob, updateJob } from "../../../thunks/JobsThunk";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function ReportJobModel({handleHiddenReport, report}) {
   const [dataReportJob, setDataReportJob] = useState({
@@ -25,7 +26,7 @@ function ReportJobModel({handleHiddenReport, report}) {
         className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
         id="new-task-modal"
       >
-        <div className="relative w-full h-full max-w-5xl m-auto px-4 md:h-auto">
+        <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
           <div className="relative bg-white rounded-lg shadow ">
             <div className="flex items-start justify-between p-5 border-b rounded-t ">
               <h3 className="text-xl font-semibold">
@@ -53,19 +54,13 @@ function ReportJobModel({handleHiddenReport, report}) {
             </div>
             <div className="p-6 space-y-6">
               <form action="#">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+                <div className="gap-4 h-full">
                   <div className="">
                     <div className="grid grid-cols-1 ">
                       <div className="md:col-span-2 ">
                         <div className="information-plan mt-2">
                           <div className="flex justify-between">
-                            {/* <textarea
-                              className="input_todo w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-2"
-                              // value={todo}
-                              rows="7"
-                              placeholder="Công việc đã hoàn thành"
-                              // onChange={(e) => setTodo(e.target.value)}
-                            /> */}
+                            
                              <FormField
                               name={"note"}
                               values={dataReportJob}
@@ -80,13 +75,6 @@ function ReportJobModel({handleHiddenReport, report}) {
                             <label htmlFor="instructionLink" className="text-xs">
                               Đường dẫn tải liệu báo cáo
                             </label>
-                            {/* <input
-                              id="mucdo"
-                              type="text"
-                              className="input_todo shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 w-full block p-2"
-                              // value={isLink}
-                              // onChange={(e) => setIsLink(e.target.value)}
-                            /> */}
                             <FormField
                               name={"instructionLink"}
                               values={dataReportJob}
@@ -122,13 +110,15 @@ function ReportJobModel({handleHiddenReport, report}) {
                 </div>
 
                 <div className="items-center py-4 border-gray-200 rounded-b text-right">
-                  <button
-                    className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
-                    type="button"
-                    onClick={() => handleSubmit()}
-                  >
-                    Save
-                  </button>
+                  
+                  <ButtonComponent
+              type={"button"}
+              textButton={"Lưu"}
+              handleClick={handleSubmit}
+              style={
+                "text-white bg-sky-500 border border-sky-500 hover:bg-sky-500 focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+              }
+            />
                 </div>
               </form>
             </div>

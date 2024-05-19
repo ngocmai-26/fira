@@ -8,7 +8,7 @@ function TableComponent({ headTable, children }) {
           {headTable.map((item) => (
             <th
               scope="col"
-              className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+              className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
             >
               {item}
             </th>

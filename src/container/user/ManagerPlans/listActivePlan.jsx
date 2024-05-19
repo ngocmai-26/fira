@@ -1,25 +1,36 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import LayoutPlan from ".";
 
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { getAllPlan } from "../../../thunks/PlansThunk";
+import { Pagination, Stack } from "@mui/material";
 
 function ListActivePlan() {
-  const { allPlan, singlePlan } = useSelector((state) => state.plansReducer);
+  const { allPlan, singlePlan, paginationPlan } = useSelector((state) => state.plansReducer);
   const dispatch = useDispatch();
   useLayoutEffect(() => {
     if (allPlan?.length <= 0) {
       dispatch(getAllPlan());
     }
   }, []);
+
+  const [currentPage, setCurrentPage] = useState(paginationPlan?.number + 1);
+  useEffect(() => {
+    setCurrentPage(paginationPlan?.number + 1);
+  }, [allPlan]);
+
+  const handlePageChange = (event, pageNumber) => {
+    dispatch(getAllPlan(pageNumber - 1));
+  };
+
   return (
     <LayoutPlan>
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
-              <div className=" bg-white p-5 ">
+              <div className=" bg-white pt-5 ">
                 <div className="bg-neutral-100 flex  pb-4 w-full flex-wrap">
                   {allPlan
                     ?.filter((item) => item.status === "ACTIVE")
@@ -28,9 +39,9 @@ function ListActivePlan() {
                         <div
                           className={`${
                             item.planDetail.planType === "ONCE"
-                              ? "bg-amber-200 hover:bg-amber-300"
+                              ? "bg-[#b0d4b8] hover:bg-[#a4c3a2] border-2 border-[#a4c3a2] bg-opacity-70"
                               : item.planDetail.planType === "LOOP"
-                              ? "bg-sky-200 hover:bg-sky-300"
+                              ? " bg-[#d7f9fa] hover:bg-[#B8E7EA] border-2 border-sky-300"
                               : "bg-white hover:bg-gray-50"
                           } px-3 py-4 mx-2 rounded-sm shadow hover:cursor-pointer`}
                         >
@@ -44,43 +55,33 @@ function ListActivePlan() {
                             {item.planDetail.description}
                           </span>
                           <div className="w-full py-3">
-                            <div className="items-center mb-4">
-                              {item?.planDetail?.note
-                                ?.split("'/n'")
-                                .map((pre) => (
-                                  <div className="w-full flex " key={pre}>
-                                    <span className="ml-2 text-sm font-medium text-gray-700">
-                                      - {pre}{" "}
-                                    </span>
-                                  </div>
-                                ))}
-                            </div>
-                            <div className="items-center mb-4 text-sm">
-                              <span className="font-bold">
-                                Công việc liên quan
+                            <div className="items-center mb-4 flex gap-2">
+                              <span className="text-sm text-slate-700">
+                                Người lập kế hoạch:
                               </span>
-                              {item?.planJobs?.length !== 0 ? (
-                                item.planJobs.map((pre) => (
-                                  <div className="w-full flex" key={pre.title}>
-                                    <span className="ml-2 text-sm font-medium text-gray-700">
-                                      {pre.title}
-                                    </span>
-                                  </div>
-                                ))
-                              ) : (
-                                <div className="text-xs text-gray-500">
-                                  Chưa có công việc
-                                </div>
-                              )}
+                              <span className="text-sm ">
+                              {item.creator?.fullName}
+                              </span>
+                                                   
                             </div>
+                            <div className="flex gap-4">
                             <div className="start-time">
-                              <span className="text-xs text-slate-400">
-                                Start date:{" "}
+                              <span className="text-xs text-slate-700">
+                                Start date:
                               </span>
                               <span className="text-xs">
-                                {moment(item?.timeStart).format("DD-MM-YYYY")}
+                                {moment(item?.planDetail?.timeStart).format("DD-MM-YYYY")}
                               </span>
                             </div>
+                            <div className="start-time">
+                              <span className="text-xs text-slate-700">
+                                End date:
+                              </span>
+                              <span className="text-xs">
+                                {moment(item?.planDetail?.timeEnd).format("DD-MM-YYYY")}
+                              </span>
+                            </div> </div>
+                            
                           </div>
                         </div>
                       </div>
@@ -91,6 +92,25 @@ function ListActivePlan() {
           </div>
         </div>
       </div>
+     <div className="mt-10">
+     {paginationPlan?.totalPages > 1 && (
+        <Stack
+          spacing={2}
+          justifyContent="center"
+          color="#fff"
+          className="pagination"
+        >
+          <Pagination
+            count={paginationPlan?.totalPages}
+            color="primary"
+            className="pagination-item"
+            style={{ margin: "auto" }}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </Stack>
+      )}
+     </div>
     </LayoutPlan>
   );
 }

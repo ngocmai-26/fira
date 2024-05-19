@@ -18,6 +18,7 @@ import ReportJobModel from "../../modal/job/ReportJobModal";
 import EValueJobModal from "../../modal/job/EValueModal";
 import DetailJobModel from "../../modal/job/DetailJobModal";
 import moment from "moment";
+import JobDetailModal from "../../modal/job/DetailModal";
 
 function JobsReport() {
   const { allJob, paginationJob } = useSelector((state) => state.jobsReducer);
@@ -26,6 +27,7 @@ function JobsReport() {
   const [evaluateData, setEvaluateData] = useState({});
   const [evaluateDetailData, setEvaluateDetailData] = useState({});
   const [evaluate, setEvaluate] = useState(false);
+  const [hiddenJobDetail, setHiddenJobDetail] = useState(false);
 
   const [hidden, isHidden] = useState(true);
   const handleHidden = (item) => {
@@ -74,7 +76,7 @@ function JobsReport() {
   const handJobDetail = (item) => {
     dispatch(getJobById(item)).then((reps) => {
       if (!reps.error) {
-        nav("/chi-tiet-cong-viec");
+        setHiddenJobDetail(!hiddenJobDetail)
       }
     });
   };
@@ -146,63 +148,55 @@ function JobsReport() {
 
   return (
     <LayoutJob>
-      <div className="flex flex-col">
+      <div className="flex flex-col mt-5">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200 table-fixed">
-                <thead className="bg-white border-b">
+              <thead className="bg-[#f3f4f6] border-b rounded-tl-md ">
                   <tr>
-                    <th scope="col" className="p-4">
-                      <div className="flex items-center">
-                        STT
-                      </div>
+                    <th scope="col" className="p-4 text-sm font-bold text-left text-gray-500 uppercase">
+                     STT
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Công việc
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Người quản lý
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Người thực hiện
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Tiến độ tự đánh giá
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
-                    >
-                      Link
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Tg bắt đầu
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Tg Kết thúc
                     </th>
                     <th
                       scope="col"
-                      className="text-xs font-medium text-left text-gray-500 uppercase"
+                      className="text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Hành động
                     </th>
@@ -214,7 +208,7 @@ function JobsReport() {
                       item?.jobDetail?.note?.length !== 0 &&
                       item?.jobDetail?.verifyLink?.length !== 0 && (
                         <tr className="" key={key}>
-                          <td className="w-4 p-4">
+                          <td className="w-4 p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                             <div className="flex items-center">
                               {key+1}
                             </div>
@@ -239,15 +233,7 @@ function JobsReport() {
                           <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                             {item?.progress} %
                           </td>
-                          <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                            <Link
-                              to="/detail-task"
-                              target="_blank"
-                              className="underline"
-                            >
-                              {item?.jobDetail?.verifyLink}
-                            </Link>
-                          </td>
+                      
                           <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
                             {moment(item?.jobDetail?.timeStart).format(
                               "DD-MM-YYYY"
@@ -285,6 +271,7 @@ function JobsReport() {
           </div>
         </div>
       </div>
+      <div className="mt-10">
 
       {paginationJob?.totalPages > 1 && (
         <Stack
@@ -303,6 +290,7 @@ function JobsReport() {
           />
         </Stack>
       )}
+      </div>
 
       <div
         className={`fixed left-0 right-0 z-50 ${
@@ -414,6 +402,7 @@ function JobsReport() {
           </div>
         </div>
       </div>
+      {hiddenJobDetail && <JobDetailModal setHiddenJobDetail={setHiddenJobDetail} />}
     </LayoutJob>
   );
 }

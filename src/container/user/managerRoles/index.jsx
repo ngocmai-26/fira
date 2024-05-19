@@ -112,7 +112,7 @@ function ManagerRoles() {
                 textButton={"Thêm chức vụ"}
                 handleClick={() => setShowCreateRole(true)}
                 style={
-                  "text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 "
+                  "text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "
                 }
               />
             </div>
@@ -124,11 +124,11 @@ function ManagerRoles() {
               {allRole?.map((item, key) => (
                 <tr className="hover:bg-gray-100" key={key}>
                   <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                    <div className="text-base font-semibold text-gray-900">
+                    <div className="text-sm font-medium text-gray-500 whitespace-nowrap">
                       {key + 1}
                     </div>
                   </td>
-                  <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                  <td className="text-sm font-medium text-gray-500 whitespace-nowrap">
                     <button
                       className="w-full text-start"
                       onClick={() => handleGetRoleById(item?.id)}
@@ -136,20 +136,25 @@ function ManagerRoles() {
                       {item?.roleName}
                     </button>
                   </td>
-                  <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                  <td className="text-sm font-medium text-gray-500 whitespace-nowrap">
                     {item?.description}
                   </td>
                   <td className="p-4 space-x-2 whitespace-nowrap">
                     <ButtonComponent
                       type={"button"}
                       textButton={"Chỉnh sửa"}
+                      style={
+                        "text-blue-500 bg-white border border-blue-500 hover:bg-blue-500 hover:text-white"
+                      }
                       handleClick={() => handleHiddenUpdate(item)}
                     />
 
                     <ButtonComponent
                       type={"button"}
                       textButton={"Xóa"}
-                      typeButton={2}
+                      style={
+                        "text-red-600 bg-white border border-red-600 hover:bg-red-600 hover:text-white"
+                      }
                       handleClick={() => {
                         if (
                           window.confirm("Bạn có muốn xóa chức vụ này không?")
@@ -161,7 +166,9 @@ function ManagerRoles() {
                     <ButtonComponent
                       type={"button"}
                       textButton={"Cấp quyền"}
-                      typeButton={1}
+                      style={
+                        "text-yellow-700 bg-white border border-yellow-700 hover:bg-yellow-700 hover:text-white"
+                      }
                       handleClick={() => {
                         setIsHiddenPer(!isHiddenPer);
                         const foundItem = allRole.find(
@@ -320,23 +327,25 @@ function ManagerRoles() {
         {showCreateRole && (
           <CreateRoleModal setShowCreateRole={setShowCreateRole} />
         )}
-        {paginationRole?.totalPages > 1 && (
-          <Stack
-            spacing={2}
-            justifyContent="center"
-            color="#fff"
-            className="pagination"
-          >
-            <Pagination
-              count={paginationRole?.totalPages}
-              color="primary"
-              className="pagination-item"
-              style={{ margin: "auto" }}
-              page={currentPage}
-              onChange={handlePageChange}
-            />
-          </Stack>
-        )}
+        <div className="mt-10">
+          {paginationRole?.totalPages > 1 && (
+            <Stack
+              spacing={2}
+              justifyContent="center"
+              color="#fff"
+              className="pagination"
+            >
+              <Pagination
+                count={paginationRole?.totalPages}
+                color="primary"
+                className="pagination-item"
+                style={{ margin: "auto" }}
+                page={currentPage}
+                onChange={handlePageChange}
+              />
+            </Stack>
+          )}
+        </div>
       </Layout>
     </>
   );

@@ -14,6 +14,7 @@ import ReportJobModel from "../../modal/job/ReportJobModal";
 import EValueJobModal from "../../modal/job/EValueModal";
 import DetailJobModel from "../../modal/job/DetailJobModal";
 import moment from "moment";
+import JobDetailModal from "../../modal/job/DetailModal";
 
 function ManagerJobs() {
   const { allJob, paginationJob } = useSelector((state) => state.jobsReducer);
@@ -22,6 +23,7 @@ function ManagerJobs() {
   const { user } = useSelector((state) => state.authReducer);
   const [evaluateData, setEvaluateData] = useState({});
   const [hiddenEValue, isHiddenEValue] = useState(false);
+  const [hiddenJobDetail, setHiddenJobDetail] = useState(false);
 
   const [isHiddenReport, setIsHiddenReport] = useState(false);
 
@@ -47,7 +49,7 @@ function ManagerJobs() {
   const handJobDetail = (item) => {
     dispatch(getJobById(item)).then((reps) => {
       if (!reps.error) {
-        nav("/chi-tiet-cong-viec");
+        setHiddenJobDetail(!hiddenJobDetail)
       }
     });
   };
@@ -74,69 +76,66 @@ function ManagerJobs() {
     if (account.role.roleName === "ROLE_ADMIN") {
       return true;
     } else {
-      return item.manager.id === account.user.id;
+      return (
+        item.staffs.some((staff) => staff.id === account.user.id) ||
+        item.manager.id === account.user.id
+      )
     }
   });
 
-  //search
+  console.log('filteredJobs', filteredJobs)
 
   return (
     <LayoutJob>
-      <div className="flex flex-col">
+      <div className="flex flex-col mt-5">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200 table-fixed">
-                <thead className="bg-white border-b">
+                <thead className="bg-[#f3f4f6] border-b rounded-tl-md ">
                   <tr>
-                    <th scope="col" className="p-4">
+                    <th scope="col" className="p-4 text-sm font-bold text-left text-gray-500 uppercase">
                      STT
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Công việc
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Người quản lý
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Người thực hiện
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Tiến độ tự đánh giá
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
-                    >
-                      Link
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Tg bắt đầu
                     </th>
                     <th
                       scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Tg Kết thúc
                     </th>
                     <th
                       scope="col"
-                      className="text-xs font-medium text-left text-gray-500 uppercase"
+                      className="text-sm font-bold text-left text-gray-500 uppercase"
                     >
                       Hành động
                     </th>
@@ -145,7 +144,7 @@ function ManagerJobs() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredJobs?.map((item, key) => (
                     <tr className="" key={key}>
-                      <td className="w-4 p-4">
+                      <td className="w-4 p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                         <div className="flex items-center">
                           {key+1}
                         </div>
@@ -171,15 +170,6 @@ function ManagerJobs() {
                         {item?.progress} %
                       </td>
                       <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                        <Link
-                          to="/detail-task"
-                          target="_blank"
-                          className="underline"
-                        >
-                          {item?.jobDetail?.verifyLink}
-                        </Link>
-                      </td>
-                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
                         {moment(item?.jobDetail?.timeStart).format(
                           "DD-MM-YYYY"
                         )}
@@ -192,7 +182,7 @@ function ManagerJobs() {
                         item.status === "DONE" &&
                         item?.jobDetail?.jobEvaluate !== null ? (
                           <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
-                            <button className="bg-blue-500 text-white text-xs p-1">
+                            <button className="border-[#58AD69] border text-[#58AD69] rounded-md hover:bg-[#58AD69] hover:text-white  text-xs p-1">
                               Chi tiết
                             </button>
                           </td>
@@ -200,7 +190,7 @@ function ManagerJobs() {
                           item.jobDetail.jobEvaluate === null &&
                           item.status === "DONE" ? (
                             <button
-                            className="bg-blue-500 text-white text-xs p-1"
+                            className="border-[#17103a] border text-[#17103a] rounded-md hover:bg-[#17103a] hover:text-white  text-xs p-1 "
                             onClick={() => handleHiddenEValue(item)}
                           >
                             Đánh giá
@@ -211,7 +201,7 @@ function ManagerJobs() {
                             item?.jobDetail?.note &&
                             item?.jobDetail?.instructionLink ? (
                               <button
-                                className="bg-blue-500 text-white text-xs p-1"
+                                className="border-[#17103a] border text-[#17103a] rounded-md hover:bg-[#17103a] hover:text-white  text-xs p-1"
                                 onClick={() => handleHiddenEValue(item)}
                               >
                                 Đánh giá
@@ -220,11 +210,11 @@ function ManagerJobs() {
                               <></>
                             )}
 
-                            <button className="bg-blue-500 text-white text-xs p-1">
+                            <button className="border-blue-500 border text-blue-500 rounded-md hover:bg-blue-500 hover:text-white  text-xs p-1">
                               Chỉnh sửa
                             </button>
                             <button
-                              className="bg-red-500 text-white text-xs p-1"
+                              className="border-red-500 border text-red-500 rounded-md hover:bg-red-500 hover:text-white  text-xs p-1"
                               onClick={() => {
                                 if (
                                   window.confirm(
@@ -239,7 +229,7 @@ function ManagerJobs() {
                             </button>
                             {item?.status === null ? (
                               <button
-                                className="bg-blue-500 text-white text-xs p-1 mr-2 px"
+                                className="border-[#ffd273] border text-[#ffd273] rounded-md hover:bg-[#ffd273] hover:text-white  text-xs p-1"
                                 onClick={() =>
                                   dispatch(
                                     comFirmJob({
@@ -258,9 +248,9 @@ function ManagerJobs() {
                         )
                       ) : (
                         <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          {item?.jobDetail?.denyReason?.length > 0 ? (
+                        {item?.jobDetail?.denyReason?.length > 0 ? (
                             <button
-                              className="bg-blue-500 text-white text-xs p-1 mr-2"
+                              className="bg-blue-500 text-white text-xs p-1 mr-2 border-blue-500 border rounded-md hover:bg-blue-500 hover:text-white"
                               type="button"
                               // onClick={() => handleShowReason(item)}
                             >
@@ -269,7 +259,7 @@ function ManagerJobs() {
                           ) : item?.status === "PENDING" ? (
                             <>
                               <button
-                                className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                className="border-[#faa2ff] border text-[#faa2ff] rounded-md hover:bg-[#faa2ff] hover:text-white  text-xs p-1"
                                 onClick={() => handleConfirm(item.id)}
                               >
                                 Xác nhận
@@ -279,12 +269,12 @@ function ManagerJobs() {
 
                             <></>
                           )}
-                          {item?.status === "PROCESSING"&& item.cachedProgress ===0 &&
+                          {item?.status === "PROCESSING"&& item.cachedProgress === 0 &&
                             item?.staffs?.map((staff) => (
                               <div key={staff.id}>
                                 {staff.id === account?.user?.id ? (
                                   <button
-                                    className="bg-blue-500 text-white text-xs p-1 mr-2"
+                                    className="border-[#e97254] border text-[#e97254] rounded-md hover:bg-[#e97254] hover:text-white  text-xs p-1"
                                     onClick={() => handleHiddenReport(item)}
                                   >
                                     Báo cáo
@@ -304,6 +294,7 @@ function ManagerJobs() {
           </div>
         </div>
       </div>
+      <div className="mt-10">
 
       {paginationJob?.totalPages > 1 && (
         <Stack
@@ -322,6 +313,8 @@ function ManagerJobs() {
           />
         </Stack>
       )}
+      </div>
+      {hiddenJobDetail && <JobDetailModal setHiddenJobDetail={setHiddenJobDetail} />}
 
       {/* Chi tiết công việc đã hoàn thành */}
       {/* <DetailJobModel /> */}

@@ -181,3 +181,25 @@ export const updatePlan = createAsyncThunk(
   },
 )
   
+
+export const searchPlansAsync = createAsyncThunk(
+  '/roles',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/plans/by-name?name=${data}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (resp.status >= 200 && resp.status < 300) {
+        const dataJson = await resp.json()
+        dispatch(setAllPlan(dataJson.data.content))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)

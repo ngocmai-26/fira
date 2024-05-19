@@ -50,7 +50,7 @@ function ListKPI() {
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
-              <div className="bg-white p-5 min-w-[960px]">
+              <div className="bg-white pt-5 min-w-[960px]">
                 <div className="bg-neutral-100 grid grid-cols-4 gap-0 pb-4">
                   <div className="draft ">
                     <div className="draft-header py-3 border-b-2 px-4">

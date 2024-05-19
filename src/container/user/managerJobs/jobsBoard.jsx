@@ -1,15 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import LayoutJob from ".";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { getAllJob, getJobById } from "../../../thunks/JobsThunk";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
+import { Pagination, Stack } from "@mui/material";
+import JobDetailModal from "../../modal/job/DetailModal";
 
 function JobsBoard() {
-  const { allJob } = useSelector((state) => state.jobsReducer);
+  const { allJob, paginationJob } = useSelector((state) => state.jobsReducer);
   const { account } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const nav = useNavigate();
+  const [hiddenJobDetail, setHiddenJobDetail] = useState(false);
   useLayoutEffect(() => {
     if (allJob?.length <= 0) {
       dispatch(getAllJob());
@@ -18,7 +21,15 @@ function JobsBoard() {
 
   useLayoutEffect(() => {
     dispatch(getAllJob(0));
-  }, []);
+  }, []);  
+  const [currentPage, setCurrentPage] = useState(paginationJob?.number + 1);
+  useEffect(() => {
+    setCurrentPage(paginationJob?.number + 1);
+  }, [allJob]);
+
+  const handlePageChange = (event, pageNumber) => {
+    dispatch(getAllJob(pageNumber - 1));
+  };
 
   const filteredJobs = allJob.filter((item) => {
     if (account.role.roleName === "ROLE_ADMIN") {
@@ -33,7 +44,7 @@ function JobsBoard() {
   const handJobDetail = (item) => {
     dispatch(getJobById(item)).then((reps) => {
       if (!reps.error) {
-        nav("/chi-tiet-cong-viec");
+        setHiddenJobDetail(!hiddenJobDetail)
       }
     });
   };
@@ -65,8 +76,8 @@ function JobsBoard() {
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
                             key={key}
                           >
-                            <button onClick={() => handJobDetail(item?.id)}>
-                              <p className="text-xs text-start font-semibold">
+                            <button onClick={() => handJobDetail(item?.id)} className="w-full text-start">
+                              <p className="text-sm text-start font-semibold">
                                 {item.title}
                               </p>
                               <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
@@ -77,15 +88,27 @@ function JobsBoard() {
                                   }}
                                 ></div>
                               </div>
+                              <div className="flex gap-2">
                               <div className="start-time">
                                 <span className="text-xs text-slate-400">
-                                  Start date:{" "}
+                                  Bắt đầu:{" "}
                                 </span>
                                 <span className="text-xs">
                                   {moment(item.jobDetail.timeStart).format(
                                     "DD-MM-YYYY"
                                   )}
                                 </span>
+                              </div>
+                              <div className="start-time">
+                                <span className="text-xs text-slate-400">
+                                  Kết thúc:{" "}
+                                </span>
+                                <span className="text-xs">
+                                  {moment(item.jobDetail.timeEnd).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </span>
+                              </div>
                               </div>
                             </button>
                           </div>
@@ -113,8 +136,8 @@ function JobsBoard() {
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
                             key={key}
                           >
-                            <button onClick={() => handJobDetail(item?.id)}>
-                              <p className="text-xs text-start font-semibold">
+                            <button onClick={() => handJobDetail(item?.id)}  className="w-full text-start">
+                              <p className="text-sm text-start font-semibold">
                                 {item.title}
                               </p>
                               <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
@@ -123,15 +146,27 @@ function JobsBoard() {
                                   style={{ width: "45%" }}
                                 ></div>
                               </div>
+                              <div className="flex gap-2">
                               <div className="start-time">
                                 <span className="text-xs text-slate-400">
-                                  Start date:{" "}
+                                  Bắt đầu:{" "}
                                 </span>
                                 <span className="text-xs">
                                   {moment(item.jobDetail.timeStart).format(
                                     "DD-MM-YYYY"
                                   )}
                                 </span>
+                              </div>
+                              <div className="start-time">
+                                <span className="text-xs text-slate-400">
+                                  Kết thúc:{" "}
+                                </span>
+                                <span className="text-xs">
+                                  {moment(item.jobDetail.timeEnd).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </span>
+                              </div>
                               </div>
                             </button>
                           </div>
@@ -160,8 +195,8 @@ function JobsBoard() {
                             className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2"
                             key={key}
                           >
-                            <button onClick={() => handJobDetail(item?.id)}>
-                              <p className="text-xs text-start font-semibold">
+                            <button onClick={() => handJobDetail(item?.id)}  className="w-full text-start">
+                              <p className="text-sm text-start font-semibold">
                                 {item.title}
                               </p>
                               <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
@@ -170,15 +205,27 @@ function JobsBoard() {
                                   style={{ width: "45%" }}
                                 ></div>
                               </div>
+                              <div className="flex gap-2">
                               <div className="start-time">
                                 <span className="text-xs text-slate-400">
-                                  Start date:{" "}
+                                  Bắt đầu:{" "}
                                 </span>
                                 <span className="text-xs">
                                   {moment(item.jobDetail.timeStart).format(
                                     "DD-MM-YYYY"
                                   )}
                                 </span>
+                              </div>
+                              <div className="start-time">
+                                <span className="text-xs text-slate-400">
+                                  Kết thúc:{" "}
+                                </span>
+                                <span className="text-xs">
+                                  {moment(item.jobDetail.timeEnd).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </span>
+                              </div>
                               </div>
                             </button>
                           </div>
@@ -205,15 +252,15 @@ function JobsBoard() {
                           <div
                             className={`plan-item ${
                               item?.jobDetail?.jobEvaluate === "GOOD"
-                                ? "bg-emerald-200"
+                                ? "bg-emerald-200 border-2 border-emerald-200 bg-opacity-50 hover:bg-emerald-200"
                                 : item?.jobDetail?.jobEvaluate === "MEDIUM"
-                                ? "bg-yellow-200"
-                                : "bg-red-500"
-                            } m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2`}
+                                ? "bg-yellow-200 border-2 border-yellow-200 bg-opacity-50 hover:bg-yellow-200"
+                                : "bg-red-500 border-2 border-red-200 bg-opacity-50 hover:bg-red-200"
+                            } m-2 px-2 py-4 rounded-sm shadow hover:cursor-pointer my-2`}
                             key={key}
                           >
-                            <button onClick={() => handJobDetail(item?.id)}>
-                              <p className="text-xs text-start font-semibold">
+                            <button onClick={() => handJobDetail(item?.id)}  className="w-full text-start">
+                              <p className="text-sm text-start font-semibold">
                                 {item.title}
                               </p>
                               <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
@@ -222,15 +269,27 @@ function JobsBoard() {
                                   style={{ width: "45%" }}
                                 ></div>
                               </div>
+                              <div className="flex gap-2">
                               <div className="start-time">
                                 <span className="text-xs text-slate-400">
-                                  Start date:{" "}
+                                  Bắt đầu:{" "}
                                 </span>
                                 <span className="text-xs">
                                   {moment(item.jobDetail.timeStart).format(
                                     "DD-MM-YYYY"
                                   )}
                                 </span>
+                              </div>
+                              <div className="start-time">
+                                <span className="text-xs text-slate-400">
+                                  Kết thúc:{" "}
+                                </span>
+                                <span className="text-xs">
+                                  {moment(item.jobDetail.timeEnd).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </span>
+                              </div>
                               </div>
                             </button>
                           </div>
@@ -245,6 +304,27 @@ function JobsBoard() {
             </div>
           </div>
         </div>
+      </div>
+      {hiddenJobDetail && <JobDetailModal setHiddenJobDetail={setHiddenJobDetail} />}
+      <div className="mt-10">
+
+      {paginationJob?.totalPages > 1 && (
+        <Stack
+          spacing={2}
+          justifyContent="center"
+          color="#fff"
+          className="pagination"
+        >
+          <Pagination
+            count={paginationJob?.totalPages}
+            color="primary"
+            className="pagination-item"
+            style={{ margin: "auto" }}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </Stack>
+      )}
       </div>
     </LayoutJob>
   );

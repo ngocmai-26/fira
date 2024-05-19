@@ -46,7 +46,7 @@ function CreateRoleModal({setShowCreateRole}) {
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
       }}>
           <div className="flex items-start justify-between p-5 border-b rounded-t">
-            <h3 className="text-xl font-semibold ">Thêm tài khoản</h3>
+            <h3 className="text-xl font-semibold ">Thêm chức vụ</h3>
             <button
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"

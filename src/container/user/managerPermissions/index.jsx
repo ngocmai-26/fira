@@ -89,7 +89,7 @@ function ManagerPermissions() {
               textButton={"Thêm chức năng"}
               handleClick={() => setShowCreatePermission(true)}
               style={
-                "text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 "
+                "text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "
               }
             />
           </div>
@@ -101,11 +101,11 @@ function ManagerPermissions() {
             {allPermission?.map((item, key) => (
               <tr className="hover:bg-gray-100" key={key}>
                 <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                  <div className="text-base font-semibold text-gray-900">
+                  <div className="w-4 marker:text-sm font-medium text-gray-500 whitespace-nowrap">
                     {item?.id}
                   </div>
                 </td>
-                <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                <td className="text-sm font-medium text-gray-500 whitespace-nowrap">
                   <button
                     className="w-full text-start"
                     onClick={() => handleGetPermissionById(item?.id)}
@@ -113,7 +113,7 @@ function ManagerPermissions() {
                     {item?.name}
                   </button>
                 </td>
-                <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                <td className="p-4 text- font-medium text-gray-500 whitespace-nowrap">
                   {item?.description}
                 </td>
                 <td className="p-4 space-x-2 whitespace-nowrap">
@@ -121,12 +121,13 @@ function ManagerPermissions() {
                     type={"button"}
                     textButton={"Chỉnh sửa"}
                     handleClick={() => handleHiddenUpdate(item)}
+                    style={"text-blue-500 bg-white border border-blue-500 hover:bg-blue-500 hover:text-white"}
                   />
 
                   <ButtonComponent
                     type={"button"}
                     textButton={"Xóa"}
-                    typeButton={2}
+                    style={"text-red-600 bg-white border border-red-600 hover:bg-red-600 hover:text-white"}
                     handleClick={() => {
                       if (
                         window.confirm("Bạn có muốn xóa chức năng này không?")
@@ -311,6 +312,7 @@ function ManagerPermissions() {
           setShowCreatePermission={setShowCreatePermission}
         />
       )}
+      <div className="mt-10">
       {paginationPer?.totalPages > 1 && (
         <Stack
           spacing={2}
@@ -328,6 +330,8 @@ function ManagerPermissions() {
           />
         </Stack>
       )}
+
+      </div>
     </Layout>
   );
 }

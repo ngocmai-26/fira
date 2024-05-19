@@ -97,7 +97,7 @@ function ManagerAccount() {
               textButton={"Thêm tài khoản"}
               handleClick={() => setShowCreateAccount(true)}
               style={
-                "text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 "
+                "text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "
               }
             />
           </div>
@@ -142,17 +142,18 @@ function ManagerAccount() {
                         type={"button"}
                         textButton={"Chỉnh sửa"}
                         handleClick={() => handleShowEditAccount(item?.id)}
+                        style={"text-blue-500 bg-white border border-blue-500 hover:bg-blue-500 hover:text-white"}
                       />
                       <ButtonComponent
                         type={"button"}
                         textButton={"Chi tiết"}
-                        style={"text-white bg-[#58AD69]"}
+                        style={"text-[#58AD69] bg-white border border-[#58AD69] hover:bg-[#58AD69] hover:text-white"}
                         handleClick={() => handleGetAccountById(item?.id)}
                       />
                       <ButtonComponent
                         type={"button"}
                         textButton={"Vô hiệu hóa"}
-                        typeButton={2}
+                        style={"text-red-600 bg-white border border-red-600 hover:bg-red-600 hover:text-white"}
                         handleClick={() => {
                           if (
                             window.confirm(
@@ -189,6 +190,8 @@ function ManagerAccount() {
       {showCreateAccount && (
         <CreateAccountModal setShowCreateAccount={setShowCreateAccount} />
       )}
+      <div className="mt-10">
+
       {paginationAccount?.totalPages > 1 && (
         <Stack
           spacing={2}
@@ -206,6 +209,7 @@ function ManagerAccount() {
           />
         </Stack>
       )}
+      </div>
     </Layout>
   );
 }

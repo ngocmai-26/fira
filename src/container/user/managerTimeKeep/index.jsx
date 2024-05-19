@@ -1,16 +1,9 @@
-import { Link } from "react-router-dom";
-import { debounce } from "../../../app/debounce";
 import {
-  Checkout,
-  checkout,
   getAllTimeKeep,
   getUserManagerTimeKeep,
   getUserTimeKeep,
-  newCheckIn,
 } from "../../../thunks/TimeKeepsThunk";
 import ButtonComponent from "../../component/ButtonComponent";
-import SearchComponent from "../../component/SearchComponent";
-import { Spinner } from "../../component/Spinner";
 import TableComponent from "../../component/TableComponent";
 import Layout from "../../layout";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -19,7 +12,9 @@ import moment from "moment";
 import { Pagination, Stack } from "@mui/material";
 
 function ManagerTimeKeep() {
-  const { allTimeKeep, paginationTimeKeep } = useSelector((state) => state.timeKeepsReducer);
+  const { allTimeKeep, paginationTimeKeep } = useSelector(
+    (state) => state.timeKeepsReducer
+  );
   const { user, account } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
@@ -30,7 +25,7 @@ function ManagerTimeKeep() {
       if (account.role.roleName === "ROLE_ADMIN") {
         dispatch(getAllTimeKeep());
       } else if (account.role.roleName === "ROLE_MANAGER") {
-        setCheck(1)
+        setCheck(1);
       } else {
         dispatch(getUserTimeKeep({ id: user?.id, data: 0 }));
       }
@@ -40,12 +35,11 @@ function ManagerTimeKeep() {
     if (account.role.roleName === "ROLE_ADMIN") {
       dispatch(getAllTimeKeep());
     } else if (account.role.roleName === "ROLE_MANAGER") {
-      setCheck(1)
+      setCheck(1);
     } else {
       dispatch(getUserTimeKeep({ id: user?.id, data: 0 }));
     }
   }, []);
-
 
   useEffect(() => {
     if (account.role.roleName === "ROLE_MANAGER") {
@@ -55,9 +49,10 @@ function ManagerTimeKeep() {
         dispatch(getUserTimeKeep({ id: user?.id, data: 0 }));
       }
     }
-    
-  }, [check])
-  const [currentPage, setCurrentPage] = useState(paginationTimeKeep?.number + 1);
+  }, [check]);
+  const [currentPage, setCurrentPage] = useState(
+    paginationTimeKeep?.number + 1
+  );
 
   useEffect(() => {
     setCurrentPage(paginationTimeKeep?.number + 1);
@@ -67,7 +62,6 @@ function ManagerTimeKeep() {
     dispatch(getAllTimeKeep(pageNumber - 1));
   };
 
-  
   return (
     <Layout>
       <div className="p-4 px-10">
@@ -77,10 +71,20 @@ function ManagerTimeKeep() {
           </span>
           {account?.role?.roleName === "ROLE_MANAGER" && (
             <div>
-              <button className={`btn ${check === 1 ?  'bg-blue-500': 'bg-slate-400'}  px-4 py-1 text-sm text-white mx-2`} onClick={() => setCheck(1)}>
+              <button
+                className={`btn ${
+                  check === 1 ? "bg-blue-500" : "bg-slate-400"
+                }  px-4 py-1 text-sm text-white mx-2`}
+                onClick={() => setCheck(1)}
+              >
                 Quản lý
               </button>
-              <button className={`btn ${check !== 1 ?  'bg-blue-500': 'bg-slate-400'}  px-4 py-1 text-sm text-white `} onClick={() => setCheck(2)}>
+              <button
+                className={`btn ${
+                  check !== 1 ? "bg-blue-500" : "bg-slate-400"
+                }  px-4 py-1 text-sm text-white `}
+                onClick={() => setCheck(2)}
+              >
                 Cá nhân
               </button>
             </div>
@@ -101,27 +105,29 @@ function ManagerTimeKeep() {
             {allTimeKeep?.map((item, key) => (
               <tr className="hover:bg-gray-100" key={key}>
                 <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                  <div className="text-base font-semibold text-gray-900">
-                    {key +1}
+                  <div className="text-sm font-medium text-gray-500 whitespace-nowrap">
+                    {key + 1}
                   </div>
                 </td>
-                <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                {item?.userChecked?.fullName}
+                <td className="text-sm font-medium text-gray-500 whitespace-nowrap">
+                  {item?.userChecked?.fullName}
                 </td>
-                <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                <td className="text-sm font-medium text-gray-500 whitespace-nowrap">
                   {moment(item?.checkInTime).format("HH:mm")}
                 </td>
-                <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                <td className="text-sm font-medium text-gray-500 whitespace-nowrap">
                   {item?.status}
                 </td>
-                <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                <td className="text-sm font-medium text-gray-500 whitespace-nowrap">
                   {item?.shift}
                 </td>
                 <td className="p-4 space-x-2 whitespace-nowrap">
                   <ButtonComponent
                     type={"button"}
                     textButton={"Chi tiết"}
-                    style={"text-white bg-[#58AD69]"}
+                    style={
+                      "text-[#58AD69] bg-white border border-[#58AD69] hover:bg-[#58AD69] hover:text-white"
+                    }
                     // handleClick={() => handleHiddenUpdate(item)}
                   />
                 </td>
@@ -130,7 +136,8 @@ function ManagerTimeKeep() {
           </TableComponent>
         </div>
       </div>
-      {paginationTimeKeep?.totalPages > 1 && (
+      <div className="mt-10">
+        {paginationTimeKeep?.totalPages > 1 && (
           <Stack
             spacing={2}
             justifyContent="center"
@@ -147,6 +154,7 @@ function ManagerTimeKeep() {
             />
           </Stack>
         )}
+      </div>
     </Layout>
   );
 }

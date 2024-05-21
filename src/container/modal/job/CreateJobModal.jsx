@@ -79,7 +79,9 @@ function CreateJobModel({ handleHiddenCreate }) {
       id="new-task-modal"
     >
       <div className="relative w-full h-full max-w-6xl m-auto px-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow ">
+        <div className="relative bg-white rounded-lg shadow "  style={{
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
+          }}>
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">Thêm công việc</h3>
             <button

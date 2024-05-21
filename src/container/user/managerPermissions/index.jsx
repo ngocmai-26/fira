@@ -23,6 +23,7 @@ function ManagerPermissions() {
   const dispatch = useDispatch();
   const [showPermissionById, setShowPermissionById] = useState(false);
   const [currentPage, setCurrentPage] = useState(paginationPer?.number + 1);
+  
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const [permDetail, setPermDetail] = useState({});
   const [showCreatePermission, setShowCreatePermission] = useState(false);
@@ -294,13 +295,15 @@ function ManagerPermissions() {
                   </div>
                 </div>
                 <div className=" py-6 border-t border-gray-200 rounded-b flex justify-end  ">
-                  <button
-                    className="bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                    type="button"
-                    onClick={handleUpdate}
-                  >
-                    Lưu
-                  </button>
+            
+                  <ButtonComponent
+                  type={"button"}
+                  textButton={"Lưu"}
+                  style={
+                    "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
+                  }
+                  handleClick={handleUpdate}
+                />
                 </div>
               </form>
             </div>

@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllJob } from "../../../thunks/JobsThunk";
 import { updatePlan } from "../../../thunks/PlansThunk";
@@ -21,15 +21,17 @@ function EditPlanModal({ handleHiddenEdit }) {
     title: singlePlan?.title,
     planStatus: singlePlan?.status,
     planJob: singlePlan?.planJobs?.map((job) => job.id),
-    planDetailRequest: {
+    planDetail: {
       description: singlePlan?.planDetail?.description,
       planType: singlePlan?.planDetail?.planType,
       note: singlePlan?.planDetail?.note,
       timeStart: singlePlan?.planDetail?.timeStart,
       timeEnd: singlePlan?.planDetail?.timeEnd,
-      planSchedules: [],
+      planSchedules: singlePlan?.planDetail?.planSchedules.map((item) => item.timeStart),
+      scheduleType: singlePlan?.planDetail?.planSchedules[0]?.scheduleType,
     },
   });
+  
   const handleButtonClick = (jobId) => {
     let newPlanJob;
     if (Array.isArray(dataPlan.planJob)) {
@@ -52,19 +54,131 @@ function EditPlanModal({ handleHiddenEdit }) {
 
 
   const handleSubmit =() => {
-    dispatch(updatePlan({id: singlePlan.id, data: dataPlan})).then((reps) => {
-        if (!reps.error) {
-          handleHiddenEdit()
-        }
-      });
+    console.log({id: singlePlan.id, data: dataPlan})
+    // dispatch(updatePlan({id: singlePlan.id, data: dataPlan})).then((reps) => {
+    //     if (!reps.error) {
+    //       handleHiddenEdit()
+    //     }
+    //   });
   }
+
+
+  const [selectedDates, setSelectedDates] = useState(singlePlan?.planDetail?.planSchedules.map((item) => item.timeStart));
+  const [selectedMonths, setSelectedMonths] = useState(singlePlan?.planDetail?.planSchedules.map((item) => item.timeStart));
+
+  const handleOptionChange = (e) => {
+    setDataPlan({
+      ...dataPlan,
+      planDetail: {
+        ...dataPlan.planDetail,
+        scheduleType: e.target.value,
+      },
+    });
+    setSelectedDates([]); // Reset selected dates when changing options
+    setSelectedMonths([]); // Reset selected months when changing options
+  };
+
+  const isSelectedDate = (day) => {
+    return selectedDates.includes(day);
+  };
+
+  const isSelectedMonth = (month) => {
+    return selectedMonths.includes(month);
+  };
+
+  const handleDateClick = (value) => {
+    if (dataPlan?.planDetail?.scheduleType === "DAY") {
+      value = parseInt(value); // Chuyển đổi từ chuỗi sang số nguyên
+      if (isSelectedDate(value)) {
+        setSelectedDates(selectedDates.filter((day) => day !== value));
+      } else {
+        setSelectedDates([...selectedDates, value]);
+      }
+    } else if (dataPlan?.planDetail?.scheduleType === "MONTH") {
+      value = parseInt(value); // Chuyển đổi từ chuỗi sang số nguyên
+      if (isSelectedMonth(value)) {
+        setSelectedMonths(selectedMonths.filter((month) => month !== value));
+      } else {
+        setSelectedMonths([...selectedMonths, value]);
+      }
+    }
+  };
+
+  const renderOptions = () => {
+    switch (dataPlan?.planDetail?.scheduleType) {
+      case "DAY":
+        return Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+          <div
+            key={day}
+            className={`p-2 text-center border text-sm rounded-md ${
+              isSelectedDate(day) ? "bg-[#ffd]" : ""
+            }`}
+            
+          >
+            {day}
+          </div>
+        ));
+      case "MONTH":
+        return Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
+          <div
+            key={month}
+            className={`p-2 text-center border text-sm rounded-md ${
+              isSelectedDate(month) ? "bg-[#ffd]" : ""
+            }`}
+          >
+            {month}
+          </div>
+        ));
+      case "YEAR":
+        return <div>Chọn năm</div>;
+      default:
+        return null;
+    }
+  };
+
+  const handleType = (e) => {
+    setDataPlan({
+      ...dataPlan,
+      planDetail: {
+        ...dataPlan.planDetail,
+        planType: e.target.value,
+        planSchedules: [],
+      },
+    });
+    setSelectedDates([]); // Reset selected dates when changing options
+    setSelectedMonths([]); // Reset selected months when changing options
+  };
+
+  useEffect(() => {
+    if (dataPlan?.planDetail?.scheduleType === "DAY") {
+      setDataPlan({
+        ...dataPlan,
+        planDetail: {
+          ...dataPlan.planDetail,
+          planSchedules: selectedDates,
+        },
+      });
+    } else if (dataPlan?.planDetail?.scheduleType === "MONTH") {
+      setDataPlan({
+        ...dataPlan,
+        planDetail: {
+          ...dataPlan.planDetail,
+          planSchedules: selectedMonths,
+        },
+      });
+    }
+  }, [selectedDates, selectedMonths]);
+  console.log("neffe", dataPlan?.planDetail?.planType === "LOOP")
+
   return (
     <div
       className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
       id="new-task-modal"
     >
       <div className="relative w-full h-full max-w-4xl m-auto px-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow ">
+        <div className="relative bg-white rounded-lg shadow "  style={{
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
+          }}>
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">Chỉnh sửa kế hoạch</h3>
             <button
@@ -104,20 +218,14 @@ function EditPlanModal({ handleHiddenEdit }) {
                         </label>
                         <select
                           id="category-create"
-                          onChange={(e) =>
-                            setDataPlan({
-                              ...dataPlan,
-                              planDetailRequest: {
-                                ...dataPlan.planDetailRequest,
-                                planType: e.target.value,
-                              },
-                            })
-                          }
+                         
+                          onChange={(e) => handleType(e)}
                           defaultValue={
                             singlePlan?.planDetail?.planType
                               ? singlePlan?.planDetail?.planType
                               : ""
                           }
+                          disabled={true}
                           className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                         >
                           <option value="0" selected=""></option>
@@ -140,8 +248,8 @@ function EditPlanModal({ handleHiddenEdit }) {
                             onChange={(e) =>
                               setDataPlan({
                                 ...dataPlan,
-                                planDetailRequest: {
-                                  ...dataPlan.planDetailRequest,
+                                planDetail: {
+                                  ...dataPlan.planDetail,
                                   timeStart: e.target.value,
                                 },
                               })
@@ -165,8 +273,8 @@ function EditPlanModal({ handleHiddenEdit }) {
                             onChange={(e) =>
                               setDataPlan({
                                 ...dataPlan,
-                                planDetailRequest: {
-                                  ...dataPlan.planDetailRequest,
+                                planDetail: {
+                                  ...dataPlan.planDetail,
                                   timeEnd: e.target.value,
                                 },
                               })
@@ -202,10 +310,10 @@ function EditPlanModal({ handleHiddenEdit }) {
                   <div className="information-plan mt-2">
                             
                     <textarea
-                      className="rounded-md border  text-sm border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-slate-500 focus:ring-primary-500 focus:border-primary-500 block p-2"
+                      className="rounded-md border text-sm border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-slate-500 focus:ring-primary-500 focus:border-primary-500 block p-2"
                       defaultValue={
-                        dataPlan?.planDetailRequest?.description
-                          ? dataPlan?.planDetailRequest?.description
+                        dataPlan?.planDetail?.description
+                          ? dataPlan?.planDetail?.description
                           : ""
                       }
                       rows="5"
@@ -213,15 +321,38 @@ function EditPlanModal({ handleHiddenEdit }) {
                       onChange={(e) =>
                         setDataPlan({
                           ...dataPlan,
-                          planDetailRequest: {
-                            ...dataPlan.planDetailRequest,
+                          planDetail: {
+                            ...dataPlan.planDetail,
                             description: e.target.value,
                           },
                         })
                       }
                     />
                   </div>
-
+                  {dataPlan?.planDetail?.planType === "LOOP" && (
+                    <div className="information-plan mt-2">
+                      <div className="scheduleType">
+                        <div className="option-selector">
+                          <select
+                            value={
+                              dataPlan.planDetail?.scheduleType
+                                ? dataPlan.planDetail?.scheduleType
+                                : ""
+                            }
+                            disabled={true}
+                            onChange={handleOptionChange}
+                            className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
+                          >
+                            <option value="">Chọn loại lịch trình</option>
+                            <option value="DAY">Ngày</option>
+                            <option value="MONTH">Tháng</option>
+                            {/* <option value="YEAR">Năm</option> */}
+                          </select>
+                        </div>
+                        <div className="calendar-grid">{renderOptions()}</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="information-plan mt-2">

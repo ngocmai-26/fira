@@ -22,7 +22,7 @@ function CreatePlanModal({ handleHiddenCreate }) {
       note: "",
       timeStart: "",
       timeEnd: "",
-      planSchedules: [],
+      planSchedules: [0],
       scheduleType: "DAY",
     },
   });
@@ -166,7 +166,9 @@ function CreatePlanModal({ handleHiddenCreate }) {
       id="new-task-modal"
     >
       <div className="relative w-full h-full max-w-4xl m-auto px-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow ">
+        <div className="relative bg-white rounded-lg shadow "  style={{
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
+          }}>
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">Kế hoạch mới</h3>
             <button
@@ -214,8 +216,8 @@ function CreatePlanModal({ handleHiddenCreate }) {
                           }
                           className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                         >
-                          <option value="LOOP">Định kì</option>
-                          <option value="ONCE">1 lần</option>
+                        <option value="ONCE">1 lần</option>
+                          <option value="LOOP" >Định kì</option>
                         </select>
                       </div>
                       <div className="col-span-2">
@@ -282,7 +284,7 @@ function CreatePlanModal({ handleHiddenCreate }) {
                         id={"title"}
                         setValue={setDataPlan}
                         required={"required"}
-                        placeholder={"Tên công việc"}
+                        placeholder={"Tiêu đề kế hoạch"}
                       />
                   </div>
                   <div className="information-plan mt-2">

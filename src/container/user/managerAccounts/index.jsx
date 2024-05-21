@@ -174,6 +174,7 @@ function ManagerAccount() {
                       />
                       <ButtonComponent
                         type={"button"}
+                        style={'text-red-600 bg-white border border-red-600 hover:bg-red-600 hover:text-white'}
                         textButton={"Duyệt tài khoản"}
                         handleClick={() => handleChangeActive(item?.id)}
                       />

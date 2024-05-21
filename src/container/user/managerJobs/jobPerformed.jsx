@@ -267,7 +267,7 @@ function JobPerformed() {
                         )
                       ) : (
                         <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          {item?.status === "PROCESSING" &&
+                          {item?.status === "PROCESSING"&& item.cachedProgress ===0 &&
                             item?.staffs?.map((staff) => (
                               <div key={staff.id}>
                                 {staff.id === account?.user?.id ? (

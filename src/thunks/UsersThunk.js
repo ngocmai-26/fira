@@ -110,7 +110,7 @@ export const updateUser = createAsyncThunk(
       dispatch(
         setAlert({
           type: TOAST_SUCCESS,
-          content: 'Cập nhật chức vụ thành công',
+          content: 'Cập nhật tài khoản thành công',
         }),
       )
       dispatch(getAllUsers())

@@ -27,7 +27,9 @@ function CreatePermissionModal({setShowCreatePermission}) {
       id="edit-user-modal"
     >
       <div className="relative w-full h-full max-w-xl px-4 md:h-auto m-auto">
-        <div className="relative bg-white rounded-lg shadow ">
+        <div className="relative bg-white rounded-lg shadow "  style={{
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
+          }}>
           <div className="flex items-start justify-between p-5 border-b rounded-t">
             <h3 className="text-xl font-semibold ">Thêm chức năng</h3>
             <button

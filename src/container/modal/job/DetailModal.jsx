@@ -21,11 +21,13 @@ function JobDetailModal({setHiddenJobDetail}) {
       id="new-task-modal"
     >
       <div className="relative w-full h-full max-w-5xl m-auto px-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow ">
-          <div className="flex  justify-between p-5 border-b rounded-t ">
+        <div className="relative bg-white rounded-lg shadow "  style={{
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
+          }}>
+          <div className="flex  justify-between pt-5 rounded-t ">
             <div className="text-center w-[95%]"> 
             <h3 className="text-xl font-semibold ">
-              Chi tiết tiến độ công việc
+              Chi tiết công việc
             </h3>
             </div>
             <button
@@ -48,17 +50,17 @@ function JobDetailModal({setHiddenJobDetail}) {
               </svg>
             </button>
           </div>
-          <div className="content p-5  border-b">
+          <div className="content pb-5  border-b">
             <div className="flex justify-center gap-2">
-              <div className="text-sm">
+              <div className="text-xs">
                 Từ:
-                <span className="text-sm text-red-400">
+                <span className="text-xs text-red-400">
                   {moment(singleJob?.jobDetail?.timeStart).format("DD-MM-YYYY")}
                 </span>
               </div>
-              <div className="text-sm">
+              <div className="text-xs">
                 Đến:
-                <span className="text-sm text-red-400">
+                <span className="text-xs text-red-400">
                   {moment(singleJob?.jobDetail?.timeEnd).format("DD-MM-YYYY")}
                 </span>
               </div>
@@ -67,8 +69,8 @@ function JobDetailModal({setHiddenJobDetail}) {
 
           <div className="p-6 space-y-6">
             <form action="#">
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-full">
-                <div className="md:col-span-2 ">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4   h-full">
+                <div className="md:col-span-2 lg:border-e-2 lg:border-gray-300">
                   <div className="information-plan mt-2">
                     <div className="text-sm py-1">
                       Mức độ:
@@ -115,7 +117,7 @@ function JobDetailModal({setHiddenJobDetail}) {
                     </div>
                   </div>
                 </div>
-                <div className="h-full">
+                <div className="h-full  lg:border-e-2 lg:border-gray-300 px-3">
                   <span className="text-xs font-medium">Phân công</span>
                   <hr />
 
@@ -146,7 +148,7 @@ function JobDetailModal({setHiddenJobDetail}) {
                     </div>
                   </div>
                 </div>
-                <div className="h-full">
+                <div className="h-full px-3">
                   <span className="text-xs font-medium">
                     Người chịu trách nhiệm
                   </span>

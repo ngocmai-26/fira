@@ -292,7 +292,7 @@ function JobsReport() {
       )}
       </div>
 
-      <div
+      {/* <div
         className={`fixed left-0 right-0 z-50 ${
           hidden ? "hidden" : "flex"
         } items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full `}
@@ -401,7 +401,8 @@ function JobsReport() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
+      {/* {hidden && <DetailJobModel />} */}
       {hiddenJobDetail && <JobDetailModal setHiddenJobDetail={setHiddenJobDetail} />}
     </LayoutJob>
   );

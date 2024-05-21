@@ -164,7 +164,7 @@ function ContactModal({ setOpen }) {
                     name={item?.owner?.fullName}
                     widthContent="max-w-40"
                   />
-                  <div className="requestBtn flex my-auto">
+                  <div className="requestBtn flex my-auto gap-3" >
                     <button
                       onClick={() => {
                         handleResponseAddFriendRequest(
@@ -172,7 +172,7 @@ function ContactModal({ setOpen }) {
                           item?.id
                         );
                       }}
-                      className="text-xs px-2 mx-1 rounded-sm bg-red-500 py-1 text-white"
+                      className="text-red-500 bg-white border border-red-500 hover:bg-red-500 hover:text-white text-xs p-1 rounded-md"
                     >
                       <FontAwesomeIcon
                         icon={faX}
@@ -189,7 +189,7 @@ function ContactModal({ setOpen }) {
                           item?.id
                         );
                       }}
-                      className="text-xs px-2 mx-1 rounded-sm  bg-blue-500 py-1 text-white"
+                      className="text-blue-500 bg-white border border-blue-500 hover:bg-blue-500 hover:text-white text-xs p-1 rounded-md"
                     >
                       <FontAwesomeIcon
                         icon={faCheck}

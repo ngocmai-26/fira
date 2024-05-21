@@ -4,6 +4,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateKPI, updateKPIDetail } from "../../../thunks/KPIsThunk";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function Expertise() {
   const { singleKPI } = useSelector((state) => state.kpisReducer);
@@ -59,7 +60,7 @@ function Expertise() {
 
   return (
     <Layout>
-      <div className="header-task ">
+      <div className="header-task px-10 ">
         <div className="title py-3">
           <a href="#" className="text-xl font-medium text-slate-500">
             Thẩm định KPI
@@ -73,29 +74,29 @@ function Expertise() {
             <div className="grid grid-cols-2 py-5">
               <div className="grid grid-cols-3">
                 <div className="border-e-2">
-                  <p className="text-xs leading-6 font-medium">Phòng ban:</p>
-                  <p className="text-xs leading-6 font-medium">Email:</p>
+                  <p className="text-sm leading-6 font-medium">Phòng ban:</p>
+                  <p className="text-sm leading-6 font-medium">Email:</p>
                 </div>
                 <div className="col-span-2 px-3">
-                  <p className="text-xs leading-6 font-medium">
+                  <p className="text-sm leading-6 font-medium">
                     {" "}
                     {singleKPI?.user?.department}
                   </p>
-                  <p className="text-xs leading-6 font-medium">
+                  <p className="text-sm leading-6 font-medium">
                     {singleKPI?.user?.email}
                   </p>
                 </div>
               </div>
               <div className="grid grid-cols-3">
                 <div className="border-e-2">
-                  <p className="text-xs leading-6 font-medium">Start Date</p>
-                  <p className="text-xs leading-6 font-medium">End Date</p>
+                  <p className="text-sm leading-6 font-medium">Start Date</p>
+                  <p className="text-sm leading-6 font-medium">End Date</p>
                 </div>
                 <div className="col-span-2 px-3">
-                  <p className="text-xs leading-6 font-medium">
+                  <p className="text-sm leading-6 font-medium">
                     {moment(singleKPI?.detail?.timeStart).format("DD-MM-YYYY")}
                   </p>
-                  <p className="text-xs leading-6 font-medium">
+                  <p className="text-sm leading-6 font-medium">
                     {moment(singleKPI?.detail?.timeEnd).format("DD-MM-YYYY")}
                   </p>
                 </div>
@@ -103,11 +104,11 @@ function Expertise() {
             </div>
           </div>
           <form action="">
-            <div className="group-item py-3">
-              <p>Danh sách tiêu chí đánh giá KPI nhân viên</p>
+          <div className="group-item py-3 border-t border-gray-300">
+              <p className="text-lg ">Danh sách tiêu chí đánh giá KPI nhân viên</p>
               <div className="table">
                 <div className="thead">
-                  <div className="grid grid-cols-12 gap-2 bg-red-500">
+                  <div className="grid grid-cols-12 gap-2 bg-[#6a9cfd]">
                     <div className="stt my-auto p-2 text-xs font-medium text-left text-white uppercase">
                       STT
                     </div>
@@ -151,7 +152,7 @@ function Expertise() {
                         <input
                           type="text"
                           name="score"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
+                          className="border w-2/4 text-center py-1.5 bg-transparent rounded-md"
                           defaultValue={pointValues.score1}
                           onChange={(e) =>
                             handleInputChange("score1", +e.target.value)
@@ -179,7 +180,7 @@ function Expertise() {
                         <input
                           type="text"
                           name="score"
-                          className="border w-2/4 text-center py-1.5 bg-transparent"
+                          className="border w-2/4 text-center py-1.5 bg-transparent rounded-md"
                           defaultValue={pointValues.score2}
                           onChange={(e) =>
                             handleInputChange("score2", +e.target.value)
@@ -189,13 +190,13 @@ function Expertise() {
                     </div>
 
                     <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
-                      <div className="col-span-9 my-auto p-2 text-sm font-semibold text-center text-red-700">
+                      <div className="col-span-9 my-auto p-2 text-sm font-semibold text-center text-[#6a9cfd]">
                         <p className="text-right">Tổng điểm:</p>
                       </div>
-                      <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
+                      <div className="my-auto p-2 text-sm font-semibold text-[#6a9cfd] text-center">
                         {sumPoint}
                       </div>
-                      <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
+                      <div className="my-auto p-2 text-sm font-semibold text-[#6a9cfd] text-center">
                         {(
                           ((singleKPI?.user?.checkInPoint +
                             singleKPI?.user?.jobPoint) /
@@ -204,7 +205,7 @@ function Expertise() {
                         ).toFixed(2)}{" "}
                         %
                       </div>
-                      <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
+                      <div className="my-auto p-2 text-sm font-semibold text-[#6a9cfd] text-center">
                         {dataUpdate?.target}
                       </div>
                     </div>
@@ -223,7 +224,7 @@ function Expertise() {
                 <textarea
                   id="biography"
                   rows="3"
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                  className="block p-2.5 w-full text-sm text-gray-900 rounded-md border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Ghi ý kiến"
                   onChange={(e) =>
                     setDataUpdateDetail({
@@ -241,12 +242,12 @@ function Expertise() {
 
               <div className="table w-full">
                 <div className="thead">
-                  <div className="grid grid-cols-12 gap-2 bg-red-500">
+                  <div className="grid grid-cols-12 gap-2 bg-[#6a9cfd]">
                     <div className="stt my-auto p-2 text-xs font-medium text-left text-white uppercase">
                       STT
                     </div>
                     <div className="text-center col-span-10 my-auto p-2 text-xs font-medium text-white uppercase">
-                      Đường link minh chứng
+                      Lịch sử minh chứng
                     </div>
                     <div className="my-auto p-2 text-xs font-medium text-left text-white uppercase">
                       Ngày tải
@@ -274,13 +275,14 @@ function Expertise() {
             </div>
 
             <div className="btn text-right py-3">
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="text-sm bg-blue-500 text-white px-5 py-1.5"
-              >
-                Gửi
-              </button>
+              <ButtonComponent
+                  type={"button"}
+                  textButton={"Gửi"}
+                  style={
+                    "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
+                  }
+                  handleClick={handleSubmit}
+                />
             </div>
           </form>
         </div>

@@ -87,7 +87,7 @@ function CreateAccountModal({ setShowCreateAccount }) {
     if (Object.keys(newFormErrors).length === 0) {
       dispatch(addNewAccount(accountData)).then((resp) => {
         if (!resp?.error) {
-          nav("/quan-ly-tai-khoan");
+          setShowCreateAccount(false)
         }
       });
     }

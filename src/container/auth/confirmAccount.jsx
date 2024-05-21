@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { confirmAccount, requestNewCode } from "../../thunks/AuthThunk";
 import { FormField } from "../component/FormField";
 import ButtonComponent from "../component/ButtonComponent";
@@ -25,8 +25,14 @@ function ConfirmAccount() {
   return (
     <article className="bg-cyan-50 h-screen w-full my-auto flex items-center ">
       <div className="w-full xl:w-4/12 md:w-8/12 lg:w-6/12 bg-white border rounded-md h-auto md:m-auto my-auto p-8 m-4 shadow-md">
-        <div className="logo pb-5">
+        <div className="logo pb-5 relative">
           <h3 className="font-bold text-xl leading-4">Xác thực tài khoản</h3>
+          <Link
+            to="/login"
+            className="absolute top-0 right-0 text-sm font-bold"
+          >
+            X
+          </Link>
         </div>
         <hr />
         <div

@@ -25,7 +25,7 @@ function ManagerRoles() {
   const { allRole, paginationRole } = useSelector(
     (state) => state.rolesReducer
   );
-  const { allPermission } = useSelector((state) => state.permissionsReducer);
+  const { allPermission, paginationPer } = useSelector((state) => state.permissionsReducer);
   const [showRoleById, setShowRoleById] = useState(false);
   const [isHiddenPer, setIsHiddenPer] = useState(true);
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(false);
@@ -85,6 +85,15 @@ function ManagerRoles() {
   const handleHiddenUpdate = (item) => {
     setIsHiddenUpdate(!isHiddenUpdate);
     setRoleDetail(item);
+  };
+
+  const [currentPagePer, setCurrentPagePer] = useState(paginationPer?.number + 1);
+  useEffect(() => {
+    setCurrentPagePer(paginationPer?.number + 1);
+  }, [allPermission]);
+
+  const handlePageChangePer = (event, pageNumber) => {
+    dispatch(getAllPermissions(pageNumber - 1));
   };
 
   return (
@@ -232,7 +241,7 @@ function ManagerRoles() {
               <div className="p-6 space-y-6">
                 <form action="#">
                   <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
+                    <div className="col-span-6">
                       <label
                         htmlFor="fullName"
                         className="block mb-2 text-sm font-medium text-gray-900 "
@@ -261,15 +270,33 @@ function ManagerRoles() {
                                 <li className="hover:bg-gray-100" key={key}>
                                   <button
                                     className="w-full text-start text-xs p-1"
-                                    onClick={() => handleAddTaskList(item.id)}
+                                    onClick={() => handleAddTaskList(item?.id)}
                                     type="button"
                                   >
-                                    {item.name}
+                                    {item?.name}
                                   </button>
                                 </li>
                               ))}
                             </ul>
+                           
                           </div>
+                          {paginationPer?.totalPages > 1 && (
+                              <Stack
+                                spacing={2}
+                                justifyContent="center"
+                                color="#fff"
+                                className="pagination"
+                              >
+                                <Pagination
+                                  count={paginationPer?.totalPages}
+                                  color="primary"
+                                  className="pagination-item"
+                                  style={{ margin: "auto" }}
+                                  page={currentPagePer}
+                                  onChange={handlePageChangePer}
+                                />
+                              </Stack>
+                            )}
                         </div>
                         <div className="">
                           <span className="text-xs font-medium">Quyền hạn</span>
@@ -277,15 +304,15 @@ function ManagerRoles() {
                             <ul>
                               {allPermission?.map((pre, key) =>
                                 taskList?.map((item) =>
-                                  pre.id === item ? (
+                                  pre?.id === item ? (
                                     <li
                                       className="text-xs p-1 flex justify-between py-1.5"
                                       key={key}
                                     >
-                                      {pre.name}
+                                      {pre?.name}
                                       <button
                                         type="button"
-                                        onClick={() => handleDeletePer(pre.id)}
+                                        onClick={() => handleDeletePer(pre?.id)}
                                       >
                                         X
                                       </button>
@@ -302,13 +329,14 @@ function ManagerRoles() {
                     </div>
                   </div>
                   <div className=" py-6 border-t border-gray-200 rounded-b flex justify-end  ">
-                    <button
-                      className="bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                      type="button"
-                      onClick={handleUpdatePer}
-                    >
-                      Lưu
-                    </button>
+                    <ButtonComponent
+                      type={"button"}
+                      textButton={"Lưu"}
+                      style={
+                        "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
+                      }
+                      handleClick={handleUpdatePer}
+                    />
                   </div>
                 </form>
               </div>

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addNewRole } from "../../../thunks/RolesThunk";
 
-function CreateRoleModal({setShowCreateRole}) {
+function CreateRoleModal({ setShowCreateRole }) {
   const [newRoleData, setNewRoleData] = useState({
     permissionIds: [],
     roleName: "",
@@ -31,7 +31,7 @@ function CreateRoleModal({setShowCreateRole}) {
     }
     dispatch(addNewRole(newRoleData)).then((resp) => {
       if (!resp?.error) {
-        setShowCreateRole(false)
+        setShowCreateRole(false);
       }
     });
   };
@@ -41,10 +41,14 @@ function CreateRoleModal({setShowCreateRole}) {
       className={`fixed mx-auto left-0 right-0 z-50 items-center justify-center  overflow-x-hidden overflow-y-auto mt-20 md:inset-0 h-modal sm:h-full`}
       id="edit-user-modal"
     >
-      <div className="relative w-full h-full max-w-xl px-4 md:h-auto m-auto">
-        <div className="relative bg-white rounded-lg " style={{
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
-      }}>
+      <div className="relative h-full max-w-lg px-4 md:h-auto m-auto">
+        <div
+          className="relative bg-white rounded-lg "
+          style={{
+            boxShadow:
+              "0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <div className="flex items-start justify-between p-5 border-b rounded-t">
             <h3 className="text-xl font-semibold ">Thêm chức vụ</h3>
             <button
@@ -112,8 +116,6 @@ function CreateRoleModal({setShowCreateRole}) {
               </div>
 
               <div className="text-center py-3 flex justify-end">
-               
-
                 <ButtonComponent
                   type={"button"}
                   textButton={"Hoàn thành"}

@@ -61,7 +61,7 @@ function ListKPI() {
                         (item) =>
                           item.description === "DRAFT" &&
                           item.verify === false && (
-                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2">
+                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-md shadow hover:bg-gray-50 hover:cursor-pointer my-2">
                               <button
                                 type="button"
                                 className="draft-content w-full text-start px-2"
@@ -122,7 +122,7 @@ function ListKPI() {
                         (item) =>
                           item.description === "EVALUATE" &&
                           item.verify === false && (
-                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 my-2">
+                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-md shadow hover:bg-gray-50 my-2">
                               <button
                                 type="button"
                                 className="draft-content w-full text-start px-2"
@@ -183,7 +183,7 @@ function ListKPI() {
                         (item) =>
                           item.description === "DONE" &&
                           item.verify === false && (
-                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2">
+                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-md shadow hover:bg-gray-50 hover:cursor-pointer my-2">
                               <button
                                 type="button"
                                 className="draft-content w-full text-start px-2"
@@ -245,7 +245,7 @@ function ListKPI() {
                         (item) =>
                           item.description === "DONE" &&
                           item.verify === true && (
-                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2">
+                            <div className="plan-item bg-white m-2 px-2 py-4 rounded-md shadow hover:bg-gray-50 hover:cursor-pointer my-2">
                               <button
                                 type="button"
                                 className="draft-content w-full text-start px-2"

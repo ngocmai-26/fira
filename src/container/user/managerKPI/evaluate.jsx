@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import KPIMore from "../../modal/kpi/kpis/kpiMore";
 import { useNavigate } from "react-router-dom";
+import ButtonComponent from "../../component/ButtonComponent";
 
 function EvaluateKPI() {
   const { account } = useSelector((state) => state.authReducer);
@@ -49,11 +50,11 @@ function EvaluateKPI() {
 
   return (
     <Layout>
-      <div className="header-task  p-4">
+      <div className="header-task p-4 px-10">
         <div className="title">
-          <a href="#" className="text-xl font-medium text-slate-500">
-            Đánh giá KPI
-          </a>
+          <div className="text-3xl font-medium text-slate-500 text-center">
+            Tạo phiếu đánh giá KPI
+          </div>
         </div>
         <div className="content bg-white py-5">
           <div className="information">
@@ -65,19 +66,19 @@ function EvaluateKPI() {
             <div className="grid grid-cols-2 py-5">
               <div className="grid grid-cols-3">
                 <div className="border-e-2">
-                  <p className="text-xs leading-6 font-medium my-1">
+                  <p className="text-sm leading-6 font-medium my-1">
                     Phòng ban:
                   </p>
-                  <p className="text-xs leading-6 font-medium my-1">Chức vụ:</p>
-                  <p className="text-xs leading-6 font-medium my-1">
+                  <p className="text-sm leading-6 font-medium my-1">Chức vụ:</p>
+                  <p className="text-sm leading-6 font-medium my-1">
                     Nhân viên:
                   </p>
                 </div>
                 <div className="col-span-2 px-3">
-                  <p className="text-xs leading-6 font-medium my-1">
+                  <p className="text-sm leading-6 font-medium my-1">
                     {account?.user?.department}
                   </p>
-                  <p className="text-xs leading-6 font-medium my-1">
+                  <p className="text-sm leading-6 font-medium my-1">
                     {account?.role?.roleName === "ROLE_ADMIN"
                       ? "Quản trị viên"
                       : account?.role?.roleName === "ROLE_MANAGE"
@@ -86,24 +87,24 @@ function EvaluateKPI() {
                       ? "Nhân viên"
                       : "Vô danh"}
                   </p>
-                  <p className="text-xs leading-6 font-medium  my-1">
+                  <p className="text-sm leading-6 font-medium  my-1">
                     {account?.user?.fullName} &#60;{account?.user?.email}&#62;
                   </p>
                 </div>
               </div>
               <div className="grid grid-cols-3">
                 <div className="border-e-2">
-                  <p className="text-xs leading-6 font-medium my-1">
+                  <p className="text-sm leading-6 font-medium my-1">
                     Start Date
                   </p>
-                  <p className="text-xs leading-6 font-medium my-2">End Date</p>
-                  <p className="text-xs leading-6 font-medium my-1">Quản lý</p>
+                  <p className="text-sm leading-6 font-medium my-2">End Date</p>
+                  <p className="text-sm leading-6 font-medium my-1">Quản lý</p>
                 </div>
                 <div className="col-span-2 px-3">
                   <div className="my-1">
                     <input
                       type="date"
-                      className="text-xs leading-6 font-medium border border-gray-400 px-2 rounded-md"
+                      className="text-sm leading-6 font-medium border border-gray-400 px-2 rounded-md"
                       defaultValue={kpiData.timeStart}
                       onChange={(e) =>
                         setKPIData({ ...kpiData, timeStart: e.target.value })
@@ -113,14 +114,14 @@ function EvaluateKPI() {
                   <div className="my-1">
                     <input
                       type="date"
-                      className="text-xs leading-6 font-medium border border-gray-400 px-2 rounded-md"
+                      className="text-sm leading-6 font-medium border border-gray-400 px-2 rounded-md"
                       defaultValue={kpiData.timeEnd}
                       onChange={(e) =>
                         setKPIData({ ...kpiData, timeEnd: e.target.value })
                       }
                     />
                   </div>
-                  <p className="text-xs leading-6 font-medium my-1">
+                  <p className="text-sm leading-6 font-medium my-1">
                     Nguyễn Thanh Sơn
                   </p>
                 </div>
@@ -128,10 +129,10 @@ function EvaluateKPI() {
             </div>
           </div>
           <form action="">
-            <div className="group-item py-3">
-              <div className="flex justify-between">
-                <p>Danh sách tiêu chí đánh giá KPI nhân viên</p>
-                <div className="my-auto p-2 text-xs font-medium text-center text-white">
+            <div className="">
+            <div className="group-item py-3 border-t border-gray-300 flex">
+              <p className="text-lg ">Danh sách tiêu chí đánh giá KPI nhân viên</p>
+                <div className="my-auto text-sm font-medium text-center text-white">
                   <button
                     type="button"
                     onClick={() => handleMore(account?.user?.id)}
@@ -142,80 +143,80 @@ function EvaluateKPI() {
               </div>
               <div className="table">
                 <div className="thead">
-                  <div className="grid grid-cols-12 gap-2 bg-red-500">
-                    <div className="stt my-auto p-2 text-xs font-medium text-left text-white uppercase">
+                  <div className="grid grid-cols-12 gap-2 bg-[#6a9cfd]">
+                    <div className="stt my-auto p-2 text-sm font-medium text-left text-white uppercase">
                       STT
                     </div>
-                    <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-white uppercase">
+                    <div className="col-span-7 my-auto p-2 text-sm font-medium text-left text-white uppercase">
                       Nội dung tiêu chí đánh giá
                     </div>
-                    <div className="my-auto p-2 text-xs font-medium text-left text-white uppercase">
+                    <div className="my-auto p-2 text-sm font-medium text-left text-white uppercase">
                       Điểm tối đa
                     </div>
-                    <div className="my-auto p-2 text-xs font-medium text-left text-white uppercase">
+                    <div className="my-auto p-2 text-sm font-medium text-left text-white uppercase">
                       Điểm tự đánh giá
                     </div>
-                    <div className="my-auto p-2 text-xs font-medium text-left text-white uppercase">
+                    <div className="my-auto p-2 text-sm font-medium text-left text-white uppercase">
                       Tỉ lệ hoàn thành
                     </div>
-                    <div className="my-auto p-2 text-xs font-medium text-left text-white uppercase">
+                    <div className="my-auto p-2 text-sm font-medium text-left text-white uppercase">
                       Thẩm định
                     </div>
                   </div>
                 </div>
                 <div className="tbody">
                   <div className="">
-                    <div className="grid grid-cols-12 gap-2 kpi-main bg-red-300">
-                      <div className="stt my-auto p-2 text-xs font-medium text-left text-white">
+                    <div className="grid grid-cols-12 gap-2 kpi-main border-b border-gray-300  ">
+                      <div className="stt my-auto p-2 text-sm font-medium text-left text-black">
                         1
                       </div>
-                      <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-white">
+                      <div className="col-span-7 my-auto p-2 text-sm font-medium text-left text-black">
                         Tuân thủ giờ giấc làm việc
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         5
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         {account?.user?.checkInPoint}
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         0
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-white">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         0
                       </div>
                     </div>
-                    <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
-                      <div className="stt my-auto p-2 text-xs font-medium text-left text-black">
+                    <div className="grid grid-cols-12 gap-2 kpi-main ">
+                      <div className="stt my-auto p-2 text-sm font-medium text-left text-black">
                         2
                       </div>
-                      <div className="col-span-7 my-auto p-2 text-xs font-medium text-left text-black">
+                      <div className="col-span-7 my-auto p-2 text-sm font-medium text-left text-black">
                         Công việc hoàn thành
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         95
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         {account?.user?.jobPoint}
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         0
                       </div>
-                      <div className="my-auto p-2 text-xs font-medium text-center text-black">
+                      <div className="my-auto p-2 text-sm font-medium text-center text-black">
                         0
                       </div>
                     </div>
                     <div className="grid grid-cols-12 gap-2 kpi-main bg-stone-100">
-                      <div className="col-span-9 my-auto p-2 text-sm font-semibold text-center text-red-700">
+                      <div className="col-span-9 my-auto p-2 text-sm font-semibold text-center text-[#6a9cfd]">
                         <p className="text-right">Tổng điểm:</p>
                       </div>
-                      <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
+                      <div className="my-auto p-2 text-sm font-semibold text-[#6a9cfd] text-center">
                         {sumPoint.toFixed(0)}
                       </div>
-                      <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
+                      <div className="my-auto p-2 text-sm font-semibold text-[#6a9cfd] text-center">
                         0
                       </div>
-                      <div className="my-auto p-2 text-sm font-semibold text-red-700 text-center">
+                      <div className="my-auto p-2 text-sm font-semibold text-[#6a9cfd] text-center">
                         0
                       </div>
                     </div>
@@ -231,7 +232,7 @@ function EvaluateKPI() {
                   id="biography"
                   rows="3"
                   defaultValue={kpiData.note}
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                  className="block p-2.5 w-full text-sm text-gray-900 rounded-md border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Ghi chú cho người đánh giá lưu ý"
                   onChange={(e) =>
                     setKPIData({ ...kpiData, note: e.target.value })
@@ -241,13 +242,15 @@ function EvaluateKPI() {
             </div>
 
             <div className="btn text-right py-3">
-              <button
-                type="button"
-                className="text-sm bg-blue-500 text-white px-5 py-1.5"
-                onClick={handleSubmit}
-              >
-                Gửi
-              </button>
+            
+              <ButtonComponent
+                  type={"button"}
+                  textButton={"Gửi"}
+                  style={
+                    "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
+                  }
+                  handleClick={handleSubmit}
+                />
             </div>
           </form>
         </div>

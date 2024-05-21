@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateKPICategories } from "../../../../thunks/KPICategoriesSlice";
 import { setAlert } from "../../../../slices/AlertSlice";
 import { TOAST_ERROR } from "../../../../constants/toast";
+import ButtonComponent from "../../../component/ButtonComponent";
 
 function UpdateKPICateModal({handleHiddenUpdate}) {
     const { singleKPICategories } = useSelector(
@@ -35,8 +36,10 @@ function UpdateKPICateModal({handleHiddenUpdate}) {
         className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
         id="edit-user-modal"
       >
-        <div className="relative w-full h-full max-w-xl px-4 md:h-auto">
-          <div className="relative bg-white rounded-lg shadow ">
+        <div className="relative w-full h-full max-w-lg px-4 md:h-auto">
+          <div className="relative bg-white rounded-lg shadow "  style={{
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
+          }}>
             <div className="flex items-start justify-between p-5 border-b rounded-t">
               <h3 className="text-xl font-semibold ">Thêm danh mục KPI</h3>
               <button
@@ -83,13 +86,15 @@ function UpdateKPICateModal({handleHiddenUpdate}) {
 
                 </div>
                 <div className=" py-6  border-gray-200 rounded-b flex justify-end  ">
-                  <button
-                    className="bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                    type="button"
-                    onClick={handleUpdate}
-                  >
-                    Lưu
-                  </button>
+              
+                  <ButtonComponent
+                  type={"button"}
+                  textButton={"Lưu"}
+                  style={
+                    "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
+                  }
+                  handleClick={handleUpdate}
+                />
                 </div>
               </form>
             </div>

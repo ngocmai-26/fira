@@ -161,7 +161,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
               {roomTags.map((item) => (
                 <li
                   key={item.id}
-                  className={`px-2 mx-1 my-0 rounded-sm cursor-pointer ${
+                  className={`px-2 mx-1 my-0 rounded-md cursor-pointer ${
                     selectedTag.includes(item.id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-100 hover:bg-gray-300"
@@ -243,7 +243,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
             <ButtonComponent
               textButton={"Hủy"}
               style={
-                "btn bg-slate-300 px-3 py-1.5 mx-2 font-medium rounded-sm text-black"
+                "btn bg-slate-300 px-3 py-1.5 mx-2 font-medium rounded-md text-black"
               }
               type={"button"}
             />
@@ -251,7 +251,7 @@ function ModalRoomChat({ setModalVisible, modalVisible }) {
               handleClick={handleCreateRoom}
               textButton={isLoading ? <Spinner /> : "Tạo nhóm"}
               style={
-                "btn bg-blue-500 px-3 py-1.5 text-white font-medium rounded-sm"
+                "btn bg-blue-500 px-3 py-1.5 text-white font-medium rounded-md"
               }
               type={"button"}
             />

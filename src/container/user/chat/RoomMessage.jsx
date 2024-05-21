@@ -193,7 +193,7 @@ const RoomInput = ({ room, contentRef }) => {
               setMessage(e.target.value);
             }}
             type="text"
-            className="text-sm border w-full p-1.5 rounded-lg"
+            className="text-sm border w-full p-1.5 rounded-lg outline-gray-300"
           />
         </div>
         <div

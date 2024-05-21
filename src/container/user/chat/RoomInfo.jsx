@@ -41,11 +41,11 @@ export const RoomInfo = ({ activeRoom, room, handleHiddenAddMember }) => {
       <div className="h-screen">
         <div className="flex flex-col">
           <div className="teams">
-            <div className="number-title flex justify-between">
+            <div className="number-title flex justify-between my-2">
               <span className="text-sm font-bold">Thành viên nhóm</span>
               <button
                 onClick={() => handleHiddenAddMember(room)}
-                className="font-medium rounded-sm text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4me-1 px-3"
+                className="font-medium rounded-md text-md text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 px-2"
               >
                 +
               </button>

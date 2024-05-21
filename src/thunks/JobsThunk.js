@@ -183,7 +183,7 @@ export const evaluateJob = createAsyncThunk(
   async (data, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const resp = await fetch(`${API.uri}/jobs/job-detail/${data.id}`, {
+      const resp = await fetch(`${API.uri}/jobs/user-job/${data.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -360,6 +360,31 @@ export const updateEvaluateJob = createAsyncThunk(
     try {
       const token = localStorage.getItem('auth_token')
       const resp = await fetch(`${API.uri}/jobs/job-detail/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data.data),
+      })
+      const dataJson = await resp.json()
+      if (resp.status >= 300) {
+        dispatch(setAlert({ type: TOAST_ERROR, content: dataJson.message[0] }))
+        return rejectWithValue()
+      }
+      dispatch(getAllJob())
+    } catch (e) {
+      console.log(e)
+    }
+  },
+)
+
+export const userJob = createAsyncThunk(
+  '/evaluate/id',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/jobs/user-job/${data.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

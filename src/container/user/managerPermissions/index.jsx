@@ -133,7 +133,7 @@ function ManagerPermissions() {
                       if (
                         window.confirm("Bạn có muốn xóa chức năng này không?")
                       ) {
-                        dispatch(deletePermissions(item.id));
+                        dispatch(deletePermissions(item?.id));
                       }
                     }}
                   />

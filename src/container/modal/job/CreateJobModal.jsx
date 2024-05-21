@@ -44,7 +44,7 @@ function CreateJobModel({ handleHiddenCreate }) {
   const [newJobData, setNewJobData] = useState({
     title: "",
     kpiCount: 0,
-    priority: 3,
+    priority: 0,
     progress: 0,
     jobStatus: "PENDING",
     pointPerJob: 0,
@@ -71,6 +71,7 @@ function CreateJobModel({ handleHiddenCreate }) {
       }
     });
   };
+
   return (
     <div
       className={`fixed left-0 right-0 z-50 items-center justify-center 

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import moment from "moment";
+import ButtonComponent from "../../component/ButtonComponent";
 import { useDispatch } from "react-redux";
 import { comFirmJob, evaluateJob } from "../../../thunks/JobsThunk";
-import ButtonComponent from "../../component/ButtonComponent";
 
 function EValueJobModal({ handleHiddenEValue, evaluateData }) {
   const dispatch = useDispatch();
+
   const eValueList = [
     {
       id: 1,
@@ -29,42 +31,35 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
     },
   ];
 
-  const [eValuate, SetEValuate] = useState(
-    evaluateData?.jobDetail?.jobEvaluate
-      ? evaluateData?.jobDetail?.jobEvaluate
-      : ""
+  const [eValuate, setEValuate] = useState(
+    evaluateData?.jobDetail?.jobEvaluate || ""
   );
-  const handleEValuate = (item) => {
-    SetEValuate(item);
-  };
 
-  const handleReassess = () => {};
+  const handleEValuate = (item) => {
+    setEValuate(item);
+  };
 
   const handleSubmitEvaluate = () => {
     dispatch(
-      evaluateJob({ id: evaluateData.id, data: { jobEvaluate: eValuate, status: "DONE" } })
+      evaluateJob({ id: evaluateData.id, data: { status: "DONE" } })
     ).then((reps) => {
       if (!reps.error) {
         handleHiddenEValue();
       }
     });
   };
+
   return (
-    <div
-      className={`fixed left-0 right-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full `}
-      id="new-task-modal"
-    >
+    <div className="fixed left-0 right-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full ">
       <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow "  style={{
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
-          }}>
+        <div className="relative bg-white rounded-lg shadow ">
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">
               Chi tiết tiến độ công việc
             </h3>
             <button
               type="button"
-              onClick={() => handleHiddenEValue()}
+              onClick={handleHiddenEValue}
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
               data-modal-toggle="add-user-modal"
             >
@@ -84,37 +79,43 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
           </div>
           <div className="content p-5  border-b">
             <div className="border-b">
-              <h5 className="font-semibold te">
+              <h5 className="font-semibold">
                 Mô tả công việc đã hoàn thành
               </h5>
               <ul>
-                {evaluateData?.jobDetail?.note
-                  ? evaluateData?.jobDetail?.note
-                  : "chưa có báo cáo"}
+                {evaluateData?.jobDetail?.note || "chưa có báo cáo"}
               </ul>
             </div>
             <div className="border-b py-3">
               <h5 className="font-semibold">Tiến độ hoàn thành</h5>
               <div className="font-bold text-blue-500">
-                {evaluateData?.progress}%
+                {evaluateData?.userJobs[0]?.cachedProgress}%
               </div>
             </div>
             <div className="py-3">
               <h5 className="font-semibold">Đường link tài liệu báo cáo</h5>
               {evaluateData?.jobDetail?.instructionLink ? (
-                <a href="" _blank className="text-xs underline">
-                  {evaluateData?.jobDetail?.instructionLink}
+                <a
+                  href={evaluateData.jobDetail.instructionLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs underline"
+                >
+                  {evaluateData.jobDetail.instructionLink}
                 </a>
               ) : (
                 <span>Chưa có báo cáo</span>
               )}
             </div>
             <div className="justify-end flex">
-              {eValueList?.map((item, key) => (
+              {eValueList.map((item, key) => (
                 <button
                   key={key}
                   className={`${
-                    eValuate === item.value? item.bgActive: item.bg}  text-sm px-2 mx-1 py-1 rounded-xs `}
+                    eValuate === item.value
+                      ? item.bgActive
+                      : item.bg
+                  }  text-sm px-2 mx-1 py-1 rounded-xs `}
                   onClick={() => handleEValuate(item.value)}
                 >
                   {item.eValuate}
@@ -123,32 +124,28 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
             </div>
           </div>
           <div className="text-right p-4 flex gap-3 justify-end">
-           
             <ButtonComponent
-              type={"button"}
-              textButton={"Đánh giá lại"}
+              type="button"
+              textButton="Đánh giá lại"
               handleClick={() =>
                 dispatch(
                   comFirmJob({
-                    id: evaluateData?.id,
+                    id: evaluateData.id,
                     data: { status: "PROCESSING" },
                   })
                 ).then((reps) => {
                   if (!reps.error) {
                     handleHiddenEValue();
                   }
-                })}
-              style={
-                "bg-red-500  border border-red-500 hover:bg-red-500 text-white focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
+                })
               }
+              style="bg-red-500  border border-red-500 hover:bg-red-500 text-white focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
             />
             <ButtonComponent
-              type={"button"}
-              textButton={"Xác nhận"}
+              type="button"
+              textButton="Xác nhận"
               handleClick={handleSubmitEvaluate}
-              style={
-                "text-white bg-sky-500 border border-sky-500 hover:bg-sky-500 focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
-              }
+              style="text-white bg-sky-500 border border-sky-500 hover:bg-sky-500 focus:ring-4 focus:ring-blue-300 px-5 bg-opacity-80 "
             />
           </div>
         </div>

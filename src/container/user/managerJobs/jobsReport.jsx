@@ -12,11 +12,11 @@ import {
   updateJob,
   verifyProgress,
 } from "../../../thunks/JobsThunk";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Pagination, Stack } from "@mui/material";
 import ReportJobModel from "../../modal/job/ReportJobModal";
 import EValueJobModal from "../../modal/job/EValueModal";
-import DetailJobModel from "../../modal/job/DetailJobModal";
+import DetailJobModal from "../../modal/job/DetailJobModal";
 import moment from "moment";
 import JobDetailModal from "../../modal/job/DetailModal";
 
@@ -26,35 +26,11 @@ function JobsReport() {
   const [currentPage, setCurrentPage] = useState(paginationJob?.number + 1);
   const [evaluateData, setEvaluateData] = useState({});
   const [evaluateDetailData, setEvaluateDetailData] = useState({});
-  const [evaluate, setEvaluate] = useState(false);
   const [hiddenJobDetail, setHiddenJobDetail] = useState(false);
-
+  const [evaluateReport, setEvaluateReport] = useState({});
+  const [hiddenEValue, setHiddenEValue] = useState(false);
+  
   const [hidden, isHidden] = useState(true);
-  const handleHidden = (item) => {
-    isHidden(!hidden);
-    setEvaluateData({
-      id: item?.id,
-      title: item?.title,
-      kpiCount: item?.kpiCount,
-      progress: item?.progress,
-      priority: item?.priority,
-      status: item?.status,
-      pointPerJob: item?.pointPerJob,
-      task: true,
-    });
-    setEvaluateDetailData({
-      description: item.description,
-      verifyLink: item.verifyLink,
-      note: item.note,
-      instructionLink: item.instructionLink,
-      denyReason: item.denyReason,
-      target: item.target,
-      timeStart: item.timeStart,
-      timeEnd: item.timeEnd,
-      additionInfo: item.additionInfo,
-      jobEvaluate: item.jobEvaluate,
-    });
-  };
 
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -76,7 +52,7 @@ function JobsReport() {
   const handJobDetail = (item) => {
     dispatch(getJobById(item)).then((reps) => {
       if (!reps.error) {
-        setHiddenJobDetail(!hiddenJobDetail)
+        setHiddenJobDetail(!hiddenJobDetail);
       }
     });
   };
@@ -85,13 +61,26 @@ function JobsReport() {
     dispatch(getAllJob(0));
   }, []);
 
-  const filteredJobs = allJob.filter((item) => {
-    if (account.role.roleName === "ROLE_ADMIN") {
-      return true;
-    } else {
-      return item?.manager?.id === account?.user?.id;
-    }
-  });
+  const filteredJobs = useMemo(() => {
+    const filteredList = [];
+    allJob.forEach((job) => {
+      job.userJobs.forEach((userJob) => {
+        if (account.role.roleName === "ROLE_ADMIN" || account.user.id === userJob.user.id) {
+          const shouldRender = userJob.status === "DONE" ||
+            (userJob.status === "PROCESSING" &&
+              userJob.cachedProgress !== 0 &&
+              userJob.jobEvaluate === null);
+          if (shouldRender) {
+            filteredList.push({
+              ...job,
+              userJobs: [userJob],
+            });
+          }
+        }
+      });
+    });
+    return filteredList;
+  }, [allJob, account]);
 
   const handleEvaluate = () => {
     evaluateData.status = "DONE";
@@ -146,6 +135,11 @@ function JobsReport() {
     });
   };
 
+  const handleHiddenEValue = (item) => {
+    setHiddenEValue(!hiddenEValue);
+    setEvaluateReport(item);
+  };
+
   return (
     <LayoutJob>
       <div className="flex flex-col mt-5">
@@ -153,10 +147,13 @@ function JobsReport() {
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200 table-fixed">
-              <thead className="bg-[#f3f4f6] border-b rounded-tl-md ">
+                <thead className="bg-[#f3f4f6] border-b rounded-tl-md ">
                   <tr>
-                    <th scope="col" className="p-4 text-sm font-bold text-left text-gray-500 uppercase">
-                     STT
+                    <th
+                      scope="col"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
+                    >
+                      STT
                     </th>
                     <th
                       scope="col"
@@ -203,207 +200,91 @@ function JobsReport() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredJobs?.map(
-                    (item, key) =>
-                      item?.jobDetail?.note?.length !== 0 &&
-                      item?.jobDetail?.verifyLink?.length !== 0 && (
-                        <tr className="" key={key}>
-                          <td className="w-4 p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                            <div className="flex items-center">
-                              {key+1}
-                            </div>
-                          </td>
-
-                          <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                            <button
-                              className="underline"
-                              onClick={() => handJobDetail(item?.id)}
-                            >
-                              {item?.title}
-                            </button>
-                          </td>
-                          <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                            {item?.manager?.fullName}
-                          </td>
-                          <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                            {item?.staffs?.map((item) => (
-                              <p>{item?.fullName}</p>
-                            ))}
-                          </td>
-                          <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                            {item?.progress} %
-                          </td>
-                      
-                          <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                            {moment(item?.jobDetail?.timeStart).format(
-                              "DD-MM-YYYY"
-                            )}
-                          </td>
-                          <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                            {moment(item?.jobDetail?.timeEnd).format(
-                              "DD-MM-YYYY"
-                            )}
-                          </td>
-                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            {item.jobDetail.note !== "" &&
-                            item.cachedProgress !== 0 &&
-                            item.jobDetail.instructionLink !== "" &&
-                            item.jobDetail.jobEvaluate === null &&
-                            item.status === "DONE" ? (
-                              <button
-                                className="bg-blue-500 text-white text-xs p-1"
-                                onClick={() => handleHidden(item)}
-                              >
-                                Đánh giá
-                              </button>
-                            ) : (
-                              <>Đã đánh giá</>
-                            )}
-                          </td>
-
-                          <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
-                        </tr>
-                      )
-                  )}
+                  {filteredJobs?.map((item, key) => (
+                    <tr className="" key={key}>
+                      <td className="w-4 p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                        <div className="flex items-center">{key + 1}</div>
+                      </td>
+                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                        <button
+                          className="underline"
+                          onClick={() => handJobDetail(item?.id)}
+                        >
+                          {item?.title}
+                        </button>
+                      </td>
+                      <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                        {item?.manager?.fullName}
+                      </td>
+                      <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                        {item?.userJobs[0]?.user?.fullName}
+                      </td>
+                      <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                        {item?.userJobs[0]?.cachedProgress} %
+                      </td>
+                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                        {moment(item?.jobDetail?.timeStart).format(
+                          "DD-MM-YYYY"
+                        )}
+                      </td>
+                      <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                        {moment(item?.jobDetail?.timeEnd).format(
+                          "DD-MM-YYYY"
+                        )}
+                      </td>
+                      <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                        {item.userJobs[0]?.status === "PROCESSING" &&
+                        item.userJobs[0]?.cachedProgress !== 0 &&
+                        item.userJobs[0]?.jobEvaluate === null ? (
+                          <button
+                            className="border-[#17103a] border text-[#17103a] rounded-md hover:bg-[#17103a] hover:text-white  text-xs p-1"
+                            onClick={() => handleHiddenEValue(item)}
+                          >
+                            Đánh giá
+                          </button>
+                        ) : item.userJobs[0]?.status === "DONE" ? (
+                          <>Đã đánh giá</>
+                        ) : (
+                          <>Chưa đánh giá</>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-      </div>
-      <div className="mt-10">
-
-      {paginationJob?.totalPages > 1 && (
-        <Stack
-          spacing={2}
-          justifyContent="center"
-          color="#fff"
-          className="pagination"
-        >
-          <Pagination
-            count={paginationJob?.totalPages}
-            color="primary"
-            className="pagination-item"
-            style={{ margin: "auto" }}
-            page={currentPage}
-            onChange={handlePageChange}
-          />
-        </Stack>
-      )}
-      </div>
-
-      {/* <div
-        className={`fixed left-0 right-0 z-50 ${
-          hidden ? "hidden" : "flex"
-        } items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full `}
-        id="new-task-modal"
-      >
-        <div className="relative w-full h-full max-w-3xl m-auto px-4 md:h-auto">
-          <div className="relative bg-white rounded-lg shadow ">
-            <div className="flex items-start justify-between p-5 border-b rounded-t ">
-              <h3 className="text-xl font-semibold">
-                Chi tiết tiến độ công việc
-              </h3>
-              <button
-                type="button"
-                onClick={() => handleHidden()}
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
-                data-modal-toggle="add-user-modal"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-            <div className="content p-5  border-b">
-              <div className="border-b">
-                <h5 className="font-semibold te">
-                  Mô tả công việc đã hoàn thành
-                </h5>
-                <ul>{evaluateData?.jobDetail?.note}</ul>
-              </div>
-              <div className="border-b py-3">
-                <h5 className="font-semibold">Tiến độ hoàn thành</h5>
-                <div className="font-bold text-blue-500">
-                  {evaluateData?.progress} %
-                </div>
-              </div>
-              <div className="py-3">
-                <h5 className="font-semibold">Đường link tài liệu báo cáo</h5>
-                <a
-                  href={evaluateData?.jobDetail?.verifyLink}
-                  _blank
-                  className="text-xs underline"
-                >
-                  {evaluateData?.jobDetail?.verifyLink}
-                </a>
-              </div>
-              {evaluate && (
-                <div className="py-3">
-                  <select
-                    id="category-create"
-                    // value={job?.priority ? job?.priority : "0"}
-                    value={evaluateDetailData?.jobEvaluate}
-                    onChange={(e) =>
-                      setEvaluateDetailData({
-                        ...evaluateDetailData,
-                        jobEvaluate: e.target.value,
-                      })
-                    }
-                    className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
-                  >
-                    <option value="BAD">Yếu</option>
-                    <option value="MEDIUM">Trung bình</option>
-                    <option value="GOOD">Tốt</option>
-                  </select>
-                </div>
-              )}
-            </div>
-            {evaluate ? (
-              <div className="text-right p-4">
-                <button
-                  className="bg-red-500 text-white text-xs p-1 mx-1"
-                  onClick={() => setEvaluate(!evaluate)}
-                >
-                  Hủy
-                </button>
-                <button
-                  className="bg-blue-500 text-white text-xs p-1 mx-1"
-                  onClick={handleEvaluate}
-                >
-                  Lưu
-                </button>
-              </div>
-            ) : (
-              <div className="text-right p-4">
-                <button
-                  className="bg-red-500 text-white text-xs p-1 mx-1"
-                  onClick={handleReassess}
-                >
-                  Đánh giá lại
-                </button>
-                <button
-                  className="bg-blue-500 text-white text-xs p-1 mx-1"
-                  onClick={() => setEvaluate(!evaluate)}
-                >
-                  Đánh giá
-                </button>
-              </div>
-            )}
-          </div>
+        <div className="mt-10">
+          {paginationJob?.totalPages > 1 && (
+            <Stack
+              spacing={2}
+              justifyContent="center"
+              color="#fff"
+              className="pagination"
+            >
+              <Pagination
+                count={paginationJob?.totalPages}
+                color="primary"
+                className="pagination-item"
+                style={{ margin: "auto" }}
+                page={currentPage}
+                onChange={handlePageChange}
+              />
+            </Stack>
+          )}
         </div>
-      </div> */}
-      {/* {hidden && <DetailJobModel />} */}
-      {hiddenJobDetail && <JobDetailModal setHiddenJobDetail={setHiddenJobDetail} />}
+        {hiddenJobDetail && (
+          <JobDetailModal setHiddenJobDetail={setHiddenJobDetail} />
+        )}
+
+        {hiddenEValue && (
+          <EValueJobModal
+            handleHiddenEValue={handleHiddenEValue}
+            evaluateData={evaluateReport}
+          />
+        )}
+      </div>
     </LayoutJob>
   );
 }

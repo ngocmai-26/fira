@@ -20,14 +20,14 @@ function JobDetailModal({setHiddenJobDetail}) {
       className={`fixed left-0 right-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full `}
       id="new-task-modal"
     >
-      <div className="relative w-full h-full max-w-5xl m-auto px-4 md:h-auto">
+      <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
         <div className="relative bg-white rounded-lg shadow "  style={{
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
           }}>
           <div className="flex  justify-between pt-5 rounded-t ">
             <div className="text-center w-[95%]"> 
             <h3 className="text-xl font-semibold ">
-              Chi tiết công việc
+              {singleJob?.title}
             </h3>
             </div>
             <button
@@ -53,13 +53,13 @@ function JobDetailModal({setHiddenJobDetail}) {
           <div className="content pb-5  border-b">
             <div className="flex justify-center gap-2">
               <div className="text-xs">
-                Từ:
+                Từ: {" "}
                 <span className="text-xs text-red-400">
                   {moment(singleJob?.jobDetail?.timeStart).format("DD-MM-YYYY")}
                 </span>
               </div>
               <div className="text-xs">
-                Đến:
+                Đến: {" "}
                 <span className="text-xs text-red-400">
                   {moment(singleJob?.jobDetail?.timeEnd).format("DD-MM-YYYY")}
                 </span>
@@ -70,75 +70,68 @@ function JobDetailModal({setHiddenJobDetail}) {
           <div className="p-6 space-y-6">
             <form action="#">
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4   h-full">
-                <div className="md:col-span-2 lg:border-e-2 lg:border-gray-300">
-                  <div className="information-plan mt-2">
+                <div className="md:col-span-4 lg:border-b-2 lg:border-gray-300">
+                  <div className="information-plan">
                     <div className="text-sm py-1">
-                      Mức độ:
-                      <span className="text-red-400">
+                      <span className=""> Mức độ : {" "}</span>
+                      <span className="text-gray-400">
                         {priorities.find(
                           (priority) => priority.id === singleJob?.priority
                         )?.name || "Không xác định"}
                       </span>
                     </div>
                     <div className="text-sm py-1">
-                      Trạng thái:
-                      <span className="text-red-400">
-                        {" "}
-                        {singleJob?.status || "Chưa có trạng thái nào"}
-                      </span>
-                    </div>
-                    <div className="text-sm py-1">
                       Tổng điểm:
-                      <span className="text-red-400">
+                      <span className="text-gray-400">
                         {" "}
                         {singleJob?.pointPerJob || "Chưa có trạng thái nào"}
                       </span>
                     </div>
                     <div className="text-sm py-1">
-                      Tổng KPI:
-                      <span className="text-red-400">
+                      Chỉ tiêu công việc
+                      <div className="text-gray-400">
                         {" "}
-                        {singleJob?.kpiCount}
-                      </span>
+                        {singleJob?.jobDetail?.target || "Công việc chưa có chỉ tiêu đề ra"}
+                      </div>
                     </div>
                     <div className="text-sm py-1">
-                      Chi tiết công việc
-                      <div className="text-red-400">
+                      Mô tả công việc
+                      <div className="text-gray-400">
                         {" "}
                         {singleJob?.jobDetail?.description}
                       </div>
                     </div>
                     <div className="text-sm py-1">
                       Link công việc
-                      <div className="text-red-400">
+                      <div className="text-gray-400">
                         {" "}
-                        {singleJob?.jobDetail?.verifyLink}
+                        {singleJob?.jobDetail?.verifyLink || "Hiện chưa có thêm thông tin nào của công việc"}
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="h-full  lg:border-e-2 lg:border-gray-300 px-3">
-                  <span className="text-xs font-medium">Phân công</span>
+                <div className="md:col-span-2 h-full lg:border-e-2 lg:border-gray-300 px-3 mt-4">
+                  <span className="text-sm font-medium">Phân công</span>
                   <hr />
 
-                  <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
+                  <div className="users-selection-list-wrapper py-2 h-64 overscroll-y-none overflow-y-auto overflow-hidden">
                     <div className="h-auto ">
-                      {singleJob?.staffs?.map((item) =>
-                        allUser.some((user) => user.id === item.id) ? (
+                      {singleJob?.userJobs?.map((item) =>
+                        allUser?.some((user) => user?.id === item?.user?.id) ? (
                           <button
                             type="button"
                             className={`users-item flex py-1 px-2 w-full text-left `}
                             // className="users-item flex py-1 px-2 w-full text-left w-100"
                           >
-                            <div className="avatar w-2/12 ">
+                            <div className="avatar w-2/12 me-2 ">
                               <img
-                                src={item?.avatar}
+                                src={item?.user.avatar}
                                 alt=""
                                 className=" w-8 h-8  rounded-full"
                               />
                             </div>
                             <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">{item.fullName}</span>
+                              <span className="text-xs ">{item?.user.fullName}</span>
                             </div>
                           </button>
                         ) : (
@@ -148,15 +141,15 @@ function JobDetailModal({setHiddenJobDetail}) {
                     </div>
                   </div>
                 </div>
-                <div className="h-full px-3">
-                  <span className="text-xs font-medium">
+                <div className="md:col-span-2 h-full px-3  mt-4">
+                  <span className="text-sm font-medium">
                     Người chịu trách nhiệm
                   </span>
                   <hr />
 
-                  <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
+                  <div className="users-selection-list-wrapper py-2 h-64 overscroll-y-none overflow-y-auto overflow-hidden">
                     <div className="h-auto ">
-                      {allUser.some(
+                      {allUser?.some(
                         (user) => user.id === singleJob?.manager?.id
                       ) ? (
                         <button
@@ -164,7 +157,7 @@ function JobDetailModal({setHiddenJobDetail}) {
                           className={`users-item flex py-1 px-2 w-full text-left `}
                           // className="users-item flex py-1 px-2 w-full text-left w-100"
                         >
-                          <div className="avatar w-2/12 ">
+                          <div className="avatar w-2/12  me-2 ">
                             <img
                               src={singleJob?.manager?.avatar}
                               alt=""

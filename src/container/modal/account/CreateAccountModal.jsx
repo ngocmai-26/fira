@@ -99,10 +99,10 @@ function CreateAccountModal({ setShowCreateAccount }) {
 
   return (
     <div
-      className={`fixed mx-auto left-0 right-0 z-50 items-center justify-center  overflow-x-hidden overflow-y-auto mt-20 md:inset-0 h-modal sm:h-full`}
+      className={`fixed mx-auto top-0 left-0 right-0 z-50 items-center justify-center  overflow-x-hidden overflow-y-auto mt-20 md:inset-0 h-modal sm:h-full`}
       id="edit-user-modal"
     >
-      <div className="relative w-full h-full max-w-xl px-4 md:h-auto m-auto">
+      <div className="relative w-full h-full max-w-xl px-4 md:h-full m-auto">
         <div
           className="relative bg-white rounded-lg shadow "
           style={{

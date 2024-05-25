@@ -46,7 +46,6 @@ const ADMIN_NAVBAR_ITEMS = [
 
 const ANONYMOUS = [
   new AdminSideNavItem(1, '', faChartPie, 'Dashboards'),
-  new AdminSideNavItem(2, '/quan-ly-tai-khoan', faUsers, 'Quản lý tài khoản'),
   new AdminSideNavItem(
     3,
     '/quan-ly-cong-viec',
@@ -59,7 +58,6 @@ const ANONYMOUS = [
     faCalendar,
     'Quản lý lịch làm việc',
   ),
-  new AdminSideNavItem(7, '/quan-ly-danh-muc-kpi', faPenToSquare, ' Quản lý danh mục kpi'),
   new AdminSideNavItem(8, '/quan-ly-diem-danh', faCalendarCheck, ' Quản lý điểm danh cá nhân'),
   new AdminSideNavItem(9, '/quan-ly-phieu-danh-gia', faCalendarCheck, ' Phiếu đánh giá KPI'),
   new AdminSideNavItem(10, '/chat', faComments, 'Tin nhắn'),
@@ -78,7 +76,6 @@ const MANAGER_NAVBAR_ITEMS = [
     faCalendar,
     'Quản lý lịch làm việc',
   ),
-  new AdminSideNavItem(7, '/quan-ly-danh-muc-kpi', faPenToSquare, ' Quản lý danh mục kpi'),
   new AdminSideNavItem(8, '/quan-ly-diem-danh', faCalendarCheck, ' Quản lý điểm danh cá nhân'),
   new AdminSideNavItem(9, '/quan-ly-phieu-danh-gia', faCalendarCheck, ' Phiếu đánh giá KPI'),
   new AdminSideNavItem(10, '/chat', faComments, 'Tin nhắn'),
@@ -97,7 +94,6 @@ const STAFF_NAVBAR_ITEMS = [
     faCalendar,
     'Quản lý lịch làm việc',
   ),
-  new AdminSideNavItem(7, '/quan-ly-danh-muc-kpi', faPenToSquare, ' Quản lý danh mục kpi'),
   new AdminSideNavItem(9, '/quan-ly-phieu-danh-gia', faCalendarCheck, ' Phiếu đánh giá KPI'),
   new AdminSideNavItem(8, '/chat', faComments, 'Tin nhắn'),
 ]

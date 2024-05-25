@@ -32,7 +32,7 @@ function VerifyEmail() {
         </Link>
         <hr />
         <form action="" className="py-0">
-          <div className="email flex flex-col sm:flex-row py-2 ">
+          <div className="email flex flex-col sm:flex-row py-2 gap-3 ">
             <FormField
               name={"email"}
               values={email}
@@ -45,6 +45,7 @@ function VerifyEmail() {
               handleClick={handleSubmit}
               type={"button"}
               textButton={"Gửi"}
+              style={'text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 '}
             />
           </div>
         </form>

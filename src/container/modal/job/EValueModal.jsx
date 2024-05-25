@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import ButtonComponent from "../../component/ButtonComponent";
 import { useDispatch } from "react-redux";
-import { comFirmJob, evaluateJob } from "../../../thunks/JobsThunk";
+import { comFirmJob, evaluateJob, userJob } from "../../../thunks/JobsThunk";
 
 function EValueJobModal({ handleHiddenEValue, evaluateData }) {
   const dispatch = useDispatch();
@@ -13,26 +13,32 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
       value: "BAD",
       eValuate: "Xấu",
       bg: "bg-white border-[#e68a8c] border text-[#e68a8c] rounded-md hover:bg-[#e68a8c] hover:text-white  text-xs p-1",
-      bgActive: "bg-[#e68a8c] border-[#e68a8c] border  rounded-md text-white text-xs p-1"
+      bgActive:
+        "bg-[#e68a8c] border-[#e68a8c] border  rounded-md text-white text-xs p-1",
     },
     {
       id: 2,
       value: "MEDIUM",
       eValuate: "Trung Bình",
       bg: " bg-white border-amber-500 border text-amber-500 rounded-md hover:bg-amber-500 hover:text-white  text-xs p-1",
-      bgActive: "bg-amber-500 border-amber-500 border rounded-md text-white text-xs p-1"
+      bgActive:
+        "bg-amber-500 border-amber-500 border rounded-md text-white text-xs p-1",
     },
     {
       id: 3,
       value: "GOOD",
       eValuate: "Tốt",
       bg: "bg-white border-green-500 border text-green-500 rounded-md hover:bg-green-500 hover:text-white  text-xs p-1",
-      bgActive: "bg-green-500 border-green-500 border rounded-md text-white  text-xs p-1"
+      bgActive:
+        "bg-green-500 border-green-500 border rounded-md text-white  text-xs p-1",
     },
   ];
 
+
   const [eValuate, setEValuate] = useState(
-    evaluateData?.jobDetail?.jobEvaluate || ""
+    evaluateData?.userJobs && evaluateData.userJobs.length > 0
+      ? evaluateData.userJobs[0].jobEvaluate || ""
+      : ""
   );
 
   const handleEValuate = (item) => {
@@ -41,11 +47,25 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
 
   const handleSubmitEvaluate = () => {
     dispatch(
-      evaluateJob({ id: evaluateData.id, data: { status: "DONE" } })
+      userJob({
+        id: evaluateData.id,
+        data: {
+          userId: evaluateData.userJobs[0]?.user.id,
+          progress: +evaluateData?.userJobs[0]?.progress,
+          status: "DONE",
+          instructionLink: evaluateData?.userJobs[0]?.instructionLink,
+          verifyLink: "",
+          denyReason: evaluateData?.userJobs[0]?.denyReason || "", // Sử dụng denyReason từ userJobs[0]
+        },
+      })
     ).then((reps) => {
-      if (!reps.error) {
-        handleHiddenEValue();
-      }
+      dispatch(
+        evaluateJob({ id: evaluateData.id, data: { jobEvaluate: eValuate } })
+      ).then((reps) => {
+        if (!reps.error) {
+          handleHiddenEValue();
+        }
+      });
     });
   };
 
@@ -79,11 +99,10 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
           </div>
           <div className="content p-5  border-b">
             <div className="border-b">
-              <h5 className="font-semibold">
-                Mô tả công việc đã hoàn thành
-              </h5>
+              <h5 className="font-semibold">Mô tả công việc đã hoàn thành</h5>
               <ul>
-                {evaluateData?.jobDetail?.note || "chưa có báo cáo"}
+                {evaluateData?.userJobs[0]?.denyReason ||
+                  "Chưa có lý do từ chối"}
               </ul>
             </div>
             <div className="border-b py-3">
@@ -112,9 +131,7 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
                 <button
                   key={key}
                   className={`${
-                    eValuate === item.value
-                      ? item.bgActive
-                      : item.bg
+                    eValuate === item.value ? item.bgActive : item.bg
                   }  text-sm px-2 mx-1 py-1 rounded-xs `}
                   onClick={() => handleEValuate(item.value)}
                 >
@@ -129,9 +146,17 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
               textButton="Đánh giá lại"
               handleClick={() =>
                 dispatch(
-                  comFirmJob({
+                  userJob({
                     id: evaluateData.id,
-                    data: { status: "PROCESSING" },
+                    data: {
+                      userId: evaluateData.userJobs[0]?.user.id,
+                      progress: +evaluateData?.userJobs[0]?.progress,
+                      status: "PROCESSING",
+                      instructionLink:
+                        evaluateData?.userJobs[0]?.instructionLink,
+                      verifyLink: "reassess",
+                      denyReason: evaluateData?.userJobs[0]?.denyReason || "", // Sử dụng denyReason từ userJobs[0]
+                    },
                   })
                 ).then((reps) => {
                   if (!reps.error) {

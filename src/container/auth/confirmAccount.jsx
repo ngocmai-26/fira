@@ -67,7 +67,7 @@ function ConfirmAccount() {
               placeholder={"Nhập mã code"}
             />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-3">
             <ButtonComponent
               handleClick={handleSendAgain}
               type={"button"}
@@ -80,6 +80,7 @@ function ConfirmAccount() {
             <ButtonComponent
               handleClick={handleSubmit}
               type={"button"}
+              style={'text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5'}
               textButton={"Gửi"}
             />
           </div>

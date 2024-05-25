@@ -77,6 +77,7 @@ function ConfirmForgotPassword() {
             <ButtonComponent
               handleClick={handleSubmit}
               type={"button"}
+              style={'text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2'}
               textButton={"Gửi"}
             />
           </div>

@@ -63,7 +63,7 @@ function JobsBoard() {
           {jobs.map((item, key) =>
             item.userJobs.some((userJob) => userJob.status === status) ? (
               <div
-                className={`plan-item m-2 px-2 py-4 rounded-sm shadow  hover:cursor-pointer my-2 ${item.manager.id === account.user.id ? 'bg-yellow-300 hover:bg-yellow-200'  : 'bg-white hover:bg-gray-50'}`}
+                className={`plan-item m-2 px-2 py-4 rounded-sm shadow  hover:cursor-pointer my-2 ${item.manager.id === account.user.id ? 'bg-[#FEE686] hover:bg-[#FEE686] bg-opacity-70'  : 'bg-white hover:bg-gray-50'}`}
                 key={key}
               >
                 <button
@@ -75,7 +75,7 @@ function JobsBoard() {
                     <div
                       className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
                       style={{
-                        width: `${item?.progress * 100}%`,
+                        width: `${item?.progress * 100} %`,
                       }}
                     ></div>
                   </div>

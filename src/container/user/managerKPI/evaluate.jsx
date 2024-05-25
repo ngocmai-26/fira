@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../layout";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GetKPIHistory, addNewKpi } from "../../../thunks/KPIsThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +14,6 @@ function EvaluateKPI() {
     account.user.checkInPoint + account?.user?.jobPoint
   );
   const { listKPIHistory } = useSelector((state) => state.kpisReducer);
-  // const { listKPIHistory } = useSelector((state) => state.kpiCategoriesReducer);
   const [kpiMore, setKPIMore] = useState(false);
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -25,8 +24,8 @@ function EvaluateKPI() {
     kpiTypeId: "81b7281f-0c09-4ae6-a008-9876517acf8f",
     note: "",
     comment: 'none',
-    timeStart: "",
-    timeEnd: "",
+    timeStart: new Date().toISOString().split('T')[0],
+    timeEnd: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
   });
 
   const handleMore = (item) => {
@@ -36,16 +35,22 @@ function EvaluateKPI() {
 
   useEffect(() => {
     dispatch(GetKPIHistory(account?.user?.id));
-
-  }, [kpiData.timeStart])
+  }, [kpiData.timeStart]);
 
   const handleSubmit = () => {
-    dispatch(addNewKpi(kpiData))
-    .then((reps) => {
-      if(!reps.error) {
+    if (new Date(kpiData.timeEnd) < new Date(kpiData.timeStart)) {
+      alert("Ngày kết thúc phải sau ngày bắt đầu!");
+      return;
+    }
+    if (new Date(kpiData.timeEnd) > new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)) {
+      alert("Ngày kết thúc không được quá 5 ngày sau ngày hiện tại!");
+      return;
+    }
+    dispatch(addNewKpi(kpiData)).then((reps) => {
+      if (!reps.error) {
         nav("/quan-ly-phieu-danh-gia");
       }
-    })
+    });
   };
 
   return (
@@ -130,13 +135,10 @@ function EvaluateKPI() {
           </div>
           <form action="">
             <div className="">
-            <div className="group-item py-3 border-t border-gray-300 flex">
-              <p className="text-lg ">Danh sách tiêu chí đánh giá KPI nhân viên</p>
-                <div className="my-auto text-sm font-medium text-center text-white">
-                  <button
-                    type="button"
-                    onClick={() => handleMore(account?.user?.id)}
-                  >
+              <div className="group-item py-3 border-t border-gray-300 flex justify-between">
+                <p className="text-lg ">Danh sách tiêu chí đánh giá KPI nhân viên</p>
+                <div className="my-auto text-sm font-medium text-center text-black rounded-md border p-2 border-gray-400">
+                  <button type="button" onClick={() => handleMore(account?.user?.id)}>
                     Chi tiết
                   </button>
                 </div>
@@ -242,15 +244,14 @@ function EvaluateKPI() {
             </div>
 
             <div className="btn text-right py-3">
-            
               <ButtonComponent
-                  type={"button"}
-                  textButton={"Gửi"}
-                  style={
-                    "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
-                  }
-                  handleClick={handleSubmit}
-                />
+                type={"button"}
+                textButton={"Gửi"}
+                style={
+                  "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
+                }
+                handleClick={handleSubmit}
+              />
             </div>
           </form>
         </div>
@@ -261,3 +262,4 @@ function EvaluateKPI() {
 }
 
 export default EvaluateKPI;
+

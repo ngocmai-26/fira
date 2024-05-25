@@ -96,7 +96,6 @@ function ListExpertise() {
         </div>
       </div>
 
-      {}
     </KPI>
   );
 }

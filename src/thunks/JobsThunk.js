@@ -151,7 +151,7 @@ export const comFirmJob = createAsyncThunk(
   async (data, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const resp = await fetch(`${API.uri}/jobs/${data.id}`, {
+      const resp = await fetch(`${API.uri}/jobs/user-job/${data.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ export const evaluateJob = createAsyncThunk(
   async (data, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const resp = await fetch(`${API.uri}/jobs/user-job/${data.id}`, {
+      const resp = await fetch(`${API.uri}/jobs/evaluate-job/${data.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

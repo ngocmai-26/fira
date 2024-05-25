@@ -13,6 +13,7 @@ import { getAllRole } from "../../../thunks/RolesThunk";
 import { getAllUsers } from "../../../thunks/UsersThunk";
 import { priorities } from "../../../constants/fakeData";
 import ButtonComponent from "../../component/ButtonComponent";
+import { getAllAccount } from "../../../thunks/AccountsThunk";
 
 function CreateJobModel({ handleHiddenCreate }) {
   const { allRole } = useSelector((state) => state.rolesReducer);
@@ -20,6 +21,7 @@ function CreateJobModel({ handleHiddenCreate }) {
     (state) => state.jobsReducer
   );
   const { account } = useSelector((state) => state.authReducer);
+  const { allAccount } = useSelector((state) => state.accountsReducer);
 
   const { allUser } = useSelector((state) => state.usersReducer);
   const dispatch = useDispatch();
@@ -32,6 +34,10 @@ function CreateJobModel({ handleHiddenCreate }) {
     if (allUser?.length <= 0) {
       dispatch(getAllUsers());
     }
+    if (allAccount?.length <= 0) {
+      dispatch(getAllAccount());
+    }
+
     if (allRole?.length <= 0) {
       dispatch(getAllRole());
     }
@@ -48,9 +54,8 @@ function CreateJobModel({ handleHiddenCreate }) {
     progress: 0,
     jobStatus: "PENDING",
     pointPerJob: 0,
-    userCreateJobId: account?.user?.id,
     staffsGotJobId: [],
-    userCreateJobId: "",
+    userCreateJobId: account?.user?.id,
     description: "",
     note: "",
     target: "",
@@ -65,8 +70,19 @@ function CreateJobModel({ handleHiddenCreate }) {
   }, [staffs]);
 
   const handleSubmit = () => {
+    if (new Date(newJobData.timeEnd) <= new Date(newJobData.timeStart)) {
+      alert("Thời gian kết thúc phải sau thời gian bắt đầu");
+      return;
+    }
+
+    // Kiểm tra xem thời gian kết thúc có trước ngày hôm nay không
+    if (new Date(newJobData.timeEnd) < new Date()) {
+      alert("Thời gian kết thúc không được trước ngày hôm nay");
+      return;
+    }
+
     dispatch(addNewJob(newJobData)).then((resp) => {
-      if (!resp?.error) {
+      if (!resp.error) {
         handleHiddenCreate();
       }
     });
@@ -79,10 +95,14 @@ function CreateJobModel({ handleHiddenCreate }) {
        overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
       id="new-task-modal"
     >
-      <div className="relative w-full h-full max-w-6xl m-auto px-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow "  style={{
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
-          }}>
+      <div className="relative w-full h-full max-w-4xl m-auto px-4 md:h-auto">
+        <div
+          className="relative bg-white rounded-lg shadow "
+          style={{
+            boxShadow:
+              "0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">Thêm công việc</h3>
             <button
@@ -108,7 +128,7 @@ function CreateJobModel({ handleHiddenCreate }) {
 
           <div className="p-6 space-y-6">
             <form action="#">
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-full">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 h-full">
                 <div className="md:col-span-2 lg:border-e pe-3 ">
                   <div className="due">
                     <div className="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-4 justify-between">
@@ -128,7 +148,7 @@ function CreateJobModel({ handleHiddenCreate }) {
                             setValue={setNewJobData}
                             required={"required"}
                             type={"date"}
-                            style={'text-sm'}
+                            style={"text-sm"}
                           />
                           <FormField
                             name={"timeEnd"}
@@ -137,7 +157,7 @@ function CreateJobModel({ handleHiddenCreate }) {
                             setValue={setNewJobData}
                             required={"required"}
                             type={"date"}
-                            style={'text-sm'}
+                            style={"text-sm"}
                           />
                         </div>
                       </div>
@@ -190,26 +210,42 @@ function CreateJobModel({ handleHiddenCreate }) {
                         className="rounded-md border text-sm border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-gray-900 focus:ring-primary-500 focus:border-primary-500 block p-2"
                         defaultValue={newJobData?.description}
                         rows="5"
-                        placeholder="Mô tả công việc"
+                        placeholder="Mô tả"
                         onChange={(e) =>
                           setNewJobData({
                             ...newJobData,
                             description: e.target.value,
                           })
                         }
-                      />
-                      <div className="w-2/12 grid justify-between">
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="due mt-2 border-t py-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-3 justify-between gap-2">
+                      <div>
+                        <label
+                          htmlFor="category-create"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
+                        >
+                          Mục tiêu công việc:
+                          <span className="text-red-500">*</span>
+                        </label>
                         <FormField
                           name={"target"}
                           values={newJobData}
                           id={"target"}
                           setValue={setNewJobData}
                           required={"required"}
-                          placeholder={"Chỉ tiêu"}
-                          styles={
-                            "shadow-sm w-full text-sm rounded-md border border-slate-200 outline-slate-200 text-sm text-slate-500 text-gray-900 focus:ring-primary-500 focus:border-primary-500 block px-2 h-9"
-                          }
+                          placeholder={"0"}
                         />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="category-create"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
+                        >
+                          KPI:
+                        </label>
                         <FormField
                           name={"kpiCount"}
                           values={newJobData}
@@ -218,10 +254,15 @@ function CreateJobModel({ handleHiddenCreate }) {
                           required={"required"}
                           type={"number"}
                           placeholder={"KPI"}
-                          styles={
-                            "shadow-sm w-full text-sm rounded-md border border-slate-200 outline-slate-200 text-sm text-slate-500 text-gray-900 focus:ring-primary-500 focus:border-primary-500 block px-2 h-9"
-                          }
                         />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="category-create"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
+                        >
+                          Điểm / công việc:
+                        </label>
                         <FormField
                           name={"pointPerJob"}
                           values={newJobData}
@@ -229,20 +270,16 @@ function CreateJobModel({ handleHiddenCreate }) {
                           setValue={setNewJobData}
                           required={"required"}
                           type={"number"}
-                          placeholder={"Điểm"}
-                          styles={
-                            "shadow-sm w-full text-sm rounded-md border border-slate-200 outline-slate-200 text-sm text-slate-500 text-gray-900 focus:ring-primary-500 focus:border-primary-500 block px-2 h-9"
-                          }
+                          placeholder={"Điểm / công việc"}
                         />
                       </div>
                     </div>
                   </div>
+                  
                   <div className="border-t mt-3">
                     <form action="#" method="GET" className="">
-                     
                       <div className="relative mt-3">
-                   
-                         <FormField
+                        <FormField
                           name={"additionInfo"}
                           values={newJobData}
                           id={"additionInfo"}
@@ -257,7 +294,7 @@ function CreateJobModel({ handleHiddenCreate }) {
                     </form>
                   </div>
                 </div>
-                <div className="h-full  lg:border-e pe-3">
+                <div className="h-full  pe-3">
                   <span className="text-sm font-medium">Phân công</span>
                   <hr />
                   <form action="#" method="GET" className="">
@@ -286,45 +323,54 @@ function CreateJobModel({ handleHiddenCreate }) {
                         className=" rounded-md border outline-slate-200 border-gray-300 text-gray-900 sm:text-xs focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-1.5"
                         placeholder="Tìm kiếm"
                       />
-                      
                     </div>
                   </form>
                   <div className="users-selection-list-wrapper py-3 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                     <div className="h-auto ">
-                      {allUser?.map((item) => (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setStaffs((prevStaffs) => {
-                              if (prevStaffs.includes(item.id)) {
-                                return prevStaffs.filter(
-                                  (id) => id !== item.id
-                                );
-                              } else {
-                                return [...prevStaffs, item.id];
-                              }
-                            })
-                          }
-                          className={`users-item flex py-1 px-2 w-full text-left ${
-                            staffs.includes(item.id) ? "bg-gray-300" : ""
-                          }`}
-                        >
-                          <div className="avatar w-2/12 ">
-                            <img
-                              src={item?.avatar}
-                              alt=""
-                              className=" w-8 h-8  rounded-full"
-                            />
-                          </div>
-                          <div className="name w-8/12 my-auto">
-                            <span className="text-xs ">{item.fullName}</span>
-                          </div>
-                        </button>
-                      ))}
+                      {allAccount
+                        .filter(
+                          (item) =>
+                            !(
+                              item.role.roleName === "ROLE_ADMIN" ||
+                              item.active === false
+                            )
+                        )
+                        .map((item) => (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setStaffs((prevStaffs) => {
+                                if (prevStaffs.includes(item.user.id)) {
+                                  return prevStaffs.filter(
+                                    (id) => id !== item.user.id
+                                  );
+                                } else {
+                                  return [...prevStaffs, item.user.id];
+                                }
+                              })
+                            }
+                            className={`users-item flex py-1 px-2 w-full text-left ${
+                              staffs.includes(item.user.id) ? "bg-gray-300" : ""
+                            }`}
+                          >
+                            <div className="avatar w-2/12 ">
+                              <img
+                                src={item.user.avatar}
+                                alt=""
+                                className=" w-8 h-8  rounded-full"
+                              />
+                            </div>
+                            <div className="name w-8/12 my-auto">
+                              <span className="text-xs ">
+                                {item.user.fullName}
+                              </span>
+                            </div>
+                          </button>
+                        ))}
                     </div>
                   </div>
                 </div>
-                <div className="h-full">
+                {/* <div className="h-full">
                   <span className="text-xs font-medium">
                     Người chịu trách nhiệm
                   </span>
@@ -359,37 +405,42 @@ function CreateJobModel({ handleHiddenCreate }) {
                   </form>
                   <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                     <div className="h-auto ">
-                      {allUser?.map((item) => (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setNewJobData({
-                              ...newJobData,
-                              userCreateJobId: item?.id,
-                            })
-                          }
-                          className={`users-item flex py-1 px-2 w-full text-left ${
-                            item?.id === newJobData?.userCreateJobId
-                              ? "bg-gray-300"
-                              : ""
-                          }`}
-                          // className="users-item flex py-1 px-2 w-full text-left w-100"
-                        >
-                          <div className="avatar w-2/12 ">
-                            <img
-                              src={item?.avatar}
-                              alt=""
-                              className=" w-8 h-8  rounded-full"
-                            />
-                          </div>
-                          <div className="name w-8/12 my-auto">
-                            <span className="text-xs ">{item.fullName}</span>
-                          </div>
-                        </button>
-                      ))}
+                      {allAccount
+                        ?.filter(
+                          (item) => item.role.roleName === "ROLE_MANAGER"
+                        )
+                        .map((item) => (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setNewJobData({
+                                ...newJobData,
+                                userCreateJobId: item?.user.id,
+                              })
+                            }
+                            className={`users-item flex py-1 px-2 w-full text-left ${
+                              item?.user.id === newJobData?.userCreateJobId
+                                ? "bg-gray-300"
+                                : ""
+                            }`}
+                          >
+                            <div className="avatar w-2/12 ">
+                              <img
+                                src={item?.user.avatar}
+                                alt=""
+                                className=" w-8 h-8  rounded-full"
+                              />
+                            </div>
+                            <div className="name w-8/12 my-auto">
+                              <span className="text-xs ">
+                                {item.user.fullName}
+                              </span>
+                            </div>
+                          </button>
+                        ))}
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="items-center p-6 border-gray-200 rounded-b text-right">
                 <ButtonComponent

@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import LayoutPlan from ".";
-
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
@@ -14,18 +13,22 @@ import {
 import DetailPlanModal from "../../modal/plans/DetailPlanModal";
 import EditPlanModal from "../../modal/plans/EditPlanModal";
 import { Pagination, Stack } from "@mui/material";
+
 function ManagerNote() {
   const { allPlan, singlePlan, paginationPlan } = useSelector(
     (state) => state.plansReducer
   );
   const [detailPlan, setDetailPlan] = useState(false);
   const [editPlan, setEditPlan] = useState(false);
+  const { account } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+
   useLayoutEffect(() => {
     if (allPlan?.length <= 0) {
       dispatch(getAllPlan());
     }
   }, []);
+
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const handleHiddenUpdate = (item) => {
     setIsHiddenUpdate(!isHiddenUpdate);
@@ -38,19 +41,6 @@ function ManagerNote() {
     setEditPlan(!editPlan);
     dispatch(getPlanById(item));
   };
-  // const [dataPlan, setDataPlan] = useState({
-  //   title: "",
-  //   planJob: [],
-  //   planDetailRequest: {
-  //     description: "",
-  //     planType: "ONCE",
-  //     note: "",
-  //     timeStart: "",
-  //     timeEnd: "",
-  //     planSchedules: [],
-  //     scheduleType: "DAY",
-  //   },
-  // });
   const handleActive = (item) => {
     console.log("item", item);
   };
@@ -64,28 +54,42 @@ function ManagerNote() {
     dispatch(getAllPlan(pageNumber - 1));
   };
 
+  const filteredPlans = allPlan.filter((item) => {
+    if (account.role.roleName === "ROLE_ADMIN") {
+      return true;
+    }
+    const isCreator = item.creator.id === account.user.id;
+    const isUserJob = item.planJobs.some((job) =>
+      job.userJobs.some((userJob) => userJob.user.id === account.user.id)
+    );
+    const isManager = item.planJobs.some(
+      (job) => job.manager.id === account.user.id
+    );
+    return isCreator || isUserJob || isManager;
+  });
+
   return (
     <LayoutPlan>
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
-              <div className=" bg-white pt-5 ">
-                <div className="bg-neutral-100 flex  pb-4 w-full flex-wrap">
-                  {allPlan?.map((item) => (
-                    <div className="my-2 h-fit w-full sm:w-1/4">
+              <div className="bg-white pt-5">
+                <div className="bg-neutral-100 flex pb-4 w-full flex-wrap">
+                  {filteredPlans.map((item) => (
+                    <div className="my-2 h-fit w-full sm:w-1/4" key={item.id}>
                       <div>
                         <div
                           className={`${
                             item.planDetail.planType === "ONCE"
                               ? "bg-[#b0d4b8] hover:bg-[#a4c3a2] border-2 border-[#a4c3a2] bg-opacity-70"
                               : item.planDetail.planType === "LOOP"
-                              ? " bg-[#d7f9fa] hover:bg-[#B8E7EA] border-2 border-sky-300"
+                              ? "bg-[#d7f9fa] hover:bg-[#B8E7EA] border-2 border-sky-300"
                               : "bg-white hover:bg-gray-50"
                           } px-3 py-4 mx-2 rounded-md shadow hover:cursor-pointer`}
                         >
                           <div className="flex justify-between">
-                            <p className="text-base font-semibold truncate ">
+                            <p className="text-base font-semibold truncate">
                               {item.title}
                             </p>
                             <div className="Plan">
@@ -170,7 +174,7 @@ function ManagerNote() {
                               <span className="text-sm text-slate-700">
                                 Người lập kế hoạch:
                               </span>
-                              <span className="text-sm ">
+                              <span className="text-sm">
                                 {item.creator?.fullName}
                               </span>
                             </div>
@@ -194,7 +198,7 @@ function ManagerNote() {
                                     "DD-MM-YYYY"
                                   )}
                                 </span>
-                              </div>{" "}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -207,7 +211,6 @@ function ManagerNote() {
           </div>
         </div>
       </div>
-      
       {detailPlan && <DetailPlanModal handleGetPlanById={handleGetPlanById} />}
       {editPlan && <EditPlanModal handleHiddenEdit={handleHiddenEdit} />}
       <div className="mt-10">

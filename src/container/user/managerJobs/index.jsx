@@ -109,16 +109,15 @@ function LayoutJob({ children }) {
     const filteredItems = allJob.filter((element) => {
       return element.priority === +item;
     });
-    if (item ==='' || item === '0') {
+    if (item === "" || item === "0") {
       setJobs(allJob);
     } else {
-      setJobs(filteredItems)
+      setJobs(filteredItems);
     }
   };
 
   const location = useLocation();
   const { pathname } = location;
-
 
   return (
     <>
@@ -132,8 +131,14 @@ function LayoutJob({ children }) {
 
           <div className="tasks">
             <div className="block sm:flex bg-white mt-4 justify-between">
-            <ul className="flex my-auto font-medium flex-row bg-white ">
-                <li className={`mt-0 px-2 ${pathname === "/quan-ly-cong-viec" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
+              <ul className="flex my-auto font-medium flex-row bg-white ">
+                <li
+                  className={`mt-0 px-2 ${
+                    pathname === "/quan-ly-cong-viec"
+                      ? "bg-gray-200"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
                   <Link
                     to="/quan-ly-cong-viec"
                     className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
@@ -143,7 +148,13 @@ function LayoutJob({ children }) {
                   </Link>
                 </li>
                 {account?.role?.roleName !== "ROLE_ADMIN" && (
-                  <li className={`mt-0 px-2 ${pathname === "/cong-viec-dang-thuc-hien" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
+                  <li
+                    className={`mt-0 px-2 ${
+                      pathname === "/cong-viec-dang-thuc-hien"
+                        ? "bg-gray-200"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
                     <Link
                       to="/cong-viec-dang-thuc-hien"
                       className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
@@ -153,7 +164,13 @@ function LayoutJob({ children }) {
                     </Link>
                   </li>
                 )}
-                <li className={`mt-0 px-2 ${pathname === "/quan-ly-cong-viec-dang-bang" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
+                <li
+                  className={`mt-0 px-2 ${
+                    pathname === "/quan-ly-cong-viec-dang-bang"
+                      ? "bg-gray-200"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
                   <Link
                     to="/quan-ly-cong-viec-dang-bang"
                     className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
@@ -162,8 +179,14 @@ function LayoutJob({ children }) {
                     Bảng công việc
                   </Link>
                 </li>
-                {account?.role?.id !== 1 || account?.role?.id !== 3 ? (
-                  <li className={`mt-0 px-2 ${pathname === "/bao-cao-cong-viec" ? "bg-gray-200" : "hover:bg-gray-50"}`}>
+                {account?.role?.roleName === "ROLE_ADMIN" || account?.role?.roleName === "ROLE_MANAGER" ? (
+                  <li
+                    className={`mt-0 px-2 ${
+                      pathname === "/bao-cao-cong-viec"
+                        ? "bg-gray-200"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
                     <Link
                       to="/bao-cao-cong-viec"
                       className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2  "
@@ -172,105 +195,26 @@ function LayoutJob({ children }) {
                       Đánh giá công việc
                     </Link>
                   </li>
-                  
                 ) : (
                   <></>
                 )}
-                
               </ul>
               <div>
-            
-            {account?.role?.id === 3 || account?.role?.id === 1 ? (
-              <ButtonComponent
-              type={"button"}
-              textButton={"Thêm công việc"}
-              handleClick={handleHiddenCreate}
-              style={
-                "text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "
-              }
-            />
-                ) : (
-                  <></>
-                )}
-          </div>
-              {/* <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
-                <div className="relative w-full  mt-1 sm:w-64 py-2">
-                  <SearchComponent
-                    placeholder="Nhập tên chức vụ"
-                    handleSearch={debounce(handleSearchJob, 1000)}
-                    style={"w-full"}
-                    SearchingAnimate={
-                      <Spinner
-                        width={"w-20"}
-                        height={"h-5"}
-                        color={"fill-gray-400"}
-                      />
+                {account?.role?.roleName === "ROLE_ADMIN" || account?.role?.roleName === "ROLE_MANAGER" ? (
+                  <ButtonComponent
+                    type={"button"}
+                    textButton={"Thêm công việc"}
+                    handleClick={handleHiddenCreate}
+                    style={
+                      "text-sky-500 bg-white border border-sky-500 hover:bg-[#B0E2FF] focus:ring-4 focus:ring-blue-300 px-5 "
                     }
                   />
-                </div>
-              </form> */}
-            </div>
-{/* 
-            <div className="bg-gray-100 my-2 p-2 block sm:flex justify-between">
-              <div className="flex sm:pb-0 pb-2">
-                {account?.role?.id === 3 || account?.role?.id === 1 ? (
-                  <div className="mx-2 sm:mx-4">
-                    <button
-                      className="bg-gray-800 text-sm rounded-md text-white py-1 px-4"
-                      onClick={() => handleHiddenCreate()}
-                    >
-                      + Thêm mới
-                    </button>
-                  </div>
                 ) : (
                   <></>
                 )}
               </div>
-              <div className="flex">
-                <select
-                  id="category-create"
-                  // onChange={(e) => setFilterStatus(e.target.value)}
-                  className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
-                >
-                  <option selected="" value="0">
-                    Trạng thái
-                  </option>
-                  {statusList?.map((item, key) => (
-                    <option value={item?.id} key={key}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  id="category-create"
-                  onChange={(e) => handleFilterPriority(e.target.value)}
-                  className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
-                >
-                  <option selected="" value="">
-                    Mức độ
-                  </option>
-                  <option value="0">Tất cả</option>
-                  {priorities?.map((item, key) => (
-                    <option value={item?.id} key={key}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  id="category-create"
-                  // onChange={(e) => setChangeReason(e.target.value)}
-                  className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
-                >
-                  <option selected="" value="0">
-                    Tất cả công việc
-                  </option>
+            </div>
 
-                  <option selected="" value="1">
-                    Công việc bị từ chối
-                  </option>
-                </select>
-              </div>
-            </div> */}
             {children}
           </div>
           {/* Tạo công việc mới */}

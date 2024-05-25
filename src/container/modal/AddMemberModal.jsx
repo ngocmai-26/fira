@@ -7,7 +7,6 @@ import ButtonComponent from "../component/ButtonComponent";
 import { Spinner } from "../component/Spinner";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllAccount } from "../../thunks/AccountsThunk";
 import { addNewMember, removeMember } from "../../thunks/RoomThunk";
 import { getAllContactByUser } from "../../thunks/ContactThunk";
 
@@ -16,14 +15,10 @@ function AddMember({ setModalVisible, modalVisible, roomAddMember }) {
   const [searchContact, setSearchContact] = useState([]);
 
   const { isLoading } = useSelector((state) => state.roomReducer);
-  const { allAccount } = useSelector((state) => state.accountsReducer);
   const { allContact } = useSelector((state) => state.contactReducer);
   const { user } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   useLayoutEffect(() => {
-    if (allAccount.length <= 0) {
-      dispatch(getAllAccount());
-    }
     if (allContact.length <= 0) {
       dispatch(getAllContactByUser());
     }

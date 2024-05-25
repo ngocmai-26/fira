@@ -10,9 +10,9 @@ function ReportJobModel({ handleHiddenReport, report }) {
     note: "",
     progress: 0,
     instructionLink: "",
+    denyReason: ""
   });
   const dispatch = useDispatch();
-  console.log("report", report);
   const handleSubmit = () => {
     dispatch(
       userJob({
@@ -23,19 +23,16 @@ function ReportJobModel({ handleHiddenReport, report }) {
           status: "PROCESSING",
           instructionLink: dataReportJob?.instructionLink,
           verifyLink: "",
-          denyReason: "",
+          denyReason: dataReportJob?.denyReason,
         },
       })
-    );
-    dispatch(
-      updateDetailJob({
-        id: report.id,
-        data: {
-          note: dataReportJob?.note,
-        },
-      })
-    );
+    ).then((reps) => {
+      if(!reps.error) {
+        handleHiddenReport()
+      }
+    })
   };
+
   return (
     <div
       className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
@@ -90,17 +87,17 @@ function ReportJobModel({ handleHiddenReport, report }) {
                             required={"required"}
                           /> */}
 
-<textarea
-                        className="rounded-md border text-xs border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-gray-900 focus:ring-primary-500 focus:border-primary-500 block p-2"
-                        defaultValue={dataReportJob?.note}
-                        rows="5"
-                        onChange={(e) =>
-                          setDataReportJob({
-                            ...dataReportJob,
-                            note: e.target.value,
-                          })
-                        }
-                      />
+                          <textarea
+                            className="rounded-md border text-xs border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-gray-900 focus:ring-primary-500 focus:border-primary-500 block p-2"
+                            defaultValue={dataReportJob?.denyReason}
+                            rows="5"
+                            onChange={(e) =>
+                              setDataReportJob({
+                                ...dataReportJob,
+                                denyReason: e.target.value,
+                              })
+                            }
+                          />
                         </div>
                       </div>
                       <div className="information-plan mt-2">

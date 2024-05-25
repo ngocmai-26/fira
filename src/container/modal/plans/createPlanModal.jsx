@@ -8,11 +8,14 @@ import ButtonComponent from "../../component/ButtonComponent";
 function CreatePlanModal({ handleHiddenCreate }) {
   const dispatch = useDispatch();
   const { allJob } = useSelector((state) => state.jobsReducer);
+  const { account } = useSelector((state) => state.authReducer);
+
   useLayoutEffect(() => {
     if (allJob?.length <= 0) {
       dispatch(getAllJob());
     }
   }, []);
+
   const [dataPlan, setDataPlan] = useState({
     title: "",
     planJob: [],
@@ -153,22 +156,53 @@ function CreatePlanModal({ handleHiddenCreate }) {
     }
   }, [selectedDates, selectedMonths]);
 
+  const validateDates = () => {
+    const { timeStart, timeEnd } = dataPlan.planDetailRequest;
+    const currentDate = new Date();
+    const startDate = new Date(timeStart);
+    const endDate = new Date(timeEnd);
+  
+    if (startDate > endDate || endDate < currentDate) {
+      return false;
+    }
+  
+    return true;
+  };
+  
   const handleClick = () => {
+    if (!validateDates()) {
+      alert("Vui lòng kiểm tra lại ngày bắt đầu và kết thúc kế hoạch!");
+      return;
+    }
+  
     dispatch(addNewPlan(dataPlan)).then((reps) => {
       if (!reps.error) {
-        handleHiddenCreate()
+        handleHiddenCreate();
       }
     });
   };
+
+  const filteredJobs = allJob.filter((item) => {
+    return (
+      account.role.roleName === "ROLE_ADMIN" ||
+      item.manager.id === account.user.id ||
+      item.userJobs.some((userJob) => userJob.user.id === account.user.id)
+    );
+  });
+
   return (
     <div
       className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
       id="new-task-modal"
     >
       <div className="relative w-full h-full max-w-4xl m-auto px-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow "  style={{
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)',
-          }}>
+        <div
+          className="relative bg-white rounded-lg shadow"
+          style={{
+            boxShadow:
+              "0 4px 6px rgba(0, 0, 0, 0.1), 0 -4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1), 0 -10px 20px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <div className="flex items-start justify-between p-5 border-b rounded-t ">
             <h3 className="text-xl font-semibold">Kế hoạch mới</h3>
             <button
@@ -216,8 +250,8 @@ function CreatePlanModal({ handleHiddenCreate }) {
                           }
                           className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                         >
-                        <option value="ONCE">1 lần</option>
-                          <option value="LOOP" >Định kì</option>
+                          <option value="ONCE">1 lần</option>
+                          <option value="LOOP">Định kì</option>
                         </select>
                       </div>
                       <div className="col-span-2">
@@ -229,7 +263,6 @@ function CreatePlanModal({ handleHiddenCreate }) {
                           <span className="text-red-500">*</span>
                         </label>
                         <div className="grid grid-cols-2 gap-2">
-                         
                           <input
                             type="date"
                             name=""
@@ -250,8 +283,8 @@ function CreatePlanModal({ handleHiddenCreate }) {
                             id="timeStart"
                             className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500"
                             required
-                          /> 
-                           <input
+                          />
+                          <input
                             type="date"
                             name=""
                             onChange={(e) =>
@@ -277,18 +310,16 @@ function CreatePlanModal({ handleHiddenCreate }) {
                     </div>
                   </div>
                   <div className="information-plan mt-2">
-                
                     <FormField
-                        name={"title"}
-                        values={dataPlan}
-                        id={"title"}
-                        setValue={setDataPlan}
-                        required={"required"}
-                        placeholder={"Tiêu đề kế hoạch"}
-                      />
+                      name={"title"}
+                      values={dataPlan}
+                      id={"title"}
+                      setValue={setDataPlan}
+                      required={"required"}
+                      placeholder={"Tiêu đề kế hoạch"}
+                    />
                   </div>
                   <div className="information-plan mt-2">
-                    
                     <textarea
                       className="rounded-md border text-sm border-slate-200 outline-slate-200 input_todo w-full shadow-sm  text-gray-900 focus:ring-primary-500 focus:border-primary-500 block p-2"
                       defaultValue={
@@ -344,8 +375,9 @@ function CreatePlanModal({ handleHiddenCreate }) {
                   </label>
                   <div className="users-selection-list-wrapper py-2 border-gray-200 rounded-md border h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                     <div className="h-auto w-full ">
-                      {allJob?.map((item) => (
+                      {filteredJobs.map((item) => (
                         <button
+                          key={item.id}
                           type="button"
                           onClick={() => handleJobIdClick(item)}
                           className={`users-item flex py-1 px-2 w-full text-left border-b ${

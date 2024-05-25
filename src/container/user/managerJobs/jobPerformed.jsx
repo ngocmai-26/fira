@@ -12,7 +12,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { Pagination, Stack } from "@mui/material";
 import ReportJobModel from "../../modal/job/ReportJobModal";
 import EValueJobModal from "../../modal/job/EValueModal";
-import DetailJobModel from "../../modal/job/DetailJobModal";
+import JobDetailModal from "../../modal/job/DetailModal";
 
 function JobPerformed() {
   const { allJob, paginationJob } = useSelector((state) => state.jobsReducer);
@@ -23,6 +23,7 @@ function JobPerformed() {
   const [hiddenEValue, isHiddenEValue] = useState(false);
 
   const [isHiddenReport, setIsHiddenReport] = useState(false);
+  const [hiddenJobDetail, setHiddenJobDetail] = useState(false);
 
   const [report, setReport] = useState({});
 
@@ -43,13 +44,13 @@ function JobPerformed() {
     dispatch(getAllJob(pageNumber - 1));
   };
 
-  const handJobDetail = (item) => {
-    dispatch(getJobById(item)).then((reps) => {
-      if (!reps.error) {
-        nav("/chi-tiet-cong-viec");
-      }
-    });
-  };
+  // const handJobDetail = (item) => {
+  //   dispatch(getJobById(item)).then((reps) => {
+  //     if (!reps.error) {
+  //       nav("/chi-tiet-cong-viec");
+  //     }
+  //   });
+  // };
 
   useLayoutEffect(() => {
     dispatch(getAllJob(0));
@@ -71,10 +72,19 @@ function JobPerformed() {
 
   const filteredJobs = allJob.filter((item) =>
     item.userJobs.some(
-      (staff) => staff.user.id === account.user.id && staff.status === "PROCESSING"
+      (staff) =>
+        staff.user.id === account.user.id && staff.status === "PROCESSING"
     )
   );
 
+  console.log("filteredJobs", filteredJobs);
+  const handJobDetail = (itemId) => {
+    dispatch(getJobById(itemId)).then((response) => {
+      if (!response.error) {
+        setHiddenJobDetail(!hiddenJobDetail);
+      }
+    });
+  };
   return (
     <LayoutJob>
       <div className="flex flex-col">
@@ -84,7 +94,10 @@ function JobPerformed() {
               <table className="min-w-full divide-y divide-gray-200 table-fixed">
                 <thead className="bg-[#f3f4f6] border-b rounded-tl-md ">
                   <tr>
-                    <th scope="col" className="p-4 text-sm font-bold text-left text-gray-500 uppercase">
+                    <th
+                      scope="col"
+                      className="p-4 text-sm font-bold text-left text-gray-500 uppercase"
+                    >
                       STT
                     </th>
                     <th
@@ -129,18 +142,11 @@ function JobPerformed() {
                   {filteredJobs?.map((item, key) => (
                     <tr key={key}>
                       <td className="w-4 p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                        <div className="flex items-center">
-                          {key + 1}
-                        </div>
+                        <div className="flex items-center">{key + 1}</div>
                       </td>
 
                       <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                        <button
-                          className="underline"
-                          onClick={() => handJobDetail(item?.id)}
-                        >
-                          {item?.title}
-                        </button>
+                      {item?.title}
                       </td>
                       <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                         {item?.manager?.fullName}
@@ -165,36 +171,38 @@ function JobPerformed() {
                         }
                       </td>
 
-                      {account?.role?.id === 1 ? (
-                        item.userJobs.some(
+                      <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
+                        <button
+                          className="border-[#58AD69] border text-[#58AD69] rounded-md hover:bg-[#58AD69] hover:text-white  text-xs p-1"
+                          onClick={() => handJobDetail(item?.id)}
+                        >
+                          Chi tiết
+                        </button>
+                        {item.userJobs.some(
                           (userJob) =>
-                            userJob.status === "DONE" && userJob.jobEvaluate !== null
+                            userJob.status === "PROCESSING" &&
+                            userJob.cachedProgress === 0 &&
+                            userJob.user.id === account.user.id
                         ) ? (
-                          <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
-                            <button className="border-[#58AD69] border text-[#58AD69] rounded-md hover:bg-[#58AD69] hover:text-white text-xs p-1">
-                              Chi tiết
-                            </button>
-                          </td>
+                          <button
+                            className="border-[#e97254] border text-[#e97254] rounded-md hover:bg-[#e97254] hover:text-white text-xs p-1"
+                            onClick={() => handleHiddenReport(item)}
+                          >
+                            Báo cáo
+                          </button>
+                        ) : item.userJobs[0]?.verifyLink === "reassess" ? (
+                          <button
+                            className="border-[#e97254] border text-[#e97254] rounded-md hover:bg-[#e97254] hover:text-white text-xs p-1"
+                            onClick={() => handleHiddenReport(item)}
+                          >
+                            Báo cáo
+                          </button>
                         ) : (
-                          <></>
-                        )
-                      ) : (
-                        <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          {item.userJobs.some(
-                            (userJob) =>
-                              userJob.status === "PROCESSING" &&
-                              userJob.cachedProgress === 0 &&
-                              userJob.user.id === account.user.id
-                          ) && (
-                            <button
-                              className="border-[#e97254] border text-[#e97254] rounded-md hover:bg-[#e97254] hover:text-white text-xs p-1"
-                              onClick={() => handleHiddenReport(item)}
-                            >
-                              Báo cáo
-                            </button>
-                          )}
-                        </td>
-                      )}
+                          <div className=" border-[#657D81] border  rounded-md bg-[#657D81] text-white text-xs p-1">
+                            Đã báo cáo
+                          </div>
+                        )}
+                      </td>
 
                       <td className="text-sm font-medium text-gray-900 whitespace-nowrap"></td>
                     </tr>
@@ -223,8 +231,10 @@ function JobPerformed() {
           />
         </Stack>
       )}
+      {hiddenJobDetail && (
+        <JobDetailModal setHiddenJobDetail={setHiddenJobDetail} />
+      )}
 
-     
       {/* Báo cáo công việc */}
       {isHiddenReport && (
         <ReportJobModel

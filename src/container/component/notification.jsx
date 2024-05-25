@@ -36,8 +36,8 @@ function NotificationComponent({ styles, data }) {
                 // <MsgItem data={item} />
                 <div
                   key={item.id}
-                  className={`flex p-1 justify-between hover:bg-gray-100 rounded-md cursor-pointer ${
-                    item.read ? "" : "bg-gray-200"
+                  className={`flex p-1 justify-between hover:bg-gray-200 rounded-md cursor-pointer mt-2 ${
+                    item.read ? "" : "bg-gray-200 bg-opacity-60"
                   }`}
                   onClick={() => handleReadNotification(item.id)}
                 >

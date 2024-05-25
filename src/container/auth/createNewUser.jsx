@@ -16,7 +16,6 @@ function CreateNewUser() {
   const [images, setImages] = useState([]);
   const { isFetching, errors } = useSelector((state) => state.authReducer);
 
-
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
@@ -58,8 +57,8 @@ function CreateNewUser() {
             <div className="">
               <div className="">
                 <label htmlFor="firstName" className="font-medium text-sm">
-                  FirstName: 
-                      <span className="text-red-500">*</span>
+                  FirstName:
+                  <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"firstName"}
@@ -76,8 +75,8 @@ function CreateNewUser() {
             <div className=" ">
               <div className="relative">
                 <label htmlFor="lastName" className="font-medium text-sm">
-                  LastName: 
-                      <span className="text-red-500">*</span>
+                  LastName:
+                  <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"lastName"}
@@ -95,7 +94,7 @@ function CreateNewUser() {
               <div className="relative">
                 <label htmlFor="address" className="font-medium text-sm">
                   Address:
-                      <span className="text-red-500">*</span>
+                  <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"address"}
@@ -114,7 +113,7 @@ function CreateNewUser() {
               <div className="relative">
                 <label htmlFor="birthday" className="font-medium text-sm">
                   Birthday:
-                      <span className="text-red-500">*</span>
+                  <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"birthday"}
@@ -134,15 +133,31 @@ function CreateNewUser() {
               <div className="relative">
                 <label htmlFor="department" className="font-medium text-sm">
                   Department:
-                      <span className="text-red-500">*</span>
+                  <span className="text-red-500">*</span>
                 </label>
-                <FormField
+                {/* <FormField
                   name={"department"}
                   values={newUserData}
                   id={"department"}
                   setValue={setNewUserData}
                   required={"required"}
-                />
+                /> */}
+                <select
+                  id="category-create"
+                  onChange={(e) =>
+                    setNewUserData({ ...newUserData, department: e.target.value })
+                  }
+                  defaultValue={
+                    newUserData.department ? newUserData.department : ""
+                  }
+                  className="rounded-md border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500 w-full"
+                >
+                <option value="">---------</option>
+                  <option value="Công nghệ thông tin">
+                    Công nghệ thông tin
+                  </option>
+                  <option value="Kinh tế">Kinh tế</option>
+                </select>
                 {<ErrorField errors={errors} field={"department"} />}
               </div>
             </div>
@@ -153,7 +168,7 @@ function CreateNewUser() {
               <div className="relative">
                 <label htmlFor="phone" className="font-medium text-sm">
                   Phone:
-                      <span className="text-red-500">*</span>
+                  <span className="text-red-500">*</span>
                 </label>
                 <FormField
                   name={"phone"}

@@ -65,10 +65,11 @@ function JobsReport() {
     const filteredList = [];
     allJob.forEach((job) => {
       job.userJobs.forEach((userJob) => {
-        if (account.role.roleName === "ROLE_ADMIN" || account.user.id === userJob.user.id) {
+        if (account.role.roleName === "ROLE_ADMIN" || (account.user.id === job.manager.id )) {
           const shouldRender = userJob.status === "DONE" ||
             (userJob.status === "PROCESSING" &&
               userJob.cachedProgress !== 0 &&
+              userJob.verifyLink === "" &&
               userJob.jobEvaluate === null);
           if (shouldRender) {
             filteredList.push({
@@ -82,58 +83,6 @@ function JobsReport() {
     return filteredList;
   }, [allJob, account]);
 
-  const handleEvaluate = () => {
-    evaluateData.status = "DONE";
-    dispatch(verifyProgress(evaluateData?.id)).then((reps) => {
-      if (!reps?.error) {
-        dispatch(updateJob({ id: evaluateData?.id, data: evaluateData })).then(
-          (resp) => {
-            if (!resp?.error) {
-              dispatch(
-                updateEvaluateJob({
-                  id: evaluateData?.id,
-                  data: evaluateDetailData,
-                })
-              ).then((resp) => {
-                if (!resp?.error) {
-                  isHidden(true);
-                }
-              });
-            }
-          }
-        );
-      }
-    });
-  };
-
-  const handleReassess = () => {
-    const updatedStatus = {
-      ...evaluateData,
-      progress: 0,
-      status: "PROCESSING",
-    };
-    const updatedDetailStatus = {
-      ...evaluateDetailData,
-      note: "",
-      verifyLink: "",
-    };
-    dispatch(
-      updateEvaluateJob({
-        id: evaluateData?.id,
-        data: updatedDetailStatus,
-      })
-    ).then((resp) => {
-      if (!resp?.error) {
-        dispatch(
-          ReassessJob({ id: evaluateData?.id, data: updatedStatus })
-        ).then((resp) => {
-          if (!resp?.error) {
-            isHidden(true);
-          }
-        });
-      }
-    });
-  };
 
   const handleHiddenEValue = (item) => {
     setHiddenEValue(!hiddenEValue);
@@ -206,12 +155,7 @@ function JobsReport() {
                         <div className="flex items-center">{key + 1}</div>
                       </td>
                       <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                        <button
-                          className="underline"
-                          onClick={() => handJobDetail(item?.id)}
-                        >
-                          {item?.title}
-                        </button>
+                      {item?.title}
                       </td>
                       <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                         {item?.manager?.fullName}
@@ -232,7 +176,13 @@ function JobsReport() {
                           "DD-MM-YYYY"
                         )}
                       </td>
-                      <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                      <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap flex gap-2">
+                      <button
+                          className="border-[#58AD69] border text-[#58AD69] rounded-md hover:bg-[#58AD69] hover:text-white  text-xs p-1"
+                          onClick={() => handJobDetail(item?.id)}
+                        >
+                          Chi tiết
+                        </button>
                         {item.userJobs[0]?.status === "PROCESSING" &&
                         item.userJobs[0]?.cachedProgress !== 0 &&
                         item.userJobs[0]?.jobEvaluate === null ? (
@@ -243,7 +193,7 @@ function JobsReport() {
                             Đánh giá
                           </button>
                         ) : item.userJobs[0]?.status === "DONE" ? (
-                          <>Đã đánh giá</>
+                          <div className="border-[#657D81] border rounded-md bg-[#657D81] text-white text-xs p-1">Đã đánh giá</div>
                         ) : (
                           <>Chưa đánh giá</>
                         )}

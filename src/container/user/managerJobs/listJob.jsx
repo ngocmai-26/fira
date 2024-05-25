@@ -60,7 +60,7 @@ function ManagerJobs() {
       return true;
     } else {
       return (
-        item?.staffs?.some((staff) => staff?.id === account?.user?.id) ||
+        item?.userJobs?.some((staff) => staff?.user.id === account?.user?.id) ||
         item?.manager?.id === account?.user?.id
       );
     }
@@ -129,15 +129,11 @@ function ManagerJobs() {
                         {moment(item?.jobDetail?.timeEnd).format("DD-MM-YYYY")}
                       </td>
                       <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap gap-2 flex">
-                      {
-                            account?.user?.id === item?.manager?.id || account?.role?.id === 1 ? (
-                              <button className="border-[#58AD69] border text-[#58AD69] rounded-md hover:bg-[#58AD69] hover:text-white  text-xs p-1" 
+                      <button className="border-[#58AD69] border text-[#58AD69] rounded-md hover:bg-[#58AD69] hover:text-white  text-xs p-1" 
                               onClick={() => handJobDetail(item?.id)}>
                                 Chi tiết
                               </button>
-                            ) : (<></>)
-                          }
-                        {account?.role?.id === 3 || account?.role?.id === 1 ? (
+                        {account?.role?.roleName === "ROLE_ADMIN" || account?.role?.roleName === "ROLE_MANAGER" ? (
                           <>
                           
                           <React.Fragment>
@@ -176,14 +172,7 @@ function ManagerJobs() {
                             </React.Fragment></>
                         ) : (
                           <React.Fragment>
-                            {item?.jobDetail?.denyReason?.length > 0 ? (
-                              <button
-                                className="bg-blue-500 text-white text-xs p-1 mr-2 border-blue-500 border rounded-md hover:bg-blue-500 hover:text-white"
-                                type="button"
-                              >
-                                Xem ly do
-                              </button>
-                            ) : item?.status === "PENDING" ? (
+                            { item?.status === "PENDING" ? (
                               <button
                                 className="border-[#faa2ff] border text-[#faa2ff] rounded-md hover:bg-[#faa2ff] hover:text-white  text-xs p-1"
                                 onClick={() => handleConfirm(item.id)}

@@ -190,7 +190,7 @@ function JobPerformed() {
                           >
                             Báo cáo
                           </button>
-                        ) : item.userJobs[0]?.verifyLink === "reassess" ? (
+                        ) : item.userJobs[0]?.verifyLink === "reassess" ||  item.userJobs[0]?.jobEvaluate? (
                           <button
                             className="border-[#e97254] border text-[#e97254] rounded-md hover:bg-[#e97254] hover:text-white text-xs p-1"
                             onClick={() => handleHiddenReport(item)}

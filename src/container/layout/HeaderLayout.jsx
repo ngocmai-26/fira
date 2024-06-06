@@ -61,7 +61,7 @@ function HeaderAdmin() {
             <button
               type="button"
               aria-haspopup="true"
-              className="transition-opacity duration-200 rounded-full focus:outline-none focus:ring"
+              className="transition-opacity duration-200 rounded-full focus:outline-none focus:ring border border-black"
             >
               <img
                 className="w-10 h-10 rounded-full"
@@ -112,7 +112,7 @@ function HeaderAdmin() {
             <button
               type="button"
               aria-haspopup="true"
-              className="transition-opacity duration-200 rounded-full focus:outline-none focus:ring"
+              className="transition-opacity duration-200 rounded-full focus:outline-none focus:ring border border-black"
             >
               <img
                 className="w-10 h-10 rounded-full"

@@ -241,5 +241,3 @@ export const GetKPIHistory = createAsyncThunk(
       }
     },
 )
-
-

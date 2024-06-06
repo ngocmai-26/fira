@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import ButtonComponent from "../../component/ButtonComponent";
 import { useDispatch } from "react-redux";
-import { comFirmJob, evaluateJob, userJob } from "../../../thunks/JobsThunk";
+import { comFirmJob, evaluate_Job, userJob } from "../../../thunks/JobsThunk";
 
 function EValueJobModal({ handleHiddenEValue, evaluateData }) {
   const dispatch = useDispatch();
@@ -34,7 +34,6 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
     },
   ];
 
-
   const [eValuate, setEValuate] = useState(
     evaluateData?.userJobs && evaluateData.userJobs.length > 0
       ? evaluateData.userJobs[0].jobEvaluate || ""
@@ -47,25 +46,33 @@ function EValueJobModal({ handleHiddenEValue, evaluateData }) {
 
   const handleSubmitEvaluate = () => {
     dispatch(
-      userJob({
+      evaluate_Job({
         id: evaluateData.id,
         data: {
+          jobEvaluate: eValuate,
           userId: evaluateData.userJobs[0]?.user.id,
-          progress: +evaluateData?.userJobs[0]?.progress,
-          status: "DONE",
-          instructionLink: evaluateData?.userJobs[0]?.instructionLink,
-          verifyLink: "",
-          denyReason: evaluateData?.userJobs[0]?.denyReason || "", // Sử dụng denyReason từ userJobs[0]
         },
       })
     ).then((reps) => {
-      dispatch(
-        evaluateJob({ id: evaluateData.id, data: { jobEvaluate: eValuate } })
-      ).then((reps) => {
-        if (!reps.error) {
-          handleHiddenEValue();
-        }
-      });
+      if (!reps.error) {
+        dispatch(
+          userJob({
+            id: evaluateData.id,
+            data: {
+              userId: evaluateData.userJobs[0]?.user.id,
+              progress: +evaluateData?.userJobs[0]?.progress,
+              status: "DONE",
+              instructionLink: evaluateData?.userJobs[0]?.instructionLink,
+              verifyLink: "",
+              denyReason: evaluateData?.userJobs[0]?.denyReason || "", // Sử dụng denyReason từ userJobs[0]
+            },
+          })
+        ).then((reps) => {
+          if (!reps.error) {
+            handleHiddenEValue();
+          }
+        });
+      }
     });
   };
 

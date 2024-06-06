@@ -28,6 +28,7 @@ import JobsReport from "../container/user/managerJobs/jobsReport";
 import ListExpertise from "../container/user/managerKPI/ListExpertise";
 import Expertise from "../container/user/managerKPI/expertise";
 import KPICheck from "../container/user/managerKPI/KPICheck";
+import JobEvaluated from "../container/user/managerJobs/jobEvaluated";
 
 export const GeneralRoute = () => {
   return (
@@ -62,6 +63,7 @@ export const LoggedRoute = () => {
         <Route path="/cong-viec-dang-thuc-hien" element={<JobPerformed />} />
         <Route path="/bao-cao-cong-viec" element={<JobsReport />} />
         <Route path="/quan-ly-cong-viec-dang-bang" element={<JobsBoard />} />
+        <Route path="/quan-ly-cong-viec-da-thuc-hien" element={<JobEvaluated />} />
         <Route path="/quan-ly-diem-danh" element={<ManagerTimeKeep />} />
         <Route path="/quan-ly-ke-hoach" element={<ManagerNote />} />
         <Route path="/quan-ly-danh-muc-kpi" element={<ManagerKPICategories />} />

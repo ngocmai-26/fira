@@ -101,7 +101,7 @@ function ListKPI() {
                                   </div>
                                   <div className="avatar flex justify-end">
                                     <img
-                                      src={item.user.avatar}
+                                      src={item?.user?.avatar}
                                       alt=""
                                       className=" w-8 h-8  rounded-full"
                                     />
@@ -162,7 +162,7 @@ function ListKPI() {
                                   </div>
                                   <div className="avatar flex justify-end">
                                     <img
-                                      src={item.user.avatar}
+                                      src={item?.user?.avatar}
                                       alt=""
                                       className=" w-8 h-8  rounded-full"
                                     />
@@ -224,7 +224,7 @@ function ListKPI() {
                                   </div>
                                   <div className="avatar flex justify-end">
                                     <img
-                                      src={item.user.avatar}
+                                      src={item?.user?.avatar}
                                       alt=""
                                       className=" w-8 h-8  rounded-full"
                                     />
@@ -285,7 +285,7 @@ function ListKPI() {
                                   </div>
                                   <div className="avatar flex justify-end">
                                     <img
-                                      src={item.user.avatar}
+                                      src={item?.user?.avatar}
                                       alt=""
                                       className=" w-8 h-8  rounded-full"
                                     />

@@ -7,6 +7,7 @@ import {
   setSingleUser,
 } from '../slices/UsersSlice'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../constants/toast'
+import { getAllAccount } from './AccountsThunk'
 
 export const getAllUsers = createAsyncThunk(
   '/users',
@@ -116,6 +117,77 @@ export const updateUser = createAsyncThunk(
       dispatch(getAllUsers())
     } catch (e) {
       console.log(e)
+    }
+  },
+)
+
+
+
+export const addStaff = createAsyncThunk(
+  'users/staff',
+  async (data, { dispatch, rejectWithValue }) => {
+    const token = localStorage.getItem('auth_token')
+    if (!token) {
+      dispatch(
+        setAlert({
+          type: TOAST_ERROR,
+          content: 'Phiên đăng nhập đã hết hạn vui lòng thử lại',
+        }),
+      )
+    }
+    const resp = await fetch(`${API.uri}/users/add-staff`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+    if (resp.status >= 200 && resp.status < 300) {
+      dispatch(
+        setAlert({ type: TOAST_SUCCESS, content: 'Cập nhật thành công' }),
+      )
+      dispatch(getAllUsers())
+      dispatch(getAllAccount())
+    } else {
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Hãy kiểm tra lại dữ liệu' }),
+      )
+    }
+  },
+)
+
+
+export const removeStaff = createAsyncThunk(
+  'users/remove-staff',
+  async (data, { dispatch, rejectWithValue }) => {
+    const token = localStorage.getItem('auth_token')
+    if (!token) {
+      dispatch(
+        setAlert({
+          type: TOAST_ERROR,
+          content: 'Phiên đăng nhập đã hết hạn vui lòng thử lại',
+        }),
+      )
+    }
+    const resp = await fetch(`${API.uri}/users/remove-staff`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+    if (resp.status >= 200 && resp.status < 300) {
+      dispatch(
+        setAlert({ type: TOAST_SUCCESS, content: 'Cập nhật thành công' }),
+      )
+      dispatch(getAllUsers())
+      dispatch(getAllAccount())
+    } else {
+      dispatch(
+        setAlert({ type: TOAST_ERROR, content: 'Hãy kiểm tra lại dữ liệu' }),
+      )
     }
   },
 )

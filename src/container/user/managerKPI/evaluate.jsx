@@ -1,17 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../layout";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { GetKPIHistory, addNewKpi } from "../../../thunks/KPIsThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import KPIMore from "../../modal/kpi/kpis/kpiMore";
 import { useNavigate } from "react-router-dom";
 import ButtonComponent from "../../component/ButtonComponent";
+import { getAllKPICategories } from "../../../thunks/KPICategoriesSlice";
 
 function EvaluateKPI() {
   const { account } = useSelector((state) => state.authReducer);
+  const { allKPICategories } = useSelector((state) => state.kpiCategoriesReducer);
   const [sumPoint, setSumPoint] = useState(
-    account.user.checkInPoint + account?.user?.jobPoint
+    account?.user?.checkInPoint + account?.user?.jobPoint  || 0
   );
   const { listKPIHistory } = useSelector((state) => state.kpisReducer);
   const [kpiMore, setKPIMore] = useState(false);
@@ -21,12 +23,13 @@ function EvaluateKPI() {
     name: "KPI - " + account?.user?.fullName,
     description: "EVALUATE",
     target: +sumPoint.toFixed(0),
-    kpiTypeId: "81b7281f-0c09-4ae6-a008-9876517acf8f",
+    kpiTypeId: "6e8fa306-79ed-4fed-9ac4-787e149db62a",
     note: "",
     comment: 'none',
     timeStart: new Date().toISOString().split('T')[0],
     timeEnd: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
   });
+
 
   const handleMore = (item) => {
     setKPIMore(!kpiMore);
@@ -86,7 +89,7 @@ function EvaluateKPI() {
                   <p className="text-sm leading-6 font-medium my-1">
                     {account?.role?.roleName === "ROLE_ADMIN"
                       ? "Quản trị viên"
-                      : account?.role?.roleName === "ROLE_MANAGE"
+                      : account?.role.roleName === "ROLE_MANAGER"
                       ? "Quản Lý"
                       : account?.role?.roleName === "ROLE_STAFF"
                       ? "Nhân viên"

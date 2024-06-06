@@ -125,13 +125,13 @@ function JobDetailModal({setHiddenJobDetail}) {
                           >
                             <div className="avatar w-2/12 me-2 ">
                               <img
-                                src={item?.user.avatar}
+                                src={item?.user?.avatar}
                                 alt=""
                                 className=" w-8 h-8  rounded-full"
                               />
                             </div>
                             <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">{item?.user.fullName}</span>
+                              <span className="text-xs ">{item?.user?.fullName}</span>
                             </div>
                           </button>
                         ) : (

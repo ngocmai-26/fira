@@ -34,8 +34,10 @@ function CreateJobModel({ handleHiddenCreate }) {
     if (allUser?.length <= 0) {
       dispatch(getAllUsers());
     }
-    if (allAccount?.length <= 0) {
-      dispatch(getAllAccount());
+    if (account?.role?.roleName === "ROLE_ADMIN") {
+      if (allAccount?.length <= 0) {
+        dispatch(getAllAccount());
+      }
     }
 
     if (allRole?.length <= 0) {
@@ -44,8 +46,6 @@ function CreateJobModel({ handleHiddenCreate }) {
   }, []);
 
   const [staffs, setStaffs] = useState([]);
-
-  const [job, setJob] = useState({});
 
   const [newJobData, setNewJobData] = useState({
     title: "",
@@ -184,7 +184,9 @@ function CreateJobModel({ handleHiddenCreate }) {
                       />
                       <select
                         id="category-create"
-                        defaultValue={job?.priority ? job?.priority : "0"}
+                        defaultValue={
+                          newJobData?.priority ? newJobData?.priority : "0"
+                        }
                         onChange={(e) =>
                           setNewJobData({
                             ...newJobData,
@@ -275,7 +277,7 @@ function CreateJobModel({ handleHiddenCreate }) {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="border-t mt-3">
                     <form action="#" method="GET" className="">
                       <div className="relative mt-3">
@@ -327,120 +329,87 @@ function CreateJobModel({ handleHiddenCreate }) {
                   </form>
                   <div className="users-selection-list-wrapper py-3 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                     <div className="h-auto ">
-                      {allAccount
-                        .filter(
-                          (item) =>
-                            !(
-                              item.role.roleName === "ROLE_ADMIN" ||
-                              item.active === false
+                      {account.role.roleName === "ROLE_ADMIN"
+                        ? allAccount
+                            ?.filter(
+                              (item) =>
+                                !(
+                                  item.role.roleName === "ROLE_ADMIN" ||
+                                  item.active === false
+                                )
                             )
-                        )
-                        .map((item) => (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setStaffs((prevStaffs) => {
-                                if (prevStaffs.includes(item.user.id)) {
-                                  return prevStaffs.filter(
-                                    (id) => id !== item.user.id
-                                  );
-                                } else {
-                                  return [...prevStaffs, item.user.id];
+                            .map((item) => (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setStaffs((prevStaffs) => {
+                                    if (prevStaffs.includes(item.user.id)) {
+                                      return prevStaffs.filter(
+                                        (id) => id !== item.user.id
+                                      );
+                                    } else {
+                                      return [...prevStaffs, item.user.id];
+                                    }
+                                  })
                                 }
-                              })
-                            }
-                            className={`users-item flex py-1 px-2 w-full text-left ${
-                              staffs.includes(item.user.id) ? "bg-gray-300" : ""
-                            }`}
-                          >
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src={item.user.avatar}
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                {item.user.fullName}
-                              </span>
-                            </div>
-                          </button>
-                        ))}
+                                className={`users-item flex py-1 px-2 w-full text-left ${
+                                  staffs.includes(item.user.id)
+                                    ? "bg-gray-300"
+                                    : ""
+                                }`}
+                              >
+                                <div className="avatar w-2/12 ">
+                                  <img
+                                    src={item?.user?.avatar}
+                                    alt=""
+                                    className=" w-8 h-8  rounded-full"
+                                  />
+                                </div>
+                                <div className="name w-8/12 my-auto">
+                                  <span className="text-xs ">
+                                    {item?.user?.fullName}
+                                  </span>
+                                </div>
+                              </button>
+                            ))
+                        : account?.user?.staffs?.map((item) => (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setStaffs((prevStaffs) => {
+                                  if (prevStaffs.includes(item.id)) {
+                                    return prevStaffs.filter(
+                                      (id) => id !== item.id
+                                    );
+                                  } else {
+                                    return [...prevStaffs, item.id];
+                                  }
+                                })
+                              }
+                              className={`users-item flex py-1 px-2 w-full text-left ${
+                                staffs.includes(item.id) ? "bg-gray-300" : ""
+                              }`}
+                            >
+                              <div className="avatar w-2/12 ">
+                                <img
+                                  src={item?.avatar}
+                                  alt=""
+                                  className=" w-8 h-8  rounded-full"
+                                />
+                              </div>
+                              <div className="name w-8/12 my-auto">
+                                <span className="text-xs ">
+                                  {item?.fullName}
+                                </span>
+                              </div>
+                            </button>
+                          ))}
+
+              
                     </div>
                   </div>
                 </div>
-                {/* <div className="h-full">
-                  <span className="text-xs font-medium">
-                    Người chịu trách nhiệm
-                  </span>
-                  <hr />
-                  <form action="#" method="GET" className="">
-                    <label htmlFor="top-bar-search" className="sr-only">
-                      Tìm kiếm
-                    </label>
-                    <div className="relative mt-1">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg
-                          className="w-5 h-5 text-gray-500 "
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                      </div>
-                      <input
-                        type="text"
-                        name="email"
-                        id="top-bar-search"
-                        className="rounded-md border outline-slate-200 border-gray-300 text-gray-900 sm:text-xs focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-1.5"
-                        placeholder="Tìm kiếm"
-                      />
-                    </div>
-                  </form>
-                  <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
-                    <div className="h-auto ">
-                      {allAccount
-                        ?.filter(
-                          (item) => item.role.roleName === "ROLE_MANAGER"
-                        )
-                        .map((item) => (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setNewJobData({
-                                ...newJobData,
-                                userCreateJobId: item?.user.id,
-                              })
-                            }
-                            className={`users-item flex py-1 px-2 w-full text-left ${
-                              item?.user.id === newJobData?.userCreateJobId
-                                ? "bg-gray-300"
-                                : ""
-                            }`}
-                          >
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src={item?.user.avatar}
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                {item.user.fullName}
-                              </span>
-                            </div>
-                          </button>
-                        ))}
-                    </div>
-                  </div>
-                </div> */}
+              
               </div>
               <div className="items-center p-6 border-gray-200 rounded-b text-right">
                 <ButtonComponent

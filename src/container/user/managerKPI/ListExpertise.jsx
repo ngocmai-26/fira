@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import KPI from ".";
 import { GetKPIHistory, getAllKPI, getKpisById } from "../../../thunks/KPIsThunk";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,8 +28,16 @@ function ListExpertise() {
         })
       }
     })
-
   }
+
+  useEffect(() => {
+    allKPI.map(
+      (item) => {
+console.log("account?.user?.staffs?.includes(item?.user?.id)",  account?.user?.staffs)
+console.log("account?.user?.staffs?.includes(item?.user?.id)",  item?.user?.id)
+console.log("account?.user?.staffs?.includes(item?.user?.id)", account?.user?.staffs?.some(staff => staff.id === item?.user?.id))
+      })
+  }, [])
   return (
     <KPI>
       <div className="flex flex-col">
@@ -45,7 +53,7 @@ function ListExpertise() {
               ) : (
                 allKPI.map(
                   (item) =>
-                    item.description === "EVALUATE" && (
+                    item.description === "EVALUATE" &&  (account?.user?.staffs?.some(staff => staff.id === item?.user?.id) || account?.role?.roleName === "ROLE_ADMIN") &&(
                       <button
                         type="button"
                         onClick={() => handleDetailExpertise(item.id)}
@@ -78,7 +86,7 @@ function ListExpertise() {
                             </div>
                             <div className="avatar flex justify-end">
                               <img
-                                src={item.user.avatar}
+                                src={item?.user?.avatar}
                                 alt=""
                                 className=" w-8 h-8 rounded-full"
                               />

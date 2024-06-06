@@ -196,7 +196,21 @@ function LayoutJob({ children }) {
                     </Link>
                   </li>
                 ) : (
-                  <></>
+                  <li
+                    className={`mt-0 px-2 ${
+                      pathname === "/quan-ly-cong-viec-da-thuc-hien"
+                        ? "bg-gray-200"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
+                    <Link
+                      to="/quan-ly-cong-viec-da-thuc-hien"
+                      className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2  "
+                    >
+                      <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
+                      Công việc đã hoàn thành
+                    </Link>
+                  </li>
                 )}
               </ul>
               <div>

@@ -16,6 +16,11 @@ function EvaluateKPI() {
     account?.user?.checkInPoint + account?.user?.jobPoint  || 0
   );
   const { listKPIHistory } = useSelector((state) => state.kpisReducer);
+  useLayoutEffect(() => {
+    if (allKPICategories?.length <= 0) {
+      dispatch(getAllKPICategories());
+    }
+  }, []);
   const [kpiMore, setKPIMore] = useState(false);
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -23,7 +28,7 @@ function EvaluateKPI() {
     name: "KPI - " + account?.user?.fullName,
     description: "EVALUATE",
     target: +sumPoint.toFixed(0),
-    kpiTypeId: "6e8fa306-79ed-4fed-9ac4-787e149db62a",
+    kpiTypeId: "",
     note: "",
     comment: 'none',
     timeStart: new Date().toISOString().split('T')[0],
@@ -106,13 +111,13 @@ function EvaluateKPI() {
                     Start Date
                   </p>
                   <p className="text-sm leading-6 font-medium my-2">End Date</p>
-                  <p className="text-sm leading-6 font-medium my-1">Quản lý</p>
+                  <p className="text-sm leading-6 font-medium my-1">Loại đánh giá</p>
                 </div>
-                <div className="col-span-2 px-3">
+                <div className="col-span-1 px-3">
                   <div className="my-1">
                     <input
                       type="date"
-                      className="text-sm leading-6 font-medium border border-gray-400 px-2 rounded-md"
+                      className="text-sm leading-6 font-medium border border-gray-400 px-2 rounded-md w-full"
                       defaultValue={kpiData.timeStart}
                       onChange={(e) =>
                         setKPIData({ ...kpiData, timeStart: e.target.value })
@@ -122,7 +127,7 @@ function EvaluateKPI() {
                   <div className="my-1">
                     <input
                       type="date"
-                      className="text-sm leading-6 font-medium border border-gray-400 px-2 rounded-md"
+                      className="text-sm leading-6 font-medium border border-gray-400 px-2 rounded-md w-full"
                       defaultValue={kpiData.timeEnd}
                       onChange={(e) =>
                         setKPIData({ ...kpiData, timeEnd: e.target.value })
@@ -130,7 +135,18 @@ function EvaluateKPI() {
                     />
                   </div>
                   <p className="text-sm leading-6 font-medium my-1">
-                    Nguyễn Thanh Sơn
+                  <select
+                        className="rounded-md w-full border border-slate-200 outline-slate-200 p-2  text-sm text-slate-500 "
+                        value={kpiData.kpiTypeId}
+                        onChange={(e) =>
+                          setKPIData({ ...kpiData, kpiTypeId: e.target.value })
+                        }
+                      >
+                        <option value="">---------</option>
+                        {allKPICategories?.map((item) => (
+                          <option value={item.id}>{item.name}</option>
+                        ))}
+                      </select>
                   </p>
                 </div>
               </div>

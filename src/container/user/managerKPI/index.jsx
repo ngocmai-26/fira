@@ -44,12 +44,12 @@ function KPI({ children }) {
               )}
               <li className="mt-0">
                 <Link
-                  to="/request-kpi"
+                  to="/ket-qua-tham-dinh"
                   className={`block py-1 text-sm font-medium leading-8 w-full px-3 ${
-                    pathname === "/request-kpi" ? "bg-gray-200" : "hover:bg-gray-50"
+                    pathname === "/ket-qua-tham-dinh" ? "bg-gray-200" : "hover:bg-gray-50"
                   }`}
                 >
-                  Kết quả đánh giá
+                  Kết quả thẩm định
                 </Link>
               </li>
             </ul>

@@ -32,6 +32,7 @@ function Expertise() {
     score1: 0,
     score2: 0,
   });
+  console.log("kpi", singleKPI)
 
   useEffect(() => {
     // Tính tổng các giá trị trong pointValues
@@ -217,7 +218,7 @@ function Expertise() {
             <div className="group-item py-3">
               <div className="note border-b-2 py-3 my-3">
                 <label htmlFor="">Ghi chú</label>
-                <p className="text-sm">Không có gì</p>
+                <p className="text-sm">{singleKPI?.detail?.note || "Không"}</p>
               </div>
               <div className="">
                 <label htmlFor="">Nhận xét</label>

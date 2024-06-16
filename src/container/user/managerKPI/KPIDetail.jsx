@@ -2,74 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../layout";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  cancelKPI,
-  getKpiVerifyById,
-  updateKPI,
-  updateKPIDetail,
-} from "../../../thunks/KPIsThunk";
-import ButtonComponent from "../../component/ButtonComponent";
 
-function KPICheck() {
+function KPIDetail() {
   const { singleKPI } = useSelector((state) => state.kpisReducer);
   const { listKPIHistory } = useSelector((state) => state.kpisReducer);
   const [sumPoint, setSumPoint] = useState(
     (singleKPI?.user?.checkInPoint + singleKPI?.user?.jobPoint).toFixed(0)
   );
-
-  const [opinion, setOpinion] = useState(false);
-  const dispatch = useDispatch();
-  const nav = useNavigate();
-
-  const [dataUpdate, setDataUpdate] = useState({
-    name: singleKPI?.name,
-    description: singleKPI?.description,
-    target: 0,
-    kpiTypeId: singleKPI?.kpiType?.id,
-  });
-  const [changeNote, setChangeNote] = useState("");
-
-  const [dataUpdateDetail, setDataUpdateDetail] = useState({
-    note: singleKPI?.detail?.note,
-    comment: singleKPI?.detail?.comment,
-    timeStart: moment(singleKPI?.detail?.timeStart).format("YYYY-MM-DD"),
-    timeEnd: moment(singleKPI?.detail?.timeEnd).format("YYYY-MM-DD"),
-  });
-
-  const handleSubmit = () => {
-    dispatch(getKpiVerifyById(singleKPI.id)).then((reps) => {
-      if (!reps.error) {
-        nav("/quan-ly-phieu-danh-gia");
-      }
-    });
-  };
-
-  const handleCancel = () => {
-    dispatch(
-      cancelKPI({
-        id: singleKPI.id,
-        data: { ...dataUpdate, description: "EVALUATE" },
-      })
-    ).then((reps) => {
-      if (!reps.error) {
-        dispatch(
-          updateKPIDetail(
-            {id: singleKPI.id,
-              data: { ...dataUpdateDetail, note: changeNote }})
-        ).then((reps) => {
-          if (!reps.error) {
-            nav("/quan-ly-phieu-danh-gia");
-          }
-        });
-      }
-    });
-  };
-
-  const handleOpenOpinion = () => {
-    setChangeNote("");
-    setOpinion(!opinion);
-  };
 
   return (
     <Layout>
@@ -89,6 +28,7 @@ function KPICheck() {
                 <div className="border-e-2">
                   <p className="text-sm leading-6 font-medium">Phòng ban:</p>
                   <p className="text-sm leading-6 font-medium">Email:</p>
+                  <p className="text-sm leading-6 font-medium">Trạng thái phiếu đánh giá:</p>
                 </div>
                 <div className="col-span-2 px-3">
                   <p className="text-sm leading-6 font-medium">
@@ -97,6 +37,9 @@ function KPICheck() {
                   </p>
                   <p className="text-sm leading-6 font-medium">
                     {singleKPI?.user?.email}
+                  </p>
+                  <p className="text-sm leading-6 font-medium text-red-500">
+                    {singleKPI?.description}
                   </p>
                 </div>
               </div>
@@ -262,75 +205,11 @@ function KPICheck() {
               </div>
             </div>
 
-            <div className="flex gap-3 justify-end text-right py-3 ">
-              <ButtonComponent
-                  type={"button"}
-                  textButton={" Ý kiến"}
-                  style={
-                    "bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 px-5 text-white"
-                  }
-                  handleClick={handleOpenOpinion}
-                />
-              <ButtonComponent
-                  type={"button"}
-                  textButton={"Gửi"}
-                  style={
-                    "bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
-                  }
-                  handleClick={handleSubmit}
-                />
-            </div>
           </form>
         </div>
       </div>
-      {opinion && (
-        <div
-          className={`fixed left-0 right-0 z-50 items-center justify-center flex overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full`}
-          id="new-task-modal"
-        >
-          <div className="relative w-full h-full max-w-xl m-auto px-4 md:h-auto">
-            <div className="relative bg-white rounded-lg shadow ">
-              <div className=" items-start justify-between p-5 ">
-                <h3 className="text-xl font-semibold border-b rounded-t">
-                  Ý kiến của bạn
-                </h3>
-                <div className="py-5">
-                  <textarea
-                    id="biography"
-                    rows="3"
-                    className="block p-2.5 w-full text-sm text-gray-900  rounded-md border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                    placeholder="Hãy nếu ý kiến của bạn"
-                    defaultValue={changeNote}
-                    onChange={(e) => setChangeNote(e.target.value)}
-                  ></textarea>
-                </div>
-                
-              <div className="flex gap-3 justify-end text-right py-3">
-              <ButtonComponent
-                  type={"button"}
-                  textButton={"Hủy"}
-                  style={
-                    "bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 px-5 text-white"
-                  }
-                  handleClick={handleOpenOpinion}
-                />
-                 <ButtonComponent
-                  type={"button"}
-                  textButton={"Phản hồi"}
-                  style={
-                    "bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 px-5 text-white"
-                  }
-                  handleClick={handleCancel}
-                />
-              </div>  
-              </div>
-
-            </div>
-          </div>
-        </div>
-      )}
     </Layout>
   );
 }
 
-export default KPICheck;
+export default KPIDetail;

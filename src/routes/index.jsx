@@ -29,6 +29,8 @@ import ListExpertise from "../container/user/managerKPI/ListExpertise";
 import Expertise from "../container/user/managerKPI/expertise";
 import KPICheck from "../container/user/managerKPI/KPICheck";
 import JobEvaluated from "../container/user/managerJobs/jobEvaluated";
+import ResultOfEvaluation from "../container/user/managerKPI/resultOfEvaluation";
+import KPIDetail from "../container/user/managerKPI/KPIDetail";
 
 export const GeneralRoute = () => {
   return (
@@ -68,8 +70,10 @@ export const LoggedRoute = () => {
         <Route path="/quan-ly-ke-hoach" element={<ManagerNote />} />
         <Route path="/quan-ly-danh-muc-kpi" element={<ManagerKPICategories />} />
         <Route path="/quan-ly-phieu-danh-gia" element={<ListKPI />} />
+        <Route path="/ket-qua-tham-dinh" element={<ResultOfEvaluation />} />
         <Route path="/danh-sach-kpi-danh-gia" element={<ListExpertise />} />
         <Route path="/danh-gia-KPI" element={<EvaluateKPI />} />
+        <Route path="/chi-tiet-phieu-danh-gia-KPI" element={<KPIDetail />} />
         <Route path="/tham-dinh-danh-gia-KPI" element={<Expertise />} />
         <Route path="/kiem-tra-danh-gia-KPI" element={<KPICheck />} />
         <Route path="/tai-khoan" element={<Account />} />

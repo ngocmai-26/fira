@@ -30,14 +30,7 @@ function ListExpertise() {
     })
   }
 
-  useEffect(() => {
-    allKPI.map(
-      (item) => {
-console.log("account?.user?.staffs?.includes(item?.user?.id)",  account?.user?.staffs)
-console.log("account?.user?.staffs?.includes(item?.user?.id)",  item?.user?.id)
-console.log("account?.user?.staffs?.includes(item?.user?.id)", account?.user?.staffs?.some(staff => staff.id === item?.user?.id))
-      })
-  }, [])
+
   return (
     <KPI>
       <div className="flex flex-col">

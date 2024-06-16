@@ -22,7 +22,7 @@ function ListKPI() {
 
         dispatch(GetKPIHistory(account?.user?.id)).then((reps) => {
           if(!reps.error) {
-            nav("/kiem-tra-danh-gia-KPI");
+            nav("/chi-tiet-phieu-danh-gia-KPI");
           }
         })
       }
@@ -65,6 +65,7 @@ function ListKPI() {
                               <button
                                 type="button"
                                 className="draft-content w-full text-start px-2"
+                                onClick={()=>handleDetailKPI(item.id)}
                               >
                                 <div>
                                   <p className="text-xs font-semibold name ">
@@ -126,6 +127,7 @@ function ListKPI() {
                               <button
                                 type="button"
                                 className="draft-content w-full text-start px-2"
+                                onClick={()=>handleDetailKPI(item.id)}
                               >
                                 <div>
                                   <p className="text-xs font-semibold name ">
@@ -249,6 +251,7 @@ function ListKPI() {
                               <button
                                 type="button"
                                 className="draft-content w-full text-start px-2"
+                                onClick={()=>handleDetailKPI(item.id)}
                               >
                                 <div>
                                   <p className="text-xs font-semibold name ">

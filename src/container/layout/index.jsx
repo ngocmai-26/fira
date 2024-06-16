@@ -9,7 +9,7 @@ function Layout({ children }) {
         <div className="flex-1 h-full overflow-x-hidden overflow-y-auto">
           <HeaderAdmin />
           <div className="scroll bg-white">
-            <div className="scroll-item" style={{ height: "90vh" }}>
+            <div className="scroll-item relative" style={{ height: "90vh" }}>
               {children}
             </div>
           </div>

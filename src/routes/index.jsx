@@ -1,7 +1,7 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigation } from "react-router-dom";
 import Login from "../container/auth/login";
 import Register from "../container/auth/register";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import VerifyEmail from "../container/auth/verifyEmail";
 import ConfirmAccount from "../container/auth/confirmAccount";
 import ConfirmForgotPassword from "../container/auth/confirmForgotPassword";
@@ -31,6 +31,7 @@ import KPICheck from "../container/user/managerKPI/KPICheck";
 import JobEvaluated from "../container/user/managerJobs/jobEvaluated";
 import ResultOfEvaluation from "../container/user/managerKPI/resultOfEvaluation";
 import KPIDetail from "../container/user/managerKPI/KPIDetail";
+import { useEffect } from "react";
 
 export const GeneralRoute = () => {
   return (
@@ -52,11 +53,15 @@ export const GeneralRoute = () => {
 };
 
 export const LoggedRoute = () => {
+  const { user} = useSelector((state) => state.authReducer);
+  
   return (
     <AppMiddleware>
       <Routes>
-        <Route path="/create-new-user" element={<CreateNewUser />} />
-        <Route path="/" element={<Home />} />
+        <Route
+          path={!user ? "/create-new-user" : "/"}
+          element={!user ? <CreateNewUser /> : <Home />}
+        />
         <Route path="/chat" element={<Chat />} />
         <Route path="/quan-ly-tai-khoan" element={<ManagerAccount />} />
         <Route path="/quan-ly-chuc-vu" element={<ManagerRoles />} />
@@ -65,10 +70,16 @@ export const LoggedRoute = () => {
         <Route path="/cong-viec-dang-thuc-hien" element={<JobPerformed />} />
         <Route path="/bao-cao-cong-viec" element={<JobsReport />} />
         <Route path="/quan-ly-cong-viec-dang-bang" element={<JobsBoard />} />
-        <Route path="/quan-ly-cong-viec-da-thuc-hien" element={<JobEvaluated />} />
+        <Route
+          path="/quan-ly-cong-viec-da-thuc-hien"
+          element={<JobEvaluated />}
+        />
         <Route path="/quan-ly-diem-danh" element={<ManagerTimeKeep />} />
         <Route path="/quan-ly-ke-hoach" element={<ManagerNote />} />
-        <Route path="/quan-ly-danh-muc-kpi" element={<ManagerKPICategories />} />
+        <Route
+          path="/quan-ly-danh-muc-kpi"
+          element={<ManagerKPICategories />}
+        />
         <Route path="/quan-ly-phieu-danh-gia" element={<ListKPI />} />
         <Route path="/ket-qua-tham-dinh" element={<ResultOfEvaluation />} />
         <Route path="/danh-sach-kpi-danh-gia" element={<ListExpertise />} />

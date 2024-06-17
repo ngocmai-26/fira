@@ -16,9 +16,9 @@ function ReportJobModel({ handleHiddenReport, report }) {
   const handleSubmit = () => {
     dispatch(
       userJob({
-        id: report.id,
+        id: report?.id,
         data: {
-          userId: user.id,
+          userId: user?.id,
           progress: +dataReportJob?.progress,
           status: "PROCESSING",
           instructionLink: dataReportJob?.instructionLink,

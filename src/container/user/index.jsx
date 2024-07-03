@@ -36,15 +36,15 @@ function JobStatusDoughnutChart({ data }) {
   // Ensure labels include all possible statuses even if their count is zero
   const allStatuses = ["PENDING", "PROCESSING", "DONE"];
   const doughnutData = {
-    labels: allStatuses,
+    labels: ["Đang chờ xử lý", "Đang xử lý", "Hoàn thành"],
     datasets: [
       {
         label: "Trạng thái công việc",
         data: allStatuses.map((status) => jobStatusCounts[status] || 0),
         backgroundColor: [
-          "rgba(255, 99, 132, 0.6)", // PENDING
-          "rgba(255, 205, 86, 0.6)", // PROCESSING
-          "rgba(75, 192, 192, 0.6)", // DONE
+          "rgba(255, 99, 132, 0.6)", 
+          "rgba(255, 205, 86, 0.6)", 
+          "rgba(75, 192, 192, 0.6)", 
         ],
       },
     ],
@@ -118,7 +118,7 @@ function KPIChart({ data }) {
   const notCompletedRate = 100 - doneRate - evaluateRate;
 
   const doughnutData = {
-    labels: ["DONE", "EVALUATE", "NOT COMPLETED"],
+    labels: ["Hoàn thành", "Đang đánh giá", "Chưa hoàn thành"],
     datasets: [
       {
         label: "Kpi Completion Rate",
@@ -157,7 +157,7 @@ function JobEvaluateChart({ data }) {
   jobEvaluates.forEach((evaluate) => {
     evaluateCounts[evaluate] += 1;
   });
-  const allStatuses = ["BAD", "MEDIUM", "GOOD", "NOT DONE"];
+  const allStatuses = ["Xấu", "Trung bình", "Tốt", "Không"];
 
   const barData = {
     labels: allStatuses,
@@ -258,7 +258,7 @@ const JobStatusManagerDoughnutChart = ({ data }) => {
   });
 
   const doughnutData = {
-    labels: Object.keys(jobStatusCounts),
+    labels: ["Đang chờ xử lý", "Đang xử lý", "Hoàn thành"],
     datasets: [
       {
         label: "Trạng thái công việc",
@@ -435,7 +435,7 @@ function Home() {
                       <KPIChart data={allDashboard} />
                     </div>
                   </div>
-                  <div
+                  {/* <div
                     className="bg-white p-5 rounded-md"
                     style={{ boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
                   >
@@ -443,7 +443,7 @@ function Home() {
                       Biểu đồ Kết quả công việc
                     </h2>
                     <JobEvaluateChart data={allDashboard} />
-                  </div>
+                  </div> */}
                 </>
               )}
               {account.role.roleName === "ROLE_MANAGER" && (
